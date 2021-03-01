@@ -30,6 +30,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: 'tic-tac-go'
+          releaseId: ${{ needs.create_release.outputs.id }}
 
             #- name: publish
             #run: cp tic-tac-go Public/
