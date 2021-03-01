@@ -24,19 +24,26 @@ jobs:
       - name: Build
         run: go build .
 
-      - name: publish
-        run: cp tic-tac-go Public/
+      - name: Upload the artifacts
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: 'tic-tac-go'
 
-          #publish-gpr:
-          #   needs: build
-          #  runs-on: ubuntu-latest
-          # steps:
-          #  - uses: actions/checkout@v2
-          # - uses: actions/setup-node@v1
-          #  with:
-          #   node-version: 12
-          #  registry-url: https://npm.pkg.github.com/
-          #     - run: npm ci
-          #    - run: npm publish
-          #     env:
-          #      NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+            #- name: publish
+            #run: cp tic-tac-go Public/
+
+            #publish-gpr:
+            #   needs: build
+            #  runs-on: ubuntu-latest
+            # steps:
+            #  - uses: actions/checkout@v2
+            # - uses: actions/setup-node@v1
+            #  with:
+            #   node-version: 12
+            #  registry-url: https://npm.pkg.github.com/
+            #     - run: npm ci
+            #    - run: npm publish
+            #     env:
+            #      NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
