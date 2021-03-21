@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	game "github.com/gucio321/tic-tac-go/board"
 	"github.com/gucio321/tic-tac-go/common"
+	game "github.com/gucio321/tic-tac-go/ttgboard"
 )
 
 // Menu represent's game's menu
