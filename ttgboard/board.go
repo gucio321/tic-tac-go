@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gucio321/tic-tac-go/common"
+	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
 
 // IdxState represents index's state
@@ -114,7 +114,7 @@ func newPlayer(t PlayerType, letter IdxState, cb func() (x, y int)) *player {
 
 // TTT represents TicTacToe game
 type TTT struct {
-	board   [common.BoardH][common.BoardW]*BoardIndex
+	board   [ttgcommon.BoardH][ttgcommon.BoardW]*BoardIndex
 	reader  *bufio.Reader
 	player1 *player
 	player2 *player
@@ -140,10 +140,10 @@ func NewTTT(player1Type, player2Type PlayerType) *TTT {
 		result.player2 = newPlayer(player2Type, IdxO, result.getPlayerMove)
 	}
 
-	var board [common.BoardH][common.BoardW]*BoardIndex
+	var board [ttgcommon.BoardH][ttgcommon.BoardW]*BoardIndex
 
-	for i := 0; i < common.BoardH; i++ {
-		for j := 0; j < common.BoardW; j++ {
+	for i := 0; i < ttgcommon.BoardH; i++ {
+		for j := 0; j < ttgcommon.BoardW; j++ {
 			board[i][j] = newIndex()
 		}
 	}
@@ -155,7 +155,7 @@ func NewTTT(player1Type, player2Type PlayerType) *TTT {
 
 func (t *TTT) printSeparator() {
 	sep := "+"
-	for i := 0; i < common.BoardW; i++ {
+	for i := 0; i < ttgcommon.BoardW; i++ {
 		sep += "---+"
 	}
 
@@ -163,13 +163,13 @@ func (t *TTT) printSeparator() {
 }
 
 func (t *TTT) printBoard() {
-	common.Clear()
+	ttgcommon.Clear()
 
 	t.printSeparator()
 
-	for i := 0; i < common.BoardH; i++ {
+	for i := 0; i < ttgcommon.BoardH; i++ {
 		line := "| "
-		for j := 0; j < common.BoardW; j++ {
+		for j := 0; j < ttgcommon.BoardW; j++ {
 			line += t.board[i][j].String()
 			line += " | "
 		}
@@ -203,13 +203,13 @@ func (t *TTT) getPlayerMove() (x, y int) {
 			continue
 		}
 
-		if num <= 0 || num > common.BoardW*common.BoardH {
+		if num <= 0 || num > ttgcommon.BoardW*ttgcommon.BoardH {
 			fmt.Println("You must enter number from 1 to 9")
 		}
 
 		num--
 
-		x, y = common.IntToCords(num)
+		x, y = ttgcommon.IntToCords(num)
 
 		if t.board[y][x].IsFree() {
 			return
@@ -220,13 +220,13 @@ func (t *TTT) getPlayerMove() (x, y int) {
 }
 
 func (t *TTT) isWinner(player IdxState) bool {
-	b := common.GetWinBoard()
+	b := ttgcommon.GetWinBoard()
 
 	for _, i := range b {
 		c1, c2, c3 := i[0], i[1], i[2]
-		x1, y1 := common.IntToCords(c1)
-		x2, y2 := common.IntToCords(c2)
-		x3, y3 := common.IntToCords(c3)
+		x1, y1 := ttgcommon.IntToCords(c1)
+		x2, y2 := ttgcommon.IntToCords(c2)
+		x3, y3 := ttgcommon.IntToCords(c3)
 
 		if (t.board[y1][x1].state == player) &&
 			t.board[y2][x2].state == player &&
@@ -239,8 +239,8 @@ func (t *TTT) isWinner(player IdxState) bool {
 }
 
 func (t *TTT) canWin(player IdxState) (x, y int, result bool) {
-	for i := 0; i < common.BoardH; i++ {
-		for j := 0; j < common.BoardW; j++ {
+	for i := 0; i < ttgcommon.BoardH; i++ {
+		for j := 0; j < ttgcommon.BoardW; j++ {
 			if !t.board[i][j].IsFree() {
 				continue
 			}
@@ -259,8 +259,8 @@ func (t *TTT) canWin(player IdxState) (x, y int, result bool) {
 }
 
 func (t *TTT) isBoardFull() bool {
-	for i := 0; i < common.BoardH; i++ {
-		for j := 0; j < common.BoardW; j++ {
+	for i := 0; i < ttgcommon.BoardH; i++ {
+		for j := 0; j < ttgcommon.BoardW; j++ {
 			if t.board[i][j].IsFree() {
 				return false
 			}
@@ -287,7 +287,7 @@ func (t *TTT) getPCMove() (x, y int) {
 		return x, y
 	}
 
-	for _, i := range common.GetCorners() {
+	for _, i := range ttgcommon.GetCorners() {
 		if t.board[i.Y][i.X].IsFree() {
 			options = append(options, option{i.X, i.Y})
 		}
@@ -305,7 +305,7 @@ func (t *TTT) getPCMove() (x, y int) {
 		return 1, 1
 	}
 
-	for _, i := range common.GetMiddles() {
+	for _, i := range ttgcommon.GetMiddles() {
 		if t.board[i.Y][i.X].IsFree() {
 			options = append(options, option{i.X, i.Y})
 		}
@@ -343,14 +343,14 @@ func (t *TTT) Run() {
 		t.move(x, y, t.player1.letter)
 
 		if t.isWinner(t.player1.letter) {
-			common.Clear()
+			ttgcommon.Clear()
 			t.printBoard()
 			fmt.Println(t.player1.name + " won")
 			t.pressAnyKey()
 
 			break
 		} else if t.isBoardFull() {
-			common.Clear()
+			ttgcommon.Clear()
 			t.printBoard()
 			fmt.Println("DRAW")
 			t.pressAnyKey()
@@ -363,14 +363,14 @@ func (t *TTT) Run() {
 		t.move(x, y, t.player2.letter)
 
 		if t.isWinner(t.player2.letter) {
-			common.Clear()
+			ttgcommon.Clear()
 			t.printBoard()
 			fmt.Println(t.player2.name + " won")
 			t.pressAnyKey()
 
 			break
 		} else if t.isBoardFull() {
-			common.Clear()
+			ttgcommon.Clear()
 			t.printBoard()
 			fmt.Println("DRAW")
 			t.pressAnyKey()

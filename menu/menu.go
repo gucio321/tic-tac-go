@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gucio321/tic-tac-go/common"
 	game "github.com/gucio321/tic-tac-go/ttgboard"
+	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
 
 // Menu represent's game's menu
@@ -190,7 +190,7 @@ func (m *Menu) processUserAction(action int) {
 // Run start's main menu
 func (m *Menu) Run() {
 	for {
-		common.Clear()
+		ttgcommon.Clear()
 		fmt.Println("Welcome in tic-tac-go")
 		m.printMenu()
 		action, err := m.getUserAction()
