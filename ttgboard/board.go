@@ -1,4 +1,4 @@
-package board
+package ttgboard
 
 import (
 	"bufio"
