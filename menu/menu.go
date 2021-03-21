@@ -172,8 +172,6 @@ func (m *Menu) getUserAction() (int, error) {
 	}
 
 	return num, nil
-
-	return 0, nil
 }
 
 func (m *Menu) processUserAction(action int) {
@@ -196,7 +194,6 @@ func (m *Menu) Run() {
 		fmt.Println("Welcome in tic-tac-go")
 		m.printMenu()
 		action, err := m.getUserAction()
-
 		if err != nil {
 			log.Print(err)
 
