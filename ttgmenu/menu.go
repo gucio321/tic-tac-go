@@ -1,4 +1,4 @@
-package menu
+package ttgmenu
 
 import (
 	"bufio"
