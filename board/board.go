@@ -287,11 +287,6 @@ func (t *TTT) getPCMove() (x, y int) {
 		return x, y
 	}
 
-	// try to get center
-	if t.board[1][1].IsFree() {
-		return 1, 1
-	}
-
 	for _, i := range common.GetCorners() {
 		if t.board[i.Y][i.X].IsFree() {
 			options = append(options, option{i.X, i.Y})
@@ -303,6 +298,11 @@ func (t *TTT) getPCMove() (x, y int) {
 		result := options[rand.Intn(len(options))]
 
 		return result.X, result.Y
+	}
+
+	// try to get center
+	if t.board[1][1].IsFree() {
+		return 1, 1
 	}
 
 	for _, i := range common.GetMiddles() {
