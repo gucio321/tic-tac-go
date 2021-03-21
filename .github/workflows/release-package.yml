@@ -1,52 +1,124 @@
-name: Node.js Package
+name: go-package
 
 on:
   push:
     branches: ['master']
 
 jobs:
-  build:
+  build-bin:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Go 1.14
+      - name: Set up Go 1.16
         uses: actions/setup-go@v2.1.3
         with:
-          go-version: 1.14
+          go-version: 1.16
           id: go
 
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libgl1-mesa-dev libsdl2-dev libasound2-dev > /dev/null 2>&1
+          sudo apt-get install -y xvfb
 
-      - name: Build
-        run: go build .
+      - name: Build package
+        run: go build -o tic-tac-go.bin .
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: tic-tac-go
-          asset_name: tic-tac-go
+          file: tic-tac-go.bin
+          asset_name: tic-tac-go.bin
           tag: ${{ github.ref }}
           overwrite: true
-          body: "This is my release text"
+          body: ""
 
-            #- name: publish
-            #run: cp tic-tac-go Public/
+  build-AppImage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
-            #publish-gpr:
-            #   needs: build
-            #  runs-on: ubuntu-latest
-            # steps:
-            #  - uses: actions/checkout@v2
-            # - uses: actions/setup-node@v1
-            #  with:
-            #   node-version: 12
-            #  registry-url: https://npm.pkg.github.com/
-            #     - run: npm ci
-            #    - run: npm publish
-            #     env:
-            #      NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Set up Go 1.16
+        uses: actions/setup-go@v2.1.3
+        with:
+          go-version: 1.16
+          id: go
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          sudo apt-get install -y appstream
+
+      - name: create ouput dir
+        run: |
+          mkdir tic-tac-go.AppDir
+
+      - name: download icon
+        run: |
+          wget https://cdn4.iconfinder.com/data/icons/core-ui-outlined/32/outlined_placeholder-512.png -o tic-tac-go.AppDir/icon.png
+
+      - name: build go package
+        run: |
+          go build -o tic-tac-go.AppDir/main.bin
+
+      - name: create .desktop entry
+        run: |
+          echo -e "[Desktop Entry]\n
+          Type=Application\n
+          Name=tic-tac-go\n
+          Icon=icon
+          NoDisplay=false\n
+          StartupNotify=true\n
+          Categories=Game;\n" >> tic-tac-go.AppDir/Desktop.desktop
+
+      - name: create AppRun
+        run: |
+          echo "#!/bin/sh
+          cd \"\$(dirname \"\$0\")\"
+          exec ./main.bin" >> tic-tac-go.AppDir/AppRun
+          chmod 755 tic-tac-go.AppDir/AppRun
+
+      - name: setup AppImageTool
+        run: |
+          wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+          chmod a+x appimagetool-x86_64.AppImage
+
+      - name: building AppImage
+        run: ./appimagetool-x86_64.AppImage tic-tac-go.AppDir tic-tac-go.AppImage
+
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: tic-tac-go.AppImage
+          asset_name: tic-tac-go.AppImage
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: ""
+
+  build-exe:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go 1.16
+        uses: actions/setup-go@v2.1.3
+        with:
+          go-version: 1.16
+          id: go
+
+      - name: Build package
+        run: go build -o tic-tac-go.exe .
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: tic-tac-go.exe
+          asset_name: tic-tac-go.exe
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: ""
