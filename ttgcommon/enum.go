@@ -1,4 +1,4 @@
-package common
+package ttgcommon
 
 // BoardW, BoardH are board's width and height
 const (
