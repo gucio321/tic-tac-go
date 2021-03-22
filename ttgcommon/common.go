@@ -8,12 +8,12 @@ import (
 )
 
 // IntToCords converts intager to X-Y cords
-func IntToCords(i int) (x, y int) {
+func IntToCords(w, h, i int) (x, y int) {
 	for {
-		if i-BoardW >= 0 {
+		if i-w >= 0 {
 			y++
 
-			i -= BoardW
+			i -= w
 		} else {
 			x = i
 

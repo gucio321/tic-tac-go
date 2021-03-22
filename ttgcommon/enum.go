@@ -2,8 +2,8 @@ package ttgcommon
 
 // BoardW, BoardH are board's width and height
 const (
-	BoardW = 3
-	BoardH = 3
+	BaseBoardW = 3
+	BaseBoardH = 3
 )
 
 // GetWinBoard returns winning indexes list

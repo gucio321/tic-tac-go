@@ -114,16 +114,28 @@ func newPlayer(t PlayerType, letter IdxState, cb func() (x, y int)) *player {
 
 // TTT represents TicTacToe game
 type TTT struct {
-	board   [ttgcommon.BoardH][ttgcommon.BoardW]*BoardIndex
+	board   [][]*BoardIndex
 	reader  *bufio.Reader
 	player1 *player
 	player2 *player
+	width,
+	height int
 }
 
 // NewTTT creates a ne TTT
-func NewTTT(player1Type, player2Type PlayerType) *TTT {
+func NewTTT(w, h int, player1Type, player2Type PlayerType) *TTT {
 	result := &TTT{
+		board:  make([][]*BoardIndex, h),
 		reader: bufio.NewReader(os.Stdin),
+		width:  w,
+		height: h,
+	}
+
+	for i := 0; i < h; i++ {
+		result.board[i] = make([]*BoardIndex, w)
+		for j := 0; j < w; j++ {
+			result.board[i][j] = newIndex()
+		}
 	}
 
 	switch player1Type {
@@ -140,22 +152,12 @@ func NewTTT(player1Type, player2Type PlayerType) *TTT {
 		result.player2 = newPlayer(player2Type, IdxO, result.getPlayerMove)
 	}
 
-	var board [ttgcommon.BoardH][ttgcommon.BoardW]*BoardIndex
-
-	for i := 0; i < ttgcommon.BoardH; i++ {
-		for j := 0; j < ttgcommon.BoardW; j++ {
-			board[i][j] = newIndex()
-		}
-	}
-
-	result.board = board
-
 	return result
 }
 
 func (t *TTT) printSeparator() {
 	sep := "+"
-	for i := 0; i < ttgcommon.BoardW; i++ {
+	for i := 0; i < t.width; i++ {
 		sep += "---+"
 	}
 
@@ -167,9 +169,9 @@ func (t *TTT) printBoard() {
 
 	t.printSeparator()
 
-	for i := 0; i < ttgcommon.BoardH; i++ {
+	for i := 0; i < t.height; i++ {
 		line := "| "
-		for j := 0; j < ttgcommon.BoardW; j++ {
+		for j := 0; j < t.width; j++ {
 			line += t.board[i][j].String()
 			line += " | "
 		}
@@ -203,13 +205,13 @@ func (t *TTT) getPlayerMove() (x, y int) {
 			continue
 		}
 
-		if num <= 0 || num > ttgcommon.BoardW*ttgcommon.BoardH {
-			fmt.Println("You must enter number from 1 to 9")
+		if num <= 0 || num > t.width*t.height {
+			fmt.Printf("You must enter number from 1 to %d\n", t.width*t.height)
 		}
 
 		num--
 
-		x, y = ttgcommon.IntToCords(num)
+		x, y = ttgcommon.IntToCords(t.width, t.height, num)
 
 		if t.board[y][x].IsFree() {
 			return
@@ -224,9 +226,9 @@ func (t *TTT) isWinner(player IdxState) bool {
 
 	for _, i := range b {
 		c1, c2, c3 := i[0], i[1], i[2]
-		x1, y1 := ttgcommon.IntToCords(c1)
-		x2, y2 := ttgcommon.IntToCords(c2)
-		x3, y3 := ttgcommon.IntToCords(c3)
+		x1, y1 := ttgcommon.IntToCords(t.width, t.height, c1)
+		x2, y2 := ttgcommon.IntToCords(t.width, t.height, c2)
+		x3, y3 := ttgcommon.IntToCords(t.width, t.height, c3)
 
 		if (t.board[y1][x1].state == player) &&
 			t.board[y2][x2].state == player &&
@@ -239,8 +241,8 @@ func (t *TTT) isWinner(player IdxState) bool {
 }
 
 func (t *TTT) canWin(player IdxState) (x, y int, result bool) {
-	for i := 0; i < ttgcommon.BoardH; i++ {
-		for j := 0; j < ttgcommon.BoardW; j++ {
+	for i := 0; i < t.height; i++ {
+		for j := 0; j < t.width; j++ {
 			if !t.board[i][j].IsFree() {
 				continue
 			}
@@ -259,8 +261,8 @@ func (t *TTT) canWin(player IdxState) (x, y int, result bool) {
 }
 
 func (t *TTT) isBoardFull() bool {
-	for i := 0; i < ttgcommon.BoardH; i++ {
-		for j := 0; j < ttgcommon.BoardW; j++ {
+	for i := 0; i < t.height; i++ {
+		for j := 0; j < t.width; j++ {
 			if t.board[i][j].IsFree() {
 				return false
 			}
