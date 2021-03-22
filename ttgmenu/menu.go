@@ -157,12 +157,12 @@ func (m *Menu) getUserAction() (int, error) {
 	fmt.Print("\nWhat'd you like to do?: ")
 
 	text, err := m.reader.ReadString('\n')
-	text = strings.ReplaceAll(text, "\r", "")
 	if err != nil {
 		return 0, fmt.Errorf("error reading answer given by user: %w", err)
 	}
 
 	text = strings.ReplaceAll(text, "\n", "")
+	text = strings.ReplaceAll(text, "\r", "")
 
 	num, err := strconv.Atoi(text)
 	if err != nil {
