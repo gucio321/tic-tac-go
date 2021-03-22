@@ -1,2 +1,2 @@
-// Package menu contain's game menu
+// Package ttgmenu contain's game menu
 package ttgmenu

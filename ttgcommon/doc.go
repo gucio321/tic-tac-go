@@ -1,2 +1,2 @@
-// Package common contains common functions and variables
+// Package ttgcommon contains common functions and variables
 package ttgcommon
