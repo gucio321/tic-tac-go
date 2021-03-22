@@ -3,21 +3,31 @@
 Tic-Tac-Go is a simple, command line implementation
 of tic-tac-toe game written in [Golang](https://golang.org)
 
-## Installation
+## Requirements
 
-You can run the game in a few ways:
+to run the game you only need to install [golang](https://golang.org)
 
-*   with `git`:
+### Installation
+
+To install the game simple run `go install github.com/gucio321/tic-tac-go`
+
+### How to run?
+
+After installation, just execute `go run github.com/gucio321/tic-tac-go`
+
+You can also download the source by `git clone https://github.com/gucio321/tic-tac-go`
+and then:
 
 ```sh
-git clone https://github.com/gucio321/tic-tac-go
 cd tic-tac-go
+go get -d ./...
 go run .
 ```
 
-*   using `go`:
+## Screenshots
 
-```sh
-go get github.com/gucio321/tic-tac-go
-go run github.com/gucio321/tic-tac-go
-```
+![menu](docs/menu.png)
+
+![gameplay](docs/gameplay.png)
+
+![help](docs/help.png)
