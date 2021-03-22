@@ -206,6 +206,7 @@ func (t *TTT) getPlayerMove() (x, y int) {
 		}
 
 		text = strings.ReplaceAll(text, "\n", "")
+		text = strings.ReplaceAll(text, "\r", "")
 
 		num, err := strconv.Atoi(text)
 		if err != nil {
