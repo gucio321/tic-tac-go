@@ -97,7 +97,6 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 		},
 		Settings: {
 			1: func() {
-				fmt.Println("WARNING: this works only for PVP game")
 				w, err := m.getUserAction("Enter new board width")
 				if err != nil {
 					log.Fatal(err)
