@@ -3,12 +3,13 @@ package ttgmenu
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/AllenDang/giu"
 
 	game "github.com/gucio321/tic-tac-go/ttgboard"
 	"github.com/gucio321/tic-tac-go/ttgcommon"
@@ -28,6 +29,7 @@ type Menu struct {
 }
 
 // NewMenu creates a new game menu
+<<<<<<< HEAD
 // nolint:funlen // enum
 func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func()) {
 	text := map[State][]string{
@@ -39,6 +41,16 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 			"\t4) Help",
 			"\t5) README",
 			"\t0) exit",
+=======
+func (m *Menu) getMenuData(state State) (lines []string, actions []func()) {
+	text := map[State][]string{
+		MainMenu: {
+			"1) start Player VS PC game",
+			"2) start Player VS Player game",
+			"3) settings",
+			"4) Help",
+			"0) exit",
+>>>>>>> d980c87 (tic tac goe with giu:)
 		},
 		Help: {
 			"TicTacToe Version 1",
@@ -58,18 +70,27 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 		},
 		Readme: readMarkdown("README.md"),
 		Settings: {
+<<<<<<< HEAD
 			"\nSettings:",
 			"\t1) change board size",
 			"\t2) reset board size",
 			"\t0) back to main menu",
+=======
+			"0) back to main menu",
+>>>>>>> d980c87 (tic tac goe with giu:)
 		},
 	}
 
-	cb := map[State]map[int]func(){
+	cb := map[State][]func(){
 		MainMenu: {
+<<<<<<< HEAD
 			0: func() { os.Exit(0) },
 			1: func() {
 				var g *game.TTG
+=======
+			func() {
+				var g *game.TTT
+>>>>>>> d980c87 (tic tac goe with giu:)
 
 				rand.Seed(time.Now().UnixNano())
 				// nolint:gomnd // two players in game
@@ -84,22 +105,31 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 
 				g.Run()
 			},
+<<<<<<< HEAD
 			2: func() {
 				game := game.NewTTG(m.boardW, m.boardH, m.chainLen, game.PlayerPerson, game.PlayerPerson)
+=======
+			func() {
+				game := game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, game.PlayerPerson, game.PlayerPerson)
+>>>>>>> d980c87 (tic tac goe with giu:)
 				game.Run()
 			},
-			3: func() {
+			func() {
 				m.state = Settings
 			},
-			4: func() {
+			func() {
 				m.state = Help
 			},
+<<<<<<< HEAD
 			5: func() {
 				m.state = Readme
 			},
+=======
+			func() { os.Exit(0) },
+>>>>>>> d980c87 (tic tac goe with giu:)
 		},
 		Help: {
-			0: func() {
+			func() {
 				m.state = MainMenu
 			},
 		},
@@ -109,6 +139,7 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 			},
 		},
 		Settings: {
+<<<<<<< HEAD
 			1: func() {
 				w, err := m.getUserAction("Enter new board width")
 				if err != nil {
@@ -134,6 +165,9 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 				_, _ = m.getUserAction("Board width and height was set to default\nPress ENTER to continue")
 			},
 			0: func() {
+=======
+			func() {
+>>>>>>> d980c87 (tic tac goe with giu:)
 				m.state = MainMenu
 			},
 		},
@@ -155,7 +189,7 @@ const (
 
 type menuIndex struct {
 	lines       []string
-	userActions map[int]func()
+	userActions []func()
 	multiAction bool
 }
 
@@ -193,11 +227,26 @@ func NewMenu() *Menu {
 	return result
 }
 
-func (m *Menu) printMenu() {
+func (m *Menu) printMenu() giu.Layout {
+	var l giu.Layout
 	lines := m.menus[m.state].lines
-	if lines != nil {
-		fmt.Println(strings.Join(lines, "\n"))
+	if m.menus[m.state].multiAction {
+		for n, line := range lines {
+			n := n
+			l = append(l,
+				giu.Button(line).OnClick(func() {
+					m.menus[m.state].userActions[n]()
+				}),
+			)
+		}
+	} else {
+		l = append(l,
+			giu.Label(strings.Join(lines, "\n")),
+			giu.Button("Back").OnClick(m.menus[m.state].userActions[0]),
+		)
 	}
+
+	return l
 }
 
 func (m *Menu) getUserAction(question string) (int, error) {
@@ -237,6 +286,7 @@ func (m *Menu) processUserAction(action int) {
 }
 
 // Run start's main menu
+<<<<<<< HEAD
 func (m *Menu) Run() {
 	for {
 		ttgcommon.Clear()
@@ -249,7 +299,12 @@ func (m *Menu) Run() {
 
 			continue
 		}
+=======
+func (m *Menu) Build() giu.Layout {
+	return giu.Layout{
+		giu.Label("Welcome in tic-tac-go"),
+>>>>>>> d980c87 (tic tac goe with giu:)
 
-		m.processUserAction(action)
+		m.printMenu(),
 	}
 }
