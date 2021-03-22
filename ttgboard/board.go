@@ -139,14 +139,24 @@ func NewTTT(w, h int, player1Type, player2Type PlayerType) *TTT {
 
 	switch player1Type {
 	case PlayerPC:
-		result.player1 = newPlayer(player1Type, IdxX, result.getPCMove)
+		result.player1 = newPlayer(player1Type, IdxX,
+			func() (x, y int) {
+				x, y = result.getPCMove(IdxX)
+				return x, y
+			},
+		)
 	case PlayerPerson:
 		result.player1 = newPlayer(player1Type, IdxX, result.getPlayerMove)
 	}
 
 	switch player2Type {
 	case PlayerPC:
-		result.player2 = newPlayer(player2Type, IdxO, result.getPCMove)
+		result.player2 = newPlayer(player2Type, IdxO,
+			func() (x, y int) {
+				x, y = result.getPCMove(IdxO)
+				return x, y
+			},
+		)
 	case PlayerPerson:
 		result.player2 = newPlayer(player2Type, IdxO, result.getPlayerMove)
 	}
@@ -271,20 +281,28 @@ func (t *TTT) isBoardFull() bool {
 	return true
 }
 
-func (t *TTT) getPCMove() (x, y int) {
+func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 	type option struct{ X, Y int }
+	pcLetter := letter
+	var playerLetter IdxState
+	switch pcLetter {
+	case IdxX:
+		playerLetter = IdxO
+	case IdxO:
+		playerLetter = IdxX
+	}
 
 	var options []option = nil
 
 	rand.Seed(time.Now().UnixNano())
 
 	// attack: try to win
-	if x, y, ok := t.canWin(IdxO); ok {
+	if x, y, ok := t.canWin(pcLetter); ok {
 		return x, y
 	}
 
 	// defense: check, if user can win
-	if x, y, ok := t.canWin(IdxX); ok {
+	if x, y, ok := t.canWin(playerLetter); ok {
 		return x, y
 	}
 
