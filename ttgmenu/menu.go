@@ -66,15 +66,15 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 
 				switch r {
 				case 0:
-					g = game.NewTTT(game.PlayerPerson, game.PlayerPC)
+					g = game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, game.PlayerPerson, game.PlayerPC)
 				case 1:
-					g = game.NewTTT(game.PlayerPC, game.PlayerPerson)
+					g = game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, game.PlayerPC, game.PlayerPerson)
 				}
 
 				g.Run()
 			},
 			2: func() {
-				game := game.NewTTT(game.PlayerPerson, game.PlayerPerson)
+				game := game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, game.PlayerPerson, game.PlayerPerson)
 				game.Run()
 			},
 			3: func() {
