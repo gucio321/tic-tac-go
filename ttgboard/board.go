@@ -57,7 +57,6 @@ func (p PlayerType) String() string {
 }
 
 // BoardIndex represents board index
-// nolint:golint // this name is ok
 type BoardIndex struct {
 	state IdxState
 }

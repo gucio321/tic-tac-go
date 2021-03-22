@@ -1,2 +1,2 @@
-// Package board contains main game data
+// Package ttgboard contains main game data
 package ttgboard
