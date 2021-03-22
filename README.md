@@ -23,3 +23,9 @@ cd tic-tac-go
 go get -d ./...
 go run .
 ```
+
+## Screenshots
+
+[menu](docs/menu.png)
+
+[gameplay](docs/gameplay.png)
