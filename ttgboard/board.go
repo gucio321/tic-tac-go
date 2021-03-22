@@ -283,8 +283,11 @@ func (t *TTT) isBoardFull() bool {
 
 func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 	type option struct{ X, Y int }
+
 	pcLetter := letter
+
 	var playerLetter IdxState
+
 	switch pcLetter {
 	case IdxX:
 		playerLetter = IdxO
