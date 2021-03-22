@@ -67,7 +67,8 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 				var g *game.TTT
 
 				rand.Seed(time.Now().UnixNano())
-				r := rand.Intn(2)
+				// nolint:gomnd // two players in game
+				r := rand.Intn(2) // nolint:gosec // it is ok
 
 				switch r {
 				case 0:
@@ -177,7 +178,7 @@ func (m *Menu) getUserAction(question string) (int, error) {
 
 	text, err := m.reader.ReadString('\n')
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("error reading user action: %w", err)
 	}
 
 	text = strings.ReplaceAll(text, "\n", "")
@@ -185,10 +186,10 @@ func (m *Menu) getUserAction(question string) (int, error) {
 	num, err := strconv.Atoi(text)
 	if err != nil {
 		if m.menus[m.state].multiAction {
-			return 0, err
-		} else {
-			return 0, nil
+			return 0, fmt.Errorf("error reading user action: %w", err)
 		}
+
+		return 0, nil
 	}
 
 	return num, nil
