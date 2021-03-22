@@ -26,6 +26,6 @@ go run .
 
 ## Screenshots
 
-[menu](docs/menu.png)
+![menu](docs/menu.png)
 
-[gameplay](docs/gameplay.png)
+![gameplay](docs/gameplay.png)
