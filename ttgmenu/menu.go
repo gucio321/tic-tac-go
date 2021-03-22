@@ -14,15 +14,19 @@ import (
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
 
+const (
+	menuQuestion = "What'd you like to do?"
+)
+
 // Menu represent's game's menu
 type Menu struct {
-	state  State
-	reader *bufio.Reader
-	menus  map[State]*menuIndex
+	state          State
+	reader         *bufio.Reader
+	menus          map[State]*menuIndex
+	boardW, boardH int
 }
 
 // NewMenu creates a new game menu
-
 func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func()) {
 	text := map[State][]string{
 		MainMenu: {
@@ -51,6 +55,7 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 		},
 		Settings: {
 			"\n\tSettings:",
+			"\t\t1) change board size",
 			"\t\t0) back to main menu",
 		},
 	}
@@ -74,7 +79,7 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 				g.Run()
 			},
 			2: func() {
-				game := game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, game.PlayerPerson, game.PlayerPerson)
+				game := game.NewTTT(m.boardW, m.boardH, game.PlayerPerson, game.PlayerPerson)
 				game.Run()
 			},
 			3: func() {
@@ -90,6 +95,19 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 			},
 		},
 		Settings: {
+			1: func() {
+				w, err := m.getUserAction("Enter new board width")
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				h, err := m.getUserAction("Enter new board height")
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				m.boardW, m.boardH = w, h
+			},
 			0: func() {
 				m.state = MainMenu
 			},
@@ -134,6 +152,8 @@ func NewMenu() *Menu {
 	result := &Menu{
 		state:  MainMenu,
 		reader: bufio.NewReader(os.Stdin),
+		boardW: ttgcommon.BaseBoardW,
+		boardH: ttgcommon.BaseBoardH,
 	}
 
 	result.menus = map[State]*menuIndex{
@@ -152,8 +172,8 @@ func (m *Menu) printMenu() {
 	}
 }
 
-func (m *Menu) getUserAction() (int, error) {
-	fmt.Print("\nWhat'd you like to do?: ")
+func (m *Menu) getUserAction(question string) (int, error) {
+	fmt.Print("\n" + question + ": ")
 
 	text, err := m.reader.ReadString('\n')
 	if err != nil {
@@ -193,7 +213,8 @@ func (m *Menu) Run() {
 		ttgcommon.Clear()
 		fmt.Println("Welcome in tic-tac-go")
 		m.printMenu()
-		action, err := m.getUserAction()
+
+		action, err := m.getUserAction(menuQuestion)
 		if err != nil {
 			log.Print(err)
 
