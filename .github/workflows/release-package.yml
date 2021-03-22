@@ -5,36 +5,7 @@ on:
     branches: ['master']
 
 jobs:
-  build-bin:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Go 1.16
-        uses: actions/setup-go@v2.1.3
-        with:
-          go-version: 1.16
-          id: go
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
-
-      - name: Build package
-        run: go build -o tic-tac-go.bin .
-
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: tic-tac-go.bin
-          asset_name: tic-tac-go.bin
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: ""
-
-  build-AppImage:
+  build-packages:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -50,6 +21,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xvfb
           sudo apt-get install -y appstream
+
+      - name: Build package
+        run: go build -o tic-tac-go.bin .
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: tic-tac-go.bin
+          asset_name: tic-tac-go.bin
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: ""
 
       - name: create ouput dir
         run: |
@@ -88,7 +72,6 @@ jobs:
       - name: building AppImage
         run: ./appimagetool-x86_64.AppImage tic-tac-go.AppDir tic-tac-go.AppImage
 
-
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -99,19 +82,8 @@ jobs:
           overwrite: true
           body: ""
 
-  build-exe:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Go 1.16
-        uses: actions/setup-go@v2.1.3
-        with:
-          go-version: 1.16
-          id: go
-
       - name: Build package
-        run: go build -o tic-tac-go.exe .
+        run: GOOS="windows" go build -o tic-tac-go.exe .
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
