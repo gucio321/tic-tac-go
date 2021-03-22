@@ -29,3 +29,5 @@ go run .
 ![menu](docs/menu.png)
 
 ![gameplay](docs/gameplay.png)
+
+![help](docs/help.png)
