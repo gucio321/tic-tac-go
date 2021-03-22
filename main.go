@@ -1,10 +1,10 @@
 package main
 
 import (
-	game "github.com/gucio321/tic-tac-go/ttgmenu"
+	app "github.com/gucio321/tic-tac-go/ttgapp"
 )
 
 func main() {
-	app := game.NewMenu()
+	app := app.Create()
 	app.Run()
 }

@@ -3,12 +3,13 @@ package ttgmenu
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/AllenDang/giu"
 
 	game "github.com/gucio321/tic-tac-go/ttgboard"
 	"github.com/gucio321/tic-tac-go/ttgcommon"
@@ -22,16 +23,14 @@ type Menu struct {
 }
 
 // NewMenu creates a new game menu
-
-func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func()) {
+func (m *Menu) getMenuData(state State) (lines []string, actions []func()) {
 	text := map[State][]string{
 		MainMenu: {
-			"\nMainMenu",
-			"\t1) start Player VS PC game",
-			"\t2) start Player VS Player game",
-			"\t3) settings",
-			"\t4) Help",
-			"\t0) exit",
+			"1) start Player VS PC game",
+			"2) start Player VS Player game",
+			"3) settings",
+			"4) Help",
+			"0) exit",
 		},
 		Help: {
 			"TicTacToe Version 1",
@@ -50,15 +49,13 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 			"Press enter to back to main menu",
 		},
 		Settings: {
-			"\n\tSettings:",
-			"\t\t0) back to main menu",
+			"0) back to main menu",
 		},
 	}
 
-	cb := map[State]map[int]func(){
+	cb := map[State][]func(){
 		MainMenu: {
-			0: func() { os.Exit(0) },
-			1: func() {
+			func() {
 				var g *game.TTT
 
 				rand.Seed(time.Now().UnixNano())
@@ -74,24 +71,25 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 
 				g.Run()
 			},
-			2: func() {
+			func() {
 				game := game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, game.PlayerPerson, game.PlayerPerson)
 				game.Run()
 			},
-			3: func() {
+			func() {
 				m.state = Settings
 			},
-			4: func() {
+			func() {
 				m.state = Help
 			},
+			func() { os.Exit(0) },
 		},
 		Help: {
-			0: func() {
+			func() {
 				m.state = MainMenu
 			},
 		},
 		Settings: {
-			0: func() {
+			func() {
 				m.state = MainMenu
 			},
 		},
@@ -112,7 +110,7 @@ const (
 
 type menuIndex struct {
 	lines       []string
-	userActions map[int]func()
+	userActions []func()
 	multiAction bool
 }
 
@@ -146,11 +144,26 @@ func NewMenu() *Menu {
 	return result
 }
 
-func (m *Menu) printMenu() {
+func (m *Menu) printMenu() giu.Layout {
+	var l giu.Layout
 	lines := m.menus[m.state].lines
-	if lines != nil {
-		fmt.Println(strings.Join(lines, "\n"))
+	if m.menus[m.state].multiAction {
+		for n, line := range lines {
+			n := n
+			l = append(l,
+				giu.Button(line).OnClick(func() {
+					m.menus[m.state].userActions[n]()
+				}),
+			)
+		}
+	} else {
+		l = append(l,
+			giu.Label(strings.Join(lines, "\n")),
+			giu.Button("Back").OnClick(m.menus[m.state].userActions[0]),
+		)
 	}
+
+	return l
 }
 
 func (m *Menu) getUserAction() (int, error) {
@@ -190,21 +203,10 @@ func (m *Menu) processUserAction(action int) {
 }
 
 // Run start's main menu
-func (m *Menu) Run() {
-	for {
-		ttgcommon.Clear()
+func (m *Menu) Build() giu.Layout {
+	return giu.Layout{
+		giu.Label("Welcome in tic-tac-go"),
 
-		fmt.Println("Welcome in tic-tac-go")
-
-		m.printMenu()
-
-		action, err := m.getUserAction()
-		if err != nil {
-			log.Print(err)
-
-			continue
-		}
-
-		m.processUserAction(action)
+		m.printMenu(),
 	}
 }
