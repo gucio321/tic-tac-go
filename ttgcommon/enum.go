@@ -15,23 +15,32 @@ func GetWinBoard(w, h, l int) [8][3]int {
 	// for w = h:
 	// n = (w-l+1)*h + (h-l+1) * w + 2 * ((w or h)-l+1)
 	// generally (if s = w = h) n = (s-l+1)*s + (s-l+1) *w + 2 * (s - l + 1)
+	w, h = 3, 4
 	numberOfCombinations := (w-l+1)*h + (h-l+1)*w + 2*(w-l+1)
 	winningIndexes := make([][]int, numberOfCombinations)
 	for n := range winningIndexes {
 		winningIndexes[n] = make([]int, l)
 	}
 
-	horizontal := make([][]int, (w-l+1)*h)
-	for n := range horizontal {
-		horizontal[n] = make([]int, l)
-	}
-
+	// horizontal indexes
 	idx := 0
 	for row := 0; row < h; row++ {
 		for rowIdx := 0; rowIdx+l <= w; rowIdx++ {
 			line := make([]int, l)
 			for idx := range line {
 				line[idx] = row*w + rowIdx + idx
+			}
+			winningIndexes[idx] = line
+			idx++
+		}
+	}
+
+	// vertical indexes
+	for col := 0; col < w; col++ {
+		for colIdx := 0; colIdx+l <= h; colIdx++ {
+			line := make([]int, l)
+			for idx := range line {
+				line[idx] = col + colIdx*w + idx*w
 			}
 			winningIndexes[idx] = line
 			idx++
