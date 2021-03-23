@@ -63,34 +63,13 @@ jobs:
       - name: Build package
         run: GOOS="windows" go build -o tic-tac-go.exe .
 
-      - name: Upload .bin to release
-        uses: svenstaro/upload-release-action@v2
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: tic-tac-go.bin
-          asset_name: tic-tac-go.bin
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: ""
-
-      - name: Upload AppImage to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: tic-tac-go.AppImage
-          asset_name: tic-tac-go.AppImage
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: ""
-
-
-
-      - name: Upload .exe to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: tic-tac-go.exe
-          asset_name: tic-tac-go.exe
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: ""
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            tic-tac-go.bin
+            tic-tac-go.AppImage
+            tic-tac-go.exe
