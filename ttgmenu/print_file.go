@@ -16,8 +16,9 @@ func readMarkdown(path string) []string {
 
 	var err error
 
+	// nilint:gosec // this is ok
 	if data, err = ioutil.ReadFile(path); err != nil {
-		return []string{"README.md is missing.", "Visit https://github.com/gucio321/tic-tac-go to see it."}
+		return []string{fmt.Sprintf("%s is missing.", path), "Visit https://github.com/gucio321/tic-tac-go to see it."}
 	}
 
 	html := blackfriday.MarkdownBasic(data)
@@ -25,7 +26,7 @@ func readMarkdown(path string) []string {
 	text, err := html2text.FromString(string(html), html2text.Options{PrettyTables: true})
 	if err != nil {
 		return []string{
-			"Error loading README.md:", err.Error(),
+			fmt.Sprintf("Error loading %s:", path), err.Error(),
 			"Please raport it on https://github.com/gucio321/tic-tac-go",
 		}
 	}
@@ -33,9 +34,4 @@ func readMarkdown(path string) []string {
 	lines := ttgcommon.SplitIntoLinesWithMaxWidth(text, 70)
 
 	return lines
-}
-
-func printReadme() {
-	lines := readMarkdown("README.md")
-	fmt.Println(strings.Join(lines, "\n"))
 }
