@@ -62,6 +62,8 @@ func (t *TTT) getPlayerMove() (x, y int) {
 
 		if num <= 0 || num > t.width*t.height {
 			t.println(fmt.Sprintf("You must enter number from 1 to %d", t.width*t.height))
+
+			continue
 		}
 
 		num--
