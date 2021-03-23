@@ -58,9 +58,9 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 		},
 		Readme: readMarkdown("README.md"),
 		Settings: {
-			"\n\tSettings:",
-			"\t\t1) change board size",
-			"\t\t0) back to main menu",
+			"\nSettings:",
+			"\t1) change board size",
+			"\t0) back to main menu",
 		},
 	}
 
