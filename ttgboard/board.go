@@ -232,7 +232,7 @@ func (t *TTT) getPlayerMove() (x, y int) {
 }
 
 func (t *TTT) isWinner(player IdxState) bool {
-	b := ttgcommon.GetWinBoard()
+	b := ttgcommon.GetWinBoard(t.width, t.height, 3)
 
 	for _, i := range b {
 		c1, c2, c3 := i[0], i[1], i[2]
