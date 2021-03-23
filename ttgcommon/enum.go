@@ -63,12 +63,12 @@ func GetWinBoard(w, h, l int) [][]int {
 }
 
 // GetCorners returns board's corners
-func GetCorners() (result [4]struct{ X, Y int }) {
-	result = [4]struct{ X, Y int }{
-		{0, 0},
-		{0, 2},
-		{2, 0},
-		{2, 2},
+func GetCorners() (result []int) {
+	result = []int{
+		0,
+		2,
+		6,
+		8,
 	}
 
 	return
