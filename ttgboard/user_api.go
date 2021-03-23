@@ -84,7 +84,7 @@ func (t *TTT) pressAnyKeyPrompt() {
 
 func (t *TTT) print(msg ...string) {
 	for _, m := range msg {
-		fmt.Printf(m)
+		fmt.Print(m)
 	}
 }
 

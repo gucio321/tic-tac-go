@@ -74,6 +74,7 @@ func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 	if t.board[1][1].IsFree() {
 		return 1, 1
 	}
+
 	for _, i := range ttgcommon.GetMiddles() {
 		if t.board[i.Y][i.X].IsFree() {
 			options = append(options, option{i.X, i.Y})
