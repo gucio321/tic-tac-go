@@ -21,19 +21,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xvfb
           sudo apt-get install -y appstream
+          wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+          chmod a+x appimagetool-x86_64.AppImage
 
-      - name: Build package
+
+      - name: Build .bin package
         run: go build -o tic-tac-go.bin .
-
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: tic-tac-go.bin
-          asset_name: tic-tac-go.bin
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: ""
 
       - name: create ouput dir
         run: |
@@ -64,15 +57,23 @@ jobs:
           exec ./main.bin" >> tic-tac-go.AppDir/AppRun
           chmod 755 tic-tac-go.AppDir/AppRun
 
-      - name: setup AppImageTool
-        run: |
-          wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
-          chmod a+x appimagetool-x86_64.AppImage
-
       - name: building AppImage
         run: ./appimagetool-x86_64.AppImage tic-tac-go.AppDir tic-tac-go.AppImage
 
-      - name: Upload binaries to release
+      - name: Build package
+        run: GOOS="windows" go build -o tic-tac-go.exe .
+
+      - name: Upload .bin to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: tic-tac-go.bin
+          asset_name: tic-tac-go.bin
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: ""
+
+      - name: Upload AppImage to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -82,10 +83,9 @@ jobs:
           overwrite: true
           body: ""
 
-      - name: Build package
-        run: GOOS="windows" go build -o tic-tac-go.exe .
 
-      - name: Upload binaries to release
+
+      - name: Upload .exe to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
