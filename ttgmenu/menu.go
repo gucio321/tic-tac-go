@@ -60,6 +60,7 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 		Settings: {
 			"\nSettings:",
 			"\t1) change board size",
+			"\t2) reset board size",
 			"\t0) back to main menu",
 		},
 	}
@@ -126,6 +127,11 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 
 				m.boardW, m.boardH = w, h
 				m.chainLen = l
+			},
+			2: func() {
+				m.boardW, m.boardH = ttgcommon.BaseBoardW, ttgcommon.BaseBoardH
+				m.chainLen = ttgcommon.BaseChainLen
+				_, _ = m.getUserAction("Board width and height was set to default\nPress ENTER to continue")
 			},
 			0: func() {
 				m.state = MainMenu
