@@ -40,7 +40,7 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 		},
 		Help: {
 			"TicTacToe Version 1",
-			"Copytight (C) 2021 by M. Sz.",
+			"Copyright (C) 2021 by M. Sz.",
 			"",
 			"To go around main menu use number buttons",
 			"In game use 1-9 buttons to select index",
