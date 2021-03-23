@@ -310,9 +310,10 @@ func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 		return x, y
 	}
 
-	for _, i := range ttgcommon.GetCorners() {
-		if t.board[i.Y][i.X].IsFree() {
-			options = append(options, option{i.X, i.Y})
+	for _, i := range ttgcommon.GetCorners(t.width, t.height) {
+		cornerY, cornerX := ttgcommon.IntToCords(t.width, t.height, i)
+		if t.board[cornerX][cornerY].IsFree() {
+			options = append(options, option{cornerY, cornerX})
 		}
 	}
 
