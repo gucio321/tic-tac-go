@@ -1,9 +1,5 @@
 package ttgcommon
 
-import (
-	"fmt"
-)
-
 // BoardW, BoardH are board's width and height
 const (
 	BaseBoardW = 3
@@ -24,6 +20,7 @@ func GetWinBoard(w, h, l int) [][]int {
 			for idx := range line {
 				line[idx] = row*w + rowIdx + idx
 			}
+
 			winningIndexes = append(winningIndexes, line)
 		}
 	}
@@ -35,6 +32,7 @@ func GetWinBoard(w, h, l int) [][]int {
 			for idx := range line {
 				line[idx] = col + colIdx*w + idx*w
 			}
+
 			winningIndexes = append(winningIndexes, line)
 		}
 	}
@@ -45,22 +43,21 @@ func GetWinBoard(w, h, l int) [][]int {
 			for idx := range line {
 				line[idx] = (x*w + xIdx) + (idx*w + idx)
 			}
+
 			winningIndexes = append(winningIndexes, line)
 		}
 	}
 
 	for bx := 0; bx < h; bx++ {
 		for bxIdx := 0; bx*w+(bxIdx+l)*w <= h*w-1; bxIdx++ {
-			fmt.Println(bxIdx)
 			line := make([]int, l)
 			for idx := range line {
 				line[idx] = (bx * w) + (bxIdx+idx)*w + (l - idx - 1)
 			}
+
 			winningIndexes = append(winningIndexes, line)
 		}
 	}
-
-	fmt.Println("indexes", winningIndexes)
 
 	return winningIndexes
 }
