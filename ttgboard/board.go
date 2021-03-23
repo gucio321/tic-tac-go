@@ -192,7 +192,7 @@ func (t *TTT) printBoard() {
 
 func (t *TTT) getPlayerMove() (x, y int) {
 	for {
-		fmt.Print("Enter your move (1-9): ")
+		fmt.Printf("Enter your move (1-%d): ", t.width*t.height)
 
 		text, err := t.reader.ReadString('\n')
 		if err != nil {
