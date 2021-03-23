@@ -28,6 +28,7 @@ type Menu struct {
 }
 
 // NewMenu creates a new game menu
+// nolint:funlen // enum
 func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func()) {
 	text := map[State][]string{
 		MainMenu: {
