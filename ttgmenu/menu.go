@@ -36,9 +36,26 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 			"\t2) start Player VS Player game",
 			"\t3) settings",
 			"\t4) Help",
+			"\t5) README",
 			"\t0) exit",
 		},
-		Help: readMarkdown("README.md"),
+		Help: {
+			"TicTacToe Version 1",
+			"Copyright (C) 2021 by M. Sz.",
+			"",
+			"To go around main menu use number buttons",
+			"In game use 1-9 buttons to select index",
+			"+---+---+---+",
+			"| 1 | 2 | 3 |",
+			"+---+---+---+",
+			"| 4 | 5 | 6 |",
+			"+---+---+---+",
+			"| 7 | 8 | 9 |",
+			"+---+---+---+",
+			"",
+			"Press enter to back to main menu",
+		},
+		Readme: readMarkdown("README.md"),
 		Settings: {
 			"\n\tSettings:",
 			"\t\t1) change board size",
@@ -75,8 +92,16 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 			4: func() {
 				m.state = Help
 			},
+			5: func() {
+				m.state = Readme
+			},
 		},
 		Help: {
+			0: func() {
+				m.state = MainMenu
+			},
+		},
+		Readme: {
 			0: func() {
 				m.state = MainMenu
 			},
@@ -118,6 +143,7 @@ type State int
 const (
 	MainMenu State = iota
 	Help
+	Readme
 	Settings
 )
 
@@ -154,6 +180,7 @@ func NewMenu() *Menu {
 	result.menus = map[State]*menuIndex{
 		MainMenu: result.newMenuIndex(MainMenu),
 		Help:     result.newMenuIndex(Help),
+		Readme:   result.newMenuIndex(Readme),
 		Settings: result.newMenuIndex(Settings),
 	}
 
