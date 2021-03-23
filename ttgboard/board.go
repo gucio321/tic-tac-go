@@ -113,15 +113,17 @@ type TTT struct {
 	player2 *player
 	width,
 	height int
+	chainLen int
 }
 
 // NewTTT creates a ne TTT
-func NewTTT(w, h int, player1Type, player2Type PlayerType) *TTT {
+func NewTTT(w, h, chainLen int, player1Type, player2Type PlayerType) *TTT {
 	result := &TTT{
-		board:  make([][]*BoardIndex, h),
-		reader: bufio.NewReader(os.Stdin),
-		width:  w,
-		height: h,
+		board:    make([][]*BoardIndex, h),
+		reader:   bufio.NewReader(os.Stdin),
+		width:    w,
+		height:   h,
+		chainLen: chainLen,
 	}
 
 	for i := 0; i < h; i++ {
@@ -159,17 +161,24 @@ func NewTTT(w, h int, player1Type, player2Type PlayerType) *TTT {
 }
 
 func (t *TTT) isWinner(player IdxState) bool {
-	b := ttgcommon.GetWinBoard(t.width, t.height, 3)
+	b := ttgcommon.GetWinBoard(t.width, t.height, t.chainLen)
 
 	for _, i := range b {
-		c1, c2, c3 := i[0], i[1], i[2]
-		x1, y1 := ttgcommon.IntToCords(t.width, t.height, c1)
-		x2, y2 := ttgcommon.IntToCords(t.width, t.height, c2)
-		x3, y3 := ttgcommon.IntToCords(t.width, t.height, c3)
+		indexes := make([]struct{ cords, x, y int }, t.chainLen)
+		for c := 0; c < t.chainLen; c++ {
+			indexes[c].cords = i[c]
+			indexes[c].x, indexes[c].y = ttgcommon.IntToCords(t.width, t.height, i[c])
+		}
 
-		if (t.board[y1][x1].state == player) &&
-			t.board[y2][x2].state == player &&
-			t.board[y3][x3].state == player {
+		line := 0
+
+		for _, c := range indexes {
+			if t.board[c.y][c.x].state == player {
+				line++
+			}
+		}
+
+		if line == t.chainLen {
 			return true
 		}
 	}
