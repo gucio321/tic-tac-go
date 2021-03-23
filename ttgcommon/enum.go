@@ -86,3 +86,11 @@ func GetMiddles() (result [4]struct{ X, Y int }) {
 
 	return
 }
+
+func GetCenter(w, h int) []int {
+	if w%2 == 0 || w%2 == 0 {
+		return nil
+	}
+
+	return []int{(h-1)/2*w + (w-1)/2}
+}
