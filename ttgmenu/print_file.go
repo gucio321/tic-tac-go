@@ -3,7 +3,6 @@ package ttgmenu
 import (
 	"fmt"
 	"io/ioutil"
-	"strings"
 
 	"github.com/jaytaylor/html2text"
 	"github.com/russross/blackfriday"
@@ -16,7 +15,7 @@ func readMarkdown(path string) []string {
 
 	var err error
 
-	// nilint:gosec // this is ok
+	// nolint:gosec // this is ok
 	if data, err = ioutil.ReadFile(path); err != nil {
 		return []string{fmt.Sprintf("%s is missing.", path), "Visit https://github.com/gucio321/tic-tac-go to see it."}
 	}
