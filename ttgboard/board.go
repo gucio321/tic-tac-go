@@ -171,6 +171,7 @@ func (t *TTT) isWinner(player IdxState) bool {
 		}
 
 		line := 0
+
 		for _, c := range indexes {
 			if t.board[c.y][c.x].state == player {
 				line++
