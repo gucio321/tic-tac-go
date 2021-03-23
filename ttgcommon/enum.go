@@ -49,7 +49,7 @@ func GetWinBoard(w, h, l int) [][]int {
 	}
 
 	for bx := 0; bx < h; bx++ {
-		for bxIdx := 0; bx*w+(bxIdx+l)*w <= h*w-1; bxIdx++ {
+		for bxIdx := 0; bx*w+(bxIdx+l)*w <= h*w; bxIdx++ {
 			line := make([]int, l)
 			for idx := range line {
 				line[idx] = (bx * w) + (bxIdx+idx)*w + (l - idx - 1)
