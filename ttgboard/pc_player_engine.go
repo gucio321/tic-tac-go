@@ -71,8 +71,18 @@ func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 	}
 
 	// try to get center
-	if t.board[1][1].IsFree() {
-		return 1, 1
+	for _, i := range ttgcommon.GetCenter(t.width, t.height) {
+		centerY, centerX := ttgcommon.IntToCords(t.width, t.height, i)
+		if t.board[centerX][centerY].IsFree() {
+			options = append(options, option{centerY, centerX})
+		}
+	}
+
+	if options != nil {
+		// nolint:gosec // it's ok
+		result := options[rand.Intn(len(options))]
+
+		return result.X, result.Y
 	}
 
 	for _, i := range ttgcommon.GetMiddles() {
