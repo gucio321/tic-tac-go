@@ -24,6 +24,7 @@ type Menu struct {
 	reader         *bufio.Reader
 	menus          map[State]*menuIndex
 	boardW, boardH int
+	chainLen       int
 }
 
 // NewMenu creates a new game menu
@@ -72,15 +73,15 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 
 				switch r {
 				case 0:
-					g = game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, game.PlayerPerson, game.PlayerPC)
+					g = game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, game.PlayerPerson, game.PlayerPC)
 				case 1:
-					g = game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, game.PlayerPC, game.PlayerPerson)
+					g = game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, game.PlayerPC, game.PlayerPerson)
 				}
 
 				g.Run()
 			},
 			2: func() {
-				game := game.NewTTT(m.boardW, m.boardH, game.PlayerPerson, game.PlayerPerson)
+				game := game.NewTTT(m.boardW, m.boardH, m.chainLen, game.PlayerPerson, game.PlayerPerson)
 				game.Run()
 			},
 			3: func() {
@@ -108,7 +109,13 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 					log.Fatal(err)
 				}
 
+				l, err := m.getUserAction("Enter new chain len")
+				if err != nil {
+					log.Fatal(err)
+				}
+
 				m.boardW, m.boardH = w, h
+				m.chainLen = l
 			},
 			0: func() {
 				m.state = MainMenu
@@ -152,10 +159,11 @@ func (m *Menu) newMenuIndex(state State) *menuIndex {
 // NewMenu creates a new menu
 func NewMenu() *Menu {
 	result := &Menu{
-		state:  MainMenu,
-		reader: bufio.NewReader(os.Stdin),
-		boardW: ttgcommon.BaseBoardW,
-		boardH: ttgcommon.BaseBoardH,
+		state:    MainMenu,
+		reader:   bufio.NewReader(os.Stdin),
+		boardW:   ttgcommon.BaseBoardW,
+		boardH:   ttgcommon.BaseBoardH,
+		chainLen: ttgcommon.BaseChainLen,
 	}
 
 	result.menus = map[State]*menuIndex{
