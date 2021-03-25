@@ -85,9 +85,10 @@ func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 		return result.X, result.Y
 	}
 
-	for _, i := range ttgcommon.GetMiddles() {
-		if t.board[i.Y][i.X].IsFree() {
-			options = append(options, option{i.X, i.Y})
+	for _, cords := range ttgcommon.GetMiddles() {
+		middleY, middleX := ttgcommon.IntToCords(t.width, t.height, cords)
+		if t.board[middleX][middleY].IsFree() {
+			options = append(options, option{middleY, middleX})
 		}
 	}
 
