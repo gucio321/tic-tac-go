@@ -28,7 +28,7 @@ func (t *TTT) canWin(player Letter) (i int, result bool) {
 
 func (t *TTT) getPCMove(letter Letter) (i int) {
 	pcLetter := letter
-	playerLetter := pcLetter.Oposite()
+	playerLetter := pcLetter.Opposite()
 
 	var options []int = nil
 

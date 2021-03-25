@@ -26,6 +26,7 @@ func IntToCords(w, h, i int) (x, y int) {
 	return
 }
 
+// CordsToInt converts coordinates on board to board index
 func CordsToInt(w, h, x, y int) int {
 	return y*w + x
 }
@@ -36,9 +37,9 @@ func Clear() {
 
 	switch runtime.GOOS {
 	case "linux", "darwin":
-		// cmd := exec.Command("clear")
-		// cmd.Stdout = os.Stdout
-		// err = cmd.Run()
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		err = cmd.Run()
 	case "windows":
 		cmd := exec.Command("cmd", "/c", "cls")
 		cmd.Stdout = os.Stdout

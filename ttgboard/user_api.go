@@ -15,7 +15,7 @@ func (t *TTT) printSeparator() {
 		sep += "---+"
 	}
 
-	println(sep)
+	fmt.Println(sep)
 }
 
 func (t *TTT) printBoard() {
@@ -25,20 +25,21 @@ func (t *TTT) printBoard() {
 
 	for y := 0; y < t.height; y++ {
 		line := "| "
+
 		for x := 0; x < t.width; x++ {
 			i := ttgcommon.CordsToInt(t.width, t.height, x, y)
 			line += (*t.board)[i].String()
 			line += " | "
 		}
 
-		println(line)
+		fmt.Println(line)
 		t.printSeparator()
 	}
 }
 
 func (t *TTT) getPlayerMove() (i int) {
 	for {
-		print(fmt.Sprintf("Enter your move (1-%d): ", t.width*t.height))
+		fmt.Printf("Enter your move (1-%d): ", t.width*t.height)
 
 		text, err := t.reader.ReadString('\n')
 		if err != nil {
@@ -81,15 +82,4 @@ func (t *TTT) pressAnyKeyPrompt() {
 	print("\nPress any key to continue...")
 
 	_, _ = t.reader.ReadString('\n')
-}
-
-func print(msg ...string) {
-	for _, m := range msg {
-		fmt.Print(m)
-	}
-}
-
-func println(msg ...string) {
-	print(msg...)
-	fmt.Printf("\n")
 }

@@ -2,6 +2,7 @@ package ttgboard
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 
 	"github.com/gucio321/tic-tac-go/ttgcommon"
@@ -123,14 +124,14 @@ func (t *TTT) Run() {
 		if t.isWinner(t.player1.letter) {
 			ttgcommon.Clear()
 			t.printBoard()
-			println(t.player1.name + " won")
+			fmt.Println(t.player1.name + " won")
 			t.pressAnyKeyPrompt()
 
 			break
 		} else if t.isBoardFull() {
 			ttgcommon.Clear()
 			t.printBoard()
-			println("DRAW")
+			fmt.Println("DRAW")
 			t.pressAnyKeyPrompt()
 
 			break
@@ -143,14 +144,14 @@ func (t *TTT) Run() {
 		if t.isWinner(t.player2.letter) {
 			ttgcommon.Clear()
 			t.printBoard()
-			println(t.player2.name + " won")
+			fmt.Println(t.player2.name + " won")
 			t.pressAnyKeyPrompt()
 
 			break
 		} else if t.isBoardFull() {
 			ttgcommon.Clear()
 			t.printBoard()
-			println("DRAW")
+			fmt.Println("DRAW")
 			t.pressAnyKeyPrompt()
 
 			break

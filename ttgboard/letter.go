@@ -1,8 +1,9 @@
 package ttgboard
 
-// IdxState represents index's state
+// Letter represents board letters (x and o)
 type Letter byte
 
+// Letter types
 const (
 	LetterNone Letter = iota
 	LetterX
@@ -40,8 +41,8 @@ func (l *Letter) IsNone() bool {
 	return *l == LetterNone
 }
 
-// Oposite returns letter, which is an oposite to current
-func (l *Letter) Oposite() Letter {
+// Opposite returns letter, which is an opposite to current
+func (l *Letter) Opposite() Letter {
 	switch *l {
 	case LetterX:
 		return LetterO
