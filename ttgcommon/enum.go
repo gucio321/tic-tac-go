@@ -76,13 +76,9 @@ func GetCorners(w, h int) (result []int) {
 }
 
 // GetMiddles returns middles of board's edges
-func GetMiddles() (result [4]struct{ X, Y int }) {
-	result = [4]struct{ X, Y int }{
-		{1, 0},
-		{0, 1},
-		{2, 1},
-		{1, 2},
-	}
+func GetMiddles() (result []int) {
+	// https://github.com/gucio321/tic-tac-go/issues/27
+	result = []int{1, 3, 5, 8}
 
 	return
 }
