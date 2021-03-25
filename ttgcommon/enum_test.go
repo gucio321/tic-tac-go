@@ -56,21 +56,21 @@ func Test_GetCorners(t *testing.T) {
 	}
 }
 
-// func Test_GetMiddles(t *testing.T) {
-//	// for now, GetMiddles works only for 3x3 board
-//	correctMiddles := []int{1, 3, 5, 7}
-//	middles := GetMiddles()
-//
-//	if len(middles) != len(correctMiddles) {
-//		t.Fatal("invalid board middles returned")
-//	}
-//
-//	for i := range middles {
-//		if middles[i] != correctMiddles[i] {
-//			t.Fatal("invalid board middles returned")
-//		}
-//	}
-//}
+func Test_GetMiddles(t *testing.T) {
+	// for now, GetMiddles works only for 3x3 board
+	correctMiddles := []int{1, 3, 5, 7}
+	middles := GetMiddles()
+
+	if len(middles) != len(correctMiddles) {
+		t.Fatal("invalid board middles returned")
+	}
+
+	for i := range middles {
+		if middles[i] != correctMiddles[i] {
+			t.Fatal("invalid board middles returned")
+		}
+	}
+}
 
 func Test_GetCenterCorrectBoard(t *testing.T) {
 	w, h := 3, 3
