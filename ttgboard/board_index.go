@@ -1,52 +1,32 @@
 package ttgboard
 
 // IdxState represents index's state
-type IdxState int
+type Letter byte
 
 const (
-	IdxNone IdxState = iota
-	IdxX
-	IdxO
+	LetterNone Letter = iota
+	LetterX
+	LetterO
 )
 
-func (i IdxState) String() string {
-	switch i {
-	case IdxNone:
-		return " "
-	case IdxX:
-		return "X"
-	case IdxO:
-		return "O"
-	}
+func newBoardIndex() *Letter {
+	result := LetterNone
 
-	return "?"
-}
-
-// BoardIndex represents board index
-type BoardIndex struct {
-	state IdxState
-}
-
-func newIndex() *BoardIndex {
-	result := &BoardIndex{
-		state: IdxNone,
-	}
-
-	return result
+	return &result
 }
 
 // SetState sets index state
-func (b *BoardIndex) SetState(state IdxState) {
-	b.state = state
+func (b *Letter) SetState(state Letter) {
+	*b = state
 }
 
-func (b *BoardIndex) String() string {
-	switch b.state {
-	case IdxNone:
+func (b *Letter) String() string {
+	switch *b {
+	case LetterNone:
 		return " "
-	case IdxX:
+	case LetterX:
 		return "X"
-	case IdxO:
+	case LetterO:
 		return "O"
 	}
 
@@ -55,6 +35,6 @@ func (b *BoardIndex) String() string {
 }
 
 // IsFree return's true if index is free
-func (b BoardIndex) IsFree() bool {
-	return b.state == IdxNone
+func (b *Letter) IsNone() bool {
+	return *b == LetterNone
 }

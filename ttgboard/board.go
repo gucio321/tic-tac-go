@@ -9,7 +9,7 @@ import (
 
 // TTT represents TicTacToe game
 type TTT struct {
-	board   [][]*BoardIndex
+	board   [][]*Letter
 	reader  *bufio.Reader
 	player1 *player
 	player2 *player
@@ -21,7 +21,7 @@ type TTT struct {
 // NewTTT creates a ne TTT
 func NewTTT(w, h, chainLen int, player1Type, player2Type PlayerType) *TTT {
 	result := &TTT{
-		board:    make([][]*BoardIndex, h),
+		board:    make([][]*Letter, h),
 		reader:   bufio.NewReader(os.Stdin),
 		width:    w,
 		height:   h,
@@ -29,40 +29,40 @@ func NewTTT(w, h, chainLen int, player1Type, player2Type PlayerType) *TTT {
 	}
 
 	for i := 0; i < h; i++ {
-		result.board[i] = make([]*BoardIndex, w)
+		result.board[i] = make([]*Letter, w)
 		for j := 0; j < w; j++ {
-			result.board[i][j] = newIndex()
+			result.board[i][j] = newBoardIndex()
 		}
 	}
 
 	switch player1Type {
 	case PlayerPC:
-		result.player1 = newPlayer(player1Type, IdxX,
+		result.player1 = newPlayer(player1Type, LetterX,
 			func() (x, y int) {
-				x, y = result.getPCMove(IdxX)
+				x, y = result.getPCMove(LetterX)
 				return x, y
 			},
 		)
 	case PlayerPerson:
-		result.player1 = newPlayer(player1Type, IdxX, result.getPlayerMove)
+		result.player1 = newPlayer(player1Type, LetterX, result.getPlayerMove)
 	}
 
 	switch player2Type {
 	case PlayerPC:
-		result.player2 = newPlayer(player2Type, IdxO,
+		result.player2 = newPlayer(player2Type, LetterO,
 			func() (x, y int) {
-				x, y = result.getPCMove(IdxO)
+				x, y = result.getPCMove(LetterO)
 				return x, y
 			},
 		)
 	case PlayerPerson:
-		result.player2 = newPlayer(player2Type, IdxO, result.getPlayerMove)
+		result.player2 = newPlayer(player2Type, LetterO, result.getPlayerMove)
 	}
 
 	return result
 }
 
-func (t *TTT) isWinner(player IdxState) bool {
+func (t *TTT) isWinner(player Letter) bool {
 	b := ttgcommon.GetWinBoard(t.width, t.height, t.chainLen)
 
 	for _, i := range b {
@@ -75,7 +75,7 @@ func (t *TTT) isWinner(player IdxState) bool {
 		line := 0
 
 		for _, c := range indexes {
-			if t.board[c.y][c.x].state == player {
+			if *t.board[c.y][c.x] == player {
 				line++
 			}
 		}
@@ -91,7 +91,7 @@ func (t *TTT) isWinner(player IdxState) bool {
 func (t *TTT) isBoardFull() bool {
 	for i := 0; i < t.height; i++ {
 		for j := 0; j < t.width; j++ {
-			if t.board[i][j].IsFree() {
+			if t.board[i][j].IsNone() {
 				return false
 			}
 		}
@@ -100,7 +100,7 @@ func (t *TTT) isBoardFull() bool {
 	return true
 }
 
-func (t *TTT) move(x, y int, letter IdxState) {
+func (t *TTT) move(x, y int, letter Letter) {
 	t.board[y][x].SetState(letter)
 }
 

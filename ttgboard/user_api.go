@@ -70,7 +70,7 @@ func (t *TTT) getPlayerMove() (x, y int) {
 
 		x, y = ttgcommon.IntToCords(t.width, t.height, num)
 
-		if t.board[y][x].IsFree() {
+		if t.board[y][x].IsNone() {
 			return
 		}
 

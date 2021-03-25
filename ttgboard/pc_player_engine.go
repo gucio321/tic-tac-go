@@ -1,6 +1,7 @@
 package ttgboard
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"time"
@@ -8,38 +9,40 @@ import (
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
 
-func (t *TTT) canWin(player IdxState) (x, y int, result bool) {
+func (t *TTT) canWin(player Letter) (x, y int, result bool) {
 	for i := 0; i < t.height; i++ {
 		for j := 0; j < t.width; j++ {
-			if !t.board[i][j].IsFree() {
+			if !t.board[i][j].IsNone() {
+				fmt.Println("continue")
 				continue
 			}
 
-			t.board[i][j].state = player
+			t.board[i][j].SetState(player)
 
 			if t.isWinner(player) {
+				fmt.Println("can win")
 				return j, i, true
 			}
 
-			t.board[i][j].state = IdxNone
+			t.board[i][j].SetState(LetterNone)
 		}
 	}
 
 	return 0, 0, false
 }
 
-func (t *TTT) getPCMove(letter IdxState) (x, y int) {
+func (t *TTT) getPCMove(letter Letter) (x, y int) {
 	type option struct{ X, Y int }
 
 	pcLetter := letter
 
-	var playerLetter IdxState
+	var playerLetter Letter
 
 	switch pcLetter {
-	case IdxX:
-		playerLetter = IdxO
-	case IdxO:
-		playerLetter = IdxX
+	case LetterX:
+		playerLetter = LetterO
+	case LetterO:
+		playerLetter = LetterX
 	}
 
 	var options []option = nil
@@ -58,7 +61,7 @@ func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 
 	for _, i := range ttgcommon.GetCorners(t.width, t.height) {
 		cornerY, cornerX := ttgcommon.IntToCords(t.width, t.height, i)
-		if t.board[cornerX][cornerY].IsFree() {
+		if t.board[cornerX][cornerY].IsNone() {
 			options = append(options, option{cornerY, cornerX})
 		}
 	}
@@ -73,7 +76,7 @@ func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 	// try to get center
 	for _, i := range ttgcommon.GetCenter(t.width, t.height) {
 		centerY, centerX := ttgcommon.IntToCords(t.width, t.height, i)
-		if t.board[centerX][centerY].IsFree() {
+		if t.board[centerX][centerY].IsNone() {
 			options = append(options, option{centerY, centerX})
 		}
 	}
@@ -87,7 +90,7 @@ func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 
 	for _, cords := range ttgcommon.GetMiddles() {
 		middleY, middleX := ttgcommon.IntToCords(t.width, t.height, cords)
-		if t.board[middleX][middleY].IsFree() {
+		if t.board[middleX][middleY].IsNone() {
 			options = append(options, option{middleY, middleX})
 		}
 	}

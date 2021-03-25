@@ -32,9 +32,9 @@ func Clear() {
 
 	switch runtime.GOOS {
 	case "linux", "darwin":
-		cmd := exec.Command("clear")
-		cmd.Stdout = os.Stdout
-		err = cmd.Run()
+		// cmd := exec.Command("clear")
+		// cmd.Stdout = os.Stdout
+		// err = cmd.Run()
 	case "windows":
 		cmd := exec.Command("cmd", "/c", "cls")
 		cmd.Stdout = os.Stdout
