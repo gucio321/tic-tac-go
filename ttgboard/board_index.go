@@ -1,5 +1,27 @@
 package ttgboard
 
+// IdxState represents index's state
+type IdxState int
+
+const (
+	IdxNone IdxState = iota
+	IdxX
+	IdxO
+)
+
+func (i IdxState) String() string {
+	switch i {
+	case IdxNone:
+		return " "
+	case IdxX:
+		return "X"
+	case IdxO:
+		return "O"
+	}
+
+	return "?"
+}
+
 // BoardIndex represents board index
 type BoardIndex struct {
 	state IdxState

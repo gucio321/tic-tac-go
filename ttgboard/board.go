@@ -7,49 +7,6 @@ import (
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
 
-// IdxState represents index's state
-type IdxState int
-
-func (i IdxState) String() string {
-	switch i {
-	case IdxNone:
-		return " "
-	case IdxX:
-		return "X"
-	case IdxO:
-		return "O"
-	}
-
-	return "?"
-}
-
-// Indt.player2.name + "s
-const (
-	IdxNone IdxState = iota
-	IdxX
-	IdxO
-)
-
-// PlayerType represents players' types
-type PlayerType int
-
-// player types
-const (
-	PlayerPC PlayerType = iota
-	PlayerPerson
-)
-
-func (p PlayerType) String() string {
-	switch p {
-	case PlayerPC:
-		return "PC"
-	case PlayerPerson:
-		return "Player"
-	}
-
-	return "?"
-}
-
 // TTT represents TicTacToe game
 type TTT struct {
 	board   [][]*BoardIndex
