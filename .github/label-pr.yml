@@ -4,3 +4,5 @@
   labels: ["dependencies"]
 - regExp: ".*\\.github"
   labels: ["workflow"]
+- regExp: ".*\\.go+$"
+  labels: ["code"]
