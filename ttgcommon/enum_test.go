@@ -87,3 +87,13 @@ func Test_GetCenterCorrectBoard(t *testing.T) {
 		}
 	}
 }
+
+func Test_GetCenterWrongBoard(t *testing.T) {
+	// 4x4 board doesn't have any center
+	w, h := 4, 4
+	center := GetCenter(w, h)
+
+	if len(center) > 0 {
+		t.Fatal("Unexpected board center returned")
+	}
+}
