@@ -56,7 +56,7 @@ func Test_GetCorners(t *testing.T) {
 	}
 }
 
-//func Test_GetMiddles(t *testing.T) {
+// func Test_GetMiddles(t *testing.T) {
 //	// for now, GetMiddles works only for 3x3 board
 //	correctMiddles := []int{1, 3, 5, 7}
 //	middles := GetMiddles()
