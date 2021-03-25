@@ -1,4 +1,4 @@
-- regExp: ".*\\.md+$"
+- regExp: [".*\\.md+$", "docs"]
   labels: ["documentation"]
 - regExp: ["go.sum", "go.mod"]
   labels: ["dependencies"]
