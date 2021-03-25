@@ -8,58 +8,45 @@ import (
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
 
-func (t *TTT) canWin(player IdxState) (x, y int, result bool) {
-	for i := 0; i < t.height; i++ {
-		for j := 0; j < t.width; j++ {
-			if !t.board[i][j].IsFree() {
-				continue
-			}
-
-			t.board[i][j].state = player
-
-			if t.isWinner(player) {
-				return j, i, true
-			}
-
-			t.board[i][j].state = IdxNone
+func (t *TTT) canWin(player Letter) (i int, result bool) {
+	for i := 0; i < t.width*t.height; i++ {
+		if !t.board.isIndexFree(i) {
+			continue
 		}
+
+		t.board.setIndexState(i, player)
+
+		if t.isWinner(player) {
+			return i, true
+		}
+
+		t.board.setIndexState(i, LetterNone)
 	}
 
-	return 0, 0, false
+	return 0, false
 }
 
-func (t *TTT) getPCMove(letter IdxState) (x, y int) {
-	type option struct{ X, Y int }
-
+func (t *TTT) getPCMove(letter Letter) (i int) {
 	pcLetter := letter
+	playerLetter := pcLetter.Opposite()
 
-	var playerLetter IdxState
-
-	switch pcLetter {
-	case IdxX:
-		playerLetter = IdxO
-	case IdxO:
-		playerLetter = IdxX
-	}
-
-	var options []option = nil
+	var options []int = nil
 
 	rand.Seed(time.Now().UnixNano())
 
 	// attack: try to win
-	if x, y, ok := t.canWin(pcLetter); ok {
-		return x, y
+	if i, ok := t.canWin(pcLetter); ok {
+		return i
 	}
 
 	// defense: check, if user can win
-	if x, y, ok := t.canWin(playerLetter); ok {
-		return x, y
+	if i, ok := t.canWin(playerLetter); ok {
+		return i
 	}
 
 	for _, i := range ttgcommon.GetCorners(t.width, t.height) {
-		cornerY, cornerX := ttgcommon.IntToCords(t.width, t.height, i)
-		if t.board[cornerX][cornerY].IsFree() {
-			options = append(options, option{cornerY, cornerX})
+		if t.board.isIndexFree(i) {
+			options = append(options, i)
 		}
 	}
 
@@ -67,14 +54,13 @@ func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 		// nolint:gosec // it's ok
 		result := options[rand.Intn(len(options))]
 
-		return result.X, result.Y
+		return result
 	}
 
 	// try to get center
 	for _, i := range ttgcommon.GetCenter(t.width, t.height) {
-		centerY, centerX := ttgcommon.IntToCords(t.width, t.height, i)
-		if t.board[centerX][centerY].IsFree() {
-			options = append(options, option{centerY, centerX})
+		if t.board.isIndexFree(i) {
+			options = append(options, i)
 		}
 	}
 
@@ -82,13 +68,12 @@ func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 		// nolint:gosec // it's ok
 		result := options[rand.Intn(len(options))]
 
-		return result.X, result.Y
+		return result
 	}
 
-	for _, cords := range ttgcommon.GetMiddles() {
-		middleY, middleX := ttgcommon.IntToCords(t.width, t.height, cords)
-		if t.board[middleX][middleY].IsFree() {
-			options = append(options, option{middleY, middleX})
+	for _, i := range ttgcommon.GetMiddles() {
+		if t.board.isIndexFree(i) {
+			options = append(options, i)
 		}
 	}
 
@@ -96,10 +81,10 @@ func (t *TTT) getPCMove(letter IdxState) (x, y int) {
 		// nolint:gosec // it's ok
 		result := options[rand.Intn(len(options))]
 
-		return result.X, result.Y
+		return result
 	}
 
 	log.Fatal("Cannot make move (board is full) and this fact wasn't detected")
 
-	return 0, 0
+	return 0
 }

@@ -26,6 +26,11 @@ func IntToCords(w, h, i int) (x, y int) {
 	return
 }
 
+// CordsToInt converts coordinates on board to board index
+func CordsToInt(w, h, x, y int) int {
+	return y*w + x
+}
+
 // Clear clears console
 func Clear() {
 	var err error

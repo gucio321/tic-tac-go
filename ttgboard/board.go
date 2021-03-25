@@ -2,112 +2,40 @@ package ttgboard
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
 
-// IdxState represents index's state
-type IdxState int
+type board []*Letter
 
-func (i IdxState) String() string {
-	switch i {
-	case IdxNone:
-		return " "
-	case IdxX:
-		return "X"
-	case IdxO:
-		return "O"
-	}
+func newBoard(w, h int) *board {
+	result := &board{}
+	*result = make([]*Letter, w*h)
 
-	return "?"
-}
-
-// Indt.player2.name + "s
-const (
-	IdxNone IdxState = iota
-	IdxX
-	IdxO
-)
-
-// PlayerType represents players' types
-type PlayerType int
-
-// player types
-const (
-	PlayerPC PlayerType = iota
-	PlayerPerson
-)
-
-func (p PlayerType) String() string {
-	switch p {
-	case PlayerPC:
-		return "PC"
-	case PlayerPerson:
-		return "Player"
-	}
-
-	return "?"
-}
-
-// BoardIndex represents board index
-type BoardIndex struct {
-	state IdxState
-}
-
-func newIndex() *BoardIndex {
-	result := &BoardIndex{
-		state: IdxNone,
+	for i := range *result {
+		(*result)[i] = newBoardIndex()
 	}
 
 	return result
 }
 
-// SetState sets index state
-func (b *BoardIndex) SetState(state IdxState) {
-	b.state = state
+func (b *board) setIndexState(i int, state Letter) {
+	(*b)[i].SetState(state)
 }
 
-func (b *BoardIndex) String() string {
-	switch b.state {
-	case IdxNone:
-		return " "
-	case IdxX:
-		return "X"
-	case IdxO:
-		return "O"
-	}
-
-	// should not be reached
-	return "?"
+func (b *board) getIndexState(i int) Letter {
+	return *(*b)[i]
 }
 
-// IsFree return's true if index is free
-func (b BoardIndex) IsFree() bool {
-	return b.state == IdxNone
-}
-
-type player struct {
-	name       string
-	playerType PlayerType
-	letter     IdxState
-	moveCb     func() (x, y int)
-}
-
-func newPlayer(t PlayerType, letter IdxState, cb func() (x, y int)) *player {
-	result := &player{
-		playerType: t,
-		letter:     letter,
-		moveCb:     cb,
-		name:       t.String() + " " + letter.String(),
-	}
-
-	return result
+func (b *board) isIndexFree(i int) bool {
+	return (*b)[i].IsNone()
 }
 
 // TTT represents TicTacToe game
 type TTT struct {
-	board   [][]*BoardIndex
+	board   *board
 	reader  *bufio.Reader
 	player1 *player
 	player2 *player
@@ -119,61 +47,51 @@ type TTT struct {
 // NewTTT creates a ne TTT
 func NewTTT(w, h, chainLen int, player1Type, player2Type PlayerType) *TTT {
 	result := &TTT{
-		board:    make([][]*BoardIndex, h),
+		board:    newBoard(w, h),
 		reader:   bufio.NewReader(os.Stdin),
 		width:    w,
 		height:   h,
 		chainLen: chainLen,
 	}
 
-	for i := 0; i < h; i++ {
-		result.board[i] = make([]*BoardIndex, w)
-		for j := 0; j < w; j++ {
-			result.board[i][j] = newIndex()
-		}
-	}
+	player1Letter := LetterX
+	player2Letter := LetterO
 
 	switch player1Type {
 	case PlayerPC:
-		result.player1 = newPlayer(player1Type, IdxX,
-			func() (x, y int) {
-				x, y = result.getPCMove(IdxX)
-				return x, y
+		result.player1 = newPlayer(player1Type, player1Letter,
+			func() (i int) {
+				i = result.getPCMove(player1Letter)
+				return i
 			},
 		)
 	case PlayerPerson:
-		result.player1 = newPlayer(player1Type, IdxX, result.getPlayerMove)
+		result.player1 = newPlayer(player1Type, player1Letter, result.getPlayerMove)
 	}
 
 	switch player2Type {
 	case PlayerPC:
-		result.player2 = newPlayer(player2Type, IdxO,
-			func() (x, y int) {
-				x, y = result.getPCMove(IdxO)
-				return x, y
+		result.player2 = newPlayer(player2Type, player2Letter,
+			func() (i int) {
+				i = result.getPCMove(player2Letter)
+				return i
 			},
 		)
 	case PlayerPerson:
-		result.player2 = newPlayer(player2Type, IdxO, result.getPlayerMove)
+		result.player2 = newPlayer(player2Type, LetterO, result.getPlayerMove)
 	}
 
 	return result
 }
 
-func (t *TTT) isWinner(player IdxState) bool {
+func (t *TTT) isWinner(player Letter) bool {
 	b := ttgcommon.GetWinBoard(t.width, t.height, t.chainLen)
 
 	for _, i := range b {
-		indexes := make([]struct{ cords, x, y int }, t.chainLen)
-		for c := 0; c < t.chainLen; c++ {
-			indexes[c].cords = i[c]
-			indexes[c].x, indexes[c].y = ttgcommon.IntToCords(t.width, t.height, i[c])
-		}
-
 		line := 0
 
-		for _, c := range indexes {
-			if t.board[c.y][c.x].state == player {
+		for _, c := range i {
+			if t.board.getIndexState(c) == player {
 				line++
 			}
 		}
@@ -187,61 +105,53 @@ func (t *TTT) isWinner(player IdxState) bool {
 }
 
 func (t *TTT) isBoardFull() bool {
-	for i := 0; i < t.height; i++ {
-		for j := 0; j < t.width; j++ {
-			if t.board[i][j].IsFree() {
-				return false
-			}
+	for i := 0; i < t.width*t.height; i++ {
+		if t.board.isIndexFree(i) {
+			return false
 		}
 	}
 
 	return true
 }
 
-func (t *TTT) move(x, y int, letter IdxState) {
-	t.board[y][x].SetState(letter)
-}
-
 // Run runs the game
 func (t *TTT) Run() {
-	var x, y int
-
 	for {
 		t.printBoard()
-		x, y = t.player1.moveCb()
-		t.move(x, y, t.player1.letter)
+		i := t.player1.moveCb()
+		t.board.setIndexState(i, t.player1.letter)
 
 		if t.isWinner(t.player1.letter) {
 			ttgcommon.Clear()
 			t.printBoard()
-			t.println(t.player1.name + " won")
+			fmt.Println(t.player1.name + " won")
 			t.pressAnyKeyPrompt()
 
 			break
 		} else if t.isBoardFull() {
 			ttgcommon.Clear()
 			t.printBoard()
-			t.println("DRAW")
+			fmt.Println("DRAW")
 			t.pressAnyKeyPrompt()
 
 			break
 		}
 
 		t.printBoard()
-		x, y = t.player2.moveCb()
-		t.move(x, y, t.player2.letter)
+		i = t.player2.moveCb()
+		t.board.setIndexState(i, t.player2.letter)
 
 		if t.isWinner(t.player2.letter) {
 			ttgcommon.Clear()
 			t.printBoard()
-			t.println(t.player2.name + " won")
+			fmt.Println(t.player2.name + " won")
 			t.pressAnyKeyPrompt()
 
 			break
 		} else if t.isBoardFull() {
 			ttgcommon.Clear()
 			t.printBoard()
-			t.println("DRAW")
+			fmt.Println("DRAW")
 			t.pressAnyKeyPrompt()
 
 			break
