@@ -1,6 +1,6 @@
 - regExp: [".*\\.md+$", "docs"]
   labels: ["documentation"]
-- regExp: ["go.sum", "go.mod"]
+- regExp: "go\\.mod"
   labels: ["dependencies"]
 - regExp: ".*\\.github"
   labels: ["workflow"]
