@@ -69,7 +69,7 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 		MainMenu: {
 			0: func() { os.Exit(0) },
 			1: func() {
-				var g *game.TTT
+				var g *game.TTG
 
 				rand.Seed(time.Now().UnixNano())
 				// nolint:gomnd // two players in game
@@ -77,15 +77,15 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 
 				switch r {
 				case 0:
-					g = game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, game.PlayerPerson, game.PlayerPC)
+					g = game.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, game.PlayerPerson, game.PlayerPC)
 				case 1:
-					g = game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, game.PlayerPC, game.PlayerPerson)
+					g = game.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, game.PlayerPC, game.PlayerPerson)
 				}
 
 				g.Run()
 			},
 			2: func() {
-				game := game.NewTTT(m.boardW, m.boardH, m.chainLen, game.PlayerPerson, game.PlayerPerson)
+				game := game.NewTTG(m.boardW, m.boardH, m.chainLen, game.PlayerPerson, game.PlayerPerson)
 				game.Run()
 			},
 			3: func() {

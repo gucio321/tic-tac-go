@@ -8,7 +8,7 @@ import (
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
 
-func (t *TTT) canWin(player Letter) (i int, result bool) {
+func (t *TTG) canWin(player Letter) (i int, result bool) {
 	for i := 0; i < t.width*t.height; i++ {
 		if !t.board.isIndexFree(i) {
 			continue
@@ -26,7 +26,7 @@ func (t *TTT) canWin(player Letter) (i int, result bool) {
 	return 0, false
 }
 
-func (t *TTT) getPCMove(letter Letter) (i int) {
+func (t *TTG) getPCMove(letter Letter) (i int) {
 	pcLetter := letter
 	playerLetter := pcLetter.Opposite()
 

@@ -8,8 +8,8 @@ import (
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
 
-// TTT represents TicTacToe game
-type TTT struct {
+// TTG represents TicTacToe game
+type TTG struct {
 	board   *board
 	reader  *bufio.Reader
 	player1 *player
@@ -19,9 +19,9 @@ type TTT struct {
 	chainLen int
 }
 
-// NewTTT creates a ne TTT
-func NewTTT(w, h, chainLen int, player1Type, player2Type PlayerType) *TTT {
-	result := &TTT{
+// NewTTG creates a ne TTG
+func NewTTG(w, h, chainLen int, player1Type, player2Type PlayerType) *TTG {
+	result := &TTG{
 		board:    newBoard(w, h),
 		reader:   bufio.NewReader(os.Stdin),
 		width:    w,
@@ -59,7 +59,7 @@ func NewTTT(w, h, chainLen int, player1Type, player2Type PlayerType) *TTT {
 	return result
 }
 
-func (t *TTT) isWinner(player Letter) bool {
+func (t *TTG) isWinner(player Letter) bool {
 	b := ttgcommon.GetWinBoard(t.width, t.height, t.chainLen)
 
 	for _, i := range b {
@@ -79,7 +79,7 @@ func (t *TTT) isWinner(player Letter) bool {
 	return false
 }
 
-func (t *TTT) isBoardFull() bool {
+func (t *TTG) isBoardFull() bool {
 	for i := 0; i < t.width*t.height; i++ {
 		if t.board.isIndexFree(i) {
 			return false
@@ -90,7 +90,7 @@ func (t *TTT) isBoardFull() bool {
 }
 
 // Run runs the game
-func (t *TTT) Run() {
+func (t *TTG) Run() {
 	for {
 		t.printBoard()
 		i := t.player1.moveCb()
