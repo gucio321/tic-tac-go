@@ -5,11 +5,9 @@ import (
 )
 
 func Test_newBoardIndex(t *testing.T) {
-	correctLetter := LetterNone
-
 	letter := newBoardIndex()
 
-	if *letter != correctLetter {
+	if *letter != LetterNone {
 		t.Fatal("Unexpected letter index created")
 	}
 }
