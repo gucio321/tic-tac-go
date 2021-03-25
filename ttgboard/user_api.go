@@ -9,7 +9,7 @@ import (
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
 
-func (t *TTT) printSeparator() {
+func (t *TTG) printSeparator() {
 	sep := "+"
 	for i := 0; i < t.width; i++ {
 		sep += "---+"
@@ -18,7 +18,7 @@ func (t *TTT) printSeparator() {
 	fmt.Println(sep)
 }
 
-func (t *TTT) printBoard() {
+func (t *TTG) printBoard() {
 	ttgcommon.Clear()
 
 	t.printSeparator()
@@ -37,7 +37,7 @@ func (t *TTT) printBoard() {
 	}
 }
 
-func (t *TTT) getPlayerMove() (i int) {
+func (t *TTG) getPlayerMove() (i int) {
 	for {
 		fmt.Printf("Enter your move (1-%d): ", t.width*t.height)
 
@@ -78,7 +78,7 @@ func (t *TTT) getPlayerMove() (i int) {
 	}
 }
 
-func (t *TTT) pressAnyKeyPrompt() {
+func (t *TTG) pressAnyKeyPrompt() {
 	print("\nPress any key to continue...")
 
 	_, _ = t.reader.ReadString('\n')
