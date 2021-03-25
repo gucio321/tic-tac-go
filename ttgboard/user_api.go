@@ -15,7 +15,7 @@ func (t *TTT) printSeparator() {
 		sep += "---+"
 	}
 
-	t.println(sep)
+	println(sep)
 }
 
 func (t *TTT) printBoard() {
@@ -23,21 +23,22 @@ func (t *TTT) printBoard() {
 
 	t.printSeparator()
 
-	for i := 0; i < t.height; i++ {
+	for y := 0; y < t.height; y++ {
 		line := "| "
-		for j := 0; j < t.width; j++ {
-			line += t.board[i][j].String()
+		for x := 0; x < t.width; x++ {
+			i := ttgcommon.CordsToInt(t.width, t.height, x, y)
+			line += (*t.board)[i].String()
 			line += " | "
 		}
 
-		t.println(line)
+		println(line)
 		t.printSeparator()
 	}
 }
 
-func (t *TTT) getPlayerMove() (x, y int) {
+func (t *TTT) getPlayerMove() (i int) {
 	for {
-		t.print(fmt.Sprintf("Enter your move (1-%d): ", t.width*t.height))
+		print(fmt.Sprintf("Enter your move (1-%d): ", t.width*t.height))
 
 		text, err := t.reader.ReadString('\n')
 		if err != nil {
@@ -45,7 +46,7 @@ func (t *TTT) getPlayerMove() (x, y int) {
 		}
 
 		if text == "" {
-			t.println("please enter number from 1 to 9")
+			println("please enter number from 1 to 9")
 
 			continue
 		}
@@ -55,42 +56,40 @@ func (t *TTT) getPlayerMove() (x, y int) {
 
 		num, err := strconv.Atoi(text)
 		if err != nil {
-			t.println("invalid index number")
+			println("invalid index number")
 
 			continue
 		}
 
 		if num <= 0 || num > t.width*t.height {
-			t.println(fmt.Sprintf("You must enter number from 1 to %d", t.width*t.height))
+			println(fmt.Sprintf("You must enter number from 1 to %d", t.width*t.height))
 
 			continue
 		}
 
 		num--
 
-		x, y = ttgcommon.IntToCords(t.width, t.height, num)
-
-		if t.board[y][x].IsNone() {
-			return
+		if t.board.isIndexFree(num) {
+			return num
 		}
 
-		t.println("This index is busy")
+		println("This index is busy")
 	}
 }
 
 func (t *TTT) pressAnyKeyPrompt() {
-	t.print("\nPress any key to continue...")
+	print("\nPress any key to continue...")
 
 	_, _ = t.reader.ReadString('\n')
 }
 
-func (t *TTT) print(msg ...string) {
+func print(msg ...string) {
 	for _, m := range msg {
 		fmt.Print(m)
 	}
 }
 
-func (t *TTT) println(msg ...string) {
-	t.print(msg...)
+func println(msg ...string) {
+	print(msg...)
 	fmt.Printf("\n")
 }

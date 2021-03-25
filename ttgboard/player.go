@@ -24,10 +24,10 @@ type player struct {
 	name       string
 	playerType PlayerType
 	letter     Letter
-	moveCb     func() (x, y int)
+	moveCb     func() (i int)
 }
 
-func newPlayer(t PlayerType, letter Letter, cb func() (x, y int)) *player {
+func newPlayer(t PlayerType, letter Letter, cb func() (i int)) *player {
 	result := &player{
 		playerType: t,
 		letter:     letter,
