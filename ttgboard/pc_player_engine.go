@@ -35,15 +35,7 @@ func (t *TTT) getPCMove(letter Letter) (x, y int) {
 	type option struct{ X, Y int }
 
 	pcLetter := letter
-
-	var playerLetter Letter
-
-	switch pcLetter {
-	case LetterX:
-		playerLetter = LetterO
-	case LetterO:
-		playerLetter = LetterX
-	}
+	playerLetter := pcLetter.Oposite()
 
 	var options []option = nil
 

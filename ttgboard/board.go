@@ -35,23 +35,26 @@ func NewTTT(w, h, chainLen int, player1Type, player2Type PlayerType) *TTT {
 		}
 	}
 
+	player1Letter := LetterX
+	player2Letter := LetterO
+
 	switch player1Type {
 	case PlayerPC:
-		result.player1 = newPlayer(player1Type, LetterX,
+		result.player1 = newPlayer(player1Type, player1Letter,
 			func() (x, y int) {
-				x, y = result.getPCMove(LetterX)
+				x, y = result.getPCMove(player1Letter)
 				return x, y
 			},
 		)
 	case PlayerPerson:
-		result.player1 = newPlayer(player1Type, LetterX, result.getPlayerMove)
+		result.player1 = newPlayer(player1Type, player1Letter, result.getPlayerMove)
 	}
 
 	switch player2Type {
 	case PlayerPC:
-		result.player2 = newPlayer(player2Type, LetterO,
+		result.player2 = newPlayer(player2Type, player2Letter,
 			func() (x, y int) {
-				x, y = result.getPCMove(LetterO)
+				x, y = result.getPCMove(player2Letter)
 				return x, y
 			},
 		)
