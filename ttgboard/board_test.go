@@ -25,7 +25,9 @@ func Test_NewBoard(t *testing.T) {
 
 func Test_setIndexState(t *testing.T) {
 	board := newBoard(3, 3)
+
 	board.setIndexState(5, LetterX)
+
 	if *(*board)[5] != LetterX {
 		t.Fatal("unexpected index was set by board.setIndexState")
 	}
@@ -34,15 +36,17 @@ func Test_setIndexState(t *testing.T) {
 func Test_getIndexState(t *testing.T) {
 	board := newBoard(3, 3)
 	*(*board)[5] = LetterX
-	l := board.getIndexState(5)
-	if l != LetterX {
+
+	if l := board.getIndexState(5); l != LetterX {
 		t.Fatal("unexpected index was returned by board.getIndexState")
 	}
 }
 
 func Test_isIndexFree(t *testing.T) {
 	board := newBoard(3, 3)
+
 	*(*board)[5] = LetterX
+
 	if board.isIndexFree(5) {
 		t.Fatal("isIndexFree returned unexpected value")
 	}
