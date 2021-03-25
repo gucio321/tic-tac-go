@@ -29,19 +29,6 @@ type Menu struct {
 }
 
 // NewMenu creates a new game menu
-<<<<<<< HEAD
-// nolint:funlen // enum
-func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func()) {
-	text := map[State][]string{
-		MainMenu: {
-			"\nMainMenu",
-			"\t1) start Player VS PC game",
-			"\t2) start Player VS Player game",
-			"\t3) settings",
-			"\t4) Help",
-			"\t5) README",
-			"\t0) exit",
-=======
 func (m *Menu) getMenuData(state State) (lines []string, actions []func()) {
 	text := map[State][]string{
 		MainMenu: {
@@ -50,7 +37,6 @@ func (m *Menu) getMenuData(state State) (lines []string, actions []func()) {
 			"3) settings",
 			"4) Help",
 			"0) exit",
->>>>>>> d980c87 (tic tac goe with giu:)
 		},
 		Help: {
 			"TicTacToe Version 1",
@@ -70,27 +56,18 @@ func (m *Menu) getMenuData(state State) (lines []string, actions []func()) {
 		},
 		Readme: readMarkdown("README.md"),
 		Settings: {
-<<<<<<< HEAD
 			"\nSettings:",
 			"\t1) change board size",
 			"\t2) reset board size",
 			"\t0) back to main menu",
-=======
-			"0) back to main menu",
->>>>>>> d980c87 (tic tac goe with giu:)
 		},
 	}
 
 	cb := map[State][]func(){
 		MainMenu: {
-<<<<<<< HEAD
 			0: func() { os.Exit(0) },
 			1: func() {
 				var g *game.TTG
-=======
-			func() {
-				var g *game.TTT
->>>>>>> d980c87 (tic tac goe with giu:)
 
 				rand.Seed(time.Now().UnixNano())
 				// nolint:gomnd // two players in game
@@ -105,13 +82,8 @@ func (m *Menu) getMenuData(state State) (lines []string, actions []func()) {
 
 				g.Run()
 			},
-<<<<<<< HEAD
 			2: func() {
 				game := game.NewTTG(m.boardW, m.boardH, m.chainLen, game.PlayerPerson, game.PlayerPerson)
-=======
-			func() {
-				game := game.NewTTT(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, game.PlayerPerson, game.PlayerPerson)
->>>>>>> d980c87 (tic tac goe with giu:)
 				game.Run()
 			},
 			func() {
@@ -120,13 +92,9 @@ func (m *Menu) getMenuData(state State) (lines []string, actions []func()) {
 			func() {
 				m.state = Help
 			},
-<<<<<<< HEAD
-			5: func() {
+			func() {
 				m.state = Readme
 			},
-=======
-			func() { os.Exit(0) },
->>>>>>> d980c87 (tic tac goe with giu:)
 		},
 		Help: {
 			func() {
@@ -139,35 +107,7 @@ func (m *Menu) getMenuData(state State) (lines []string, actions []func()) {
 			},
 		},
 		Settings: {
-<<<<<<< HEAD
-			1: func() {
-				w, err := m.getUserAction("Enter new board width")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				h, err := m.getUserAction("Enter new board height")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				l, err := m.getUserAction("Enter new chain len")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				m.boardW, m.boardH = w, h
-				m.chainLen = l
-			},
-			2: func() {
-				m.boardW, m.boardH = ttgcommon.BaseBoardW, ttgcommon.BaseBoardH
-				m.chainLen = ttgcommon.BaseChainLen
-				_, _ = m.getUserAction("Board width and height was set to default\nPress ENTER to continue")
-			},
-			0: func() {
-=======
 			func() {
->>>>>>> d980c87 (tic tac goe with giu:)
 				m.state = MainMenu
 			},
 		},
@@ -286,24 +226,9 @@ func (m *Menu) processUserAction(action int) {
 }
 
 // Run start's main menu
-<<<<<<< HEAD
-func (m *Menu) Run() {
-	for {
-		ttgcommon.Clear()
-		fmt.Println("Welcome in tic-tac-go")
-		m.printMenu()
-
-		action, err := m.getUserAction(menuQuestion)
-		if err != nil {
-			log.Print(err)
-
-			continue
-		}
-=======
 func (m *Menu) Build() giu.Layout {
 	return giu.Layout{
 		giu.Label("Welcome in tic-tac-go"),
->>>>>>> d980c87 (tic tac goe with giu:)
 
 		m.printMenu(),
 	}
