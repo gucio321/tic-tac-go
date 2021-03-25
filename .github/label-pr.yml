@@ -6,3 +6,5 @@
   labels: ["workflow"]
 - regExp: ".*\\.go+$"
   labels: ["code"]
+- regExp: ".*_test\\.go+$"
+  labels: ["unittests"]
