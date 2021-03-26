@@ -6,6 +6,8 @@ import (
 	"github.com/gucio321/tic-tac-go/ttggame/ttgletter"
 )
 
+const playerString = "Player X"
+
 func Test_NewPlayer(t *testing.T) {
 	player := NewPlayer(PlayerPerson, ttgletter.LetterX, func() int { return 8 })
 
@@ -21,7 +23,7 @@ func Test_NewPlayer(t *testing.T) {
 		t.Fatal("Unexpected player created")
 	}
 
-	if player.name != "Player X" {
+	if player.name != playerString {
 		t.Fatal("Unexpected player created")
 	}
 }
@@ -45,7 +47,7 @@ func Test_Letter(t *testing.T) {
 func Test_Name(t *testing.T) {
 	player := NewPlayer(PlayerPerson, ttgletter.LetterX, func() int { return 8 })
 
-	if player.Name() != "Player X" {
+	if player.Name() != playerString {
 		t.Fatal("unexpected name returned")
 	}
 }
