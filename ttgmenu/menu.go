@@ -10,8 +10,9 @@ import (
 	"strings"
 	"time"
 
-	game "github.com/gucio321/tic-tac-go/ttgboard"
 	"github.com/gucio321/tic-tac-go/ttgcommon"
+	game "github.com/gucio321/tic-tac-go/ttggame"
+	"github.com/gucio321/tic-tac-go/ttggame/ttgplayer"
 )
 
 const (
@@ -77,15 +78,15 @@ func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func())
 
 				switch r {
 				case 0:
-					g = game.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, game.PlayerPerson, game.PlayerPC)
+					g = game.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPC)
 				case 1:
-					g = game.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, game.PlayerPC, game.PlayerPerson)
+					g = game.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPerson)
 				}
 
 				g.Run()
 			},
 			2: func() {
-				game := game.NewTTG(m.boardW, m.boardH, m.chainLen, game.PlayerPerson, game.PlayerPerson)
+				game := game.NewTTG(m.boardW, m.boardH, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPerson)
 				game.Run()
 			},
 			3: func() {

@@ -1,4 +1,4 @@
-package ttgboard
+package ttggame
 
 import (
 	"log"
@@ -6,27 +6,28 @@ import (
 	"time"
 
 	"github.com/gucio321/tic-tac-go/ttgcommon"
+	"github.com/gucio321/tic-tac-go/ttggame/ttgletter"
 )
 
-func (t *TTG) canWin(player Letter) (i int, result bool) {
+func (t *TTG) canWin(player ttgletter.Letter) (i int, result bool) {
 	for i := 0; i < t.width*t.height; i++ {
-		if !t.board.isIndexFree(i) {
+		if !t.board.IsIndexFree(i) {
 			continue
 		}
 
-		t.board.setIndexState(i, player)
+		board := t.board.Copy()
 
-		if t.isWinner(player) {
+		board.SetIndexState(i, player)
+
+		if t.isWinner(board, player) {
 			return i, true
 		}
-
-		t.board.setIndexState(i, LetterNone)
 	}
 
 	return 0, false
 }
 
-func (t *TTG) getPCMove(letter Letter) (i int) {
+func (t *TTG) getPCMove(letter ttgletter.Letter) (i int) {
 	pcLetter := letter
 	playerLetter := pcLetter.Opposite()
 
@@ -45,7 +46,7 @@ func (t *TTG) getPCMove(letter Letter) (i int) {
 	}
 
 	for _, i := range ttgcommon.GetCorners(t.width, t.height) {
-		if t.board.isIndexFree(i) {
+		if t.board.IsIndexFree(i) {
 			options = append(options, i)
 		}
 	}
@@ -59,7 +60,7 @@ func (t *TTG) getPCMove(letter Letter) (i int) {
 
 	// try to get center
 	for _, i := range ttgcommon.GetCenter(t.width, t.height) {
-		if t.board.isIndexFree(i) {
+		if t.board.IsIndexFree(i) {
 			options = append(options, i)
 		}
 	}
@@ -72,7 +73,7 @@ func (t *TTG) getPCMove(letter Letter) (i int) {
 	}
 
 	for _, i := range ttgcommon.GetMiddles() {
-		if t.board.isIndexFree(i) {
+		if t.board.IsIndexFree(i) {
 			options = append(options, i)
 		}
 	}

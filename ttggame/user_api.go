@@ -1,4 +1,4 @@
-package ttgboard
+package ttggame
 
 import (
 	"fmt"
@@ -70,7 +70,7 @@ func (t *TTG) getPlayerMove() (i int) {
 
 		num--
 
-		if t.board.isIndexFree(num) {
+		if t.board.IsIndexFree(num) {
 			return num
 		}
 
