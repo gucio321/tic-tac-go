@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/gucio321/tic-tac-go/tree/master.svg?style=svg)](https://circleci.com/gh/gucio321/tic-tac-go/tree/master)
+
 ## About
 
 Tic-Tac-Go is a simple, command line implementation
