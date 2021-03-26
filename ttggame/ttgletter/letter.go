@@ -1,4 +1,4 @@
-package ttgboard
+package ttgletter
 
 // Letter represents board letters (x and o)
 type Letter byte
@@ -10,7 +10,8 @@ const (
 	LetterO
 )
 
-func newBoardIndex() *Letter {
+// NewLetter creates a new letter
+func NewLetter() *Letter {
 	result := LetterNone
 
 	return &result
