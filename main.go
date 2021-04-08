@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-	app := game.NewMenu()
+	app := game.New()
 	app.Run()
 }

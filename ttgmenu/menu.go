@@ -11,194 +11,167 @@ import (
 	"time"
 
 	"github.com/gucio321/tic-tac-go/ttgcommon"
-	game "github.com/gucio321/tic-tac-go/ttggame"
+	"github.com/gucio321/tic-tac-go/ttggame"
 	"github.com/gucio321/tic-tac-go/ttggame/ttgplayer"
 )
 
+type menuPosition byte
+
 const (
-	menuQuestion = "What'd you like to do?"
+	mainMenu menuPosition = iota
+	settingsMenu
 )
 
-// Menu represent's game's menu
+type settings struct {
+	chainLen,
+	width,
+	height byte
+}
+
+// Menu represents a game menu
 type Menu struct {
-	state          State
-	reader         *bufio.Reader
-	menus          map[State]*menuIndex
-	boardW, boardH int
-	chainLen       int
+	*settings
+	pages  []*menuPage
+	done   bool
+	pos    menuPosition
+	reader *bufio.Reader
 }
 
-// NewMenu creates a new game menu
-// nolint:funlen // enum
-func (m *Menu) getMenuData(state State) (lines []string, actions map[int]func()) {
-	text := map[State][]string{
-		MainMenu: {
-			"\nMainMenu",
-			"\t1) start Player VS PC game",
-			"\t2) start Player VS Player game",
-			"\t3) settings",
-			"\t4) Help",
-			"\t5) README",
-			"\t0) exit",
-		},
-		Help: {
-			"TicTacToe Version 1",
-			"Copyright (C) 2021 by M. Sz.",
-			"",
-			"To go around main menu use number buttons",
-			"In game use 1-9 buttons to select index",
-			"+---+---+---+",
-			"| 1 | 2 | 3 |",
-			"+---+---+---+",
-			"| 4 | 5 | 6 |",
-			"+---+---+---+",
-			"| 7 | 8 | 9 |",
-			"+---+---+---+",
-			"",
-			"Press enter to back to main menu",
-		},
-		Readme: readMarkdown("README.md"),
-		Settings: {
-			"\nSettings:",
-			"\t1) change board size",
-			"\t2) reset board size",
-			"\t0) back to main menu",
-		},
-	}
-
-	cb := map[State]map[int]func(){
-		MainMenu: {
-			0: func() { os.Exit(0) },
-			1: func() {
-				var g *game.TTG
-
-				rand.Seed(time.Now().UnixNano())
-				// nolint:gomnd // two players in game
-				r := rand.Intn(2) // nolint:gosec // it is ok
-
-				switch r {
-				case 0:
-					g = game.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPC)
-				case 1:
-					g = game.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPerson)
-				}
-
-				g.Run()
-			},
-			2: func() {
-				game := game.NewTTG(m.boardW, m.boardH, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPerson)
-				game.Run()
-			},
-			3: func() {
-				m.state = Settings
-			},
-			4: func() {
-				m.state = Help
-			},
-			5: func() {
-				m.state = Readme
-			},
-		},
-		Help: {
-			0: func() {
-				m.state = MainMenu
-			},
-		},
-		Readme: {
-			0: func() {
-				m.state = MainMenu
-			},
-		},
-		Settings: {
-			1: func() {
-				w, err := m.getUserAction("Enter new board width")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				h, err := m.getUserAction("Enter new board height")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				l, err := m.getUserAction("Enter new chain len")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				m.boardW, m.boardH = w, h
-				m.chainLen = l
-			},
-			2: func() {
-				m.boardW, m.boardH = ttgcommon.BaseBoardW, ttgcommon.BaseBoardH
-				m.chainLen = ttgcommon.BaseChainLen
-				_, _ = m.getUserAction("Board width and height was set to default\nPress ENTER to continue")
-			},
-			0: func() {
-				m.state = MainMenu
-			},
-		},
-	}
-
-	return text[state], cb[state]
-}
-
-// State represents menu's state
-type State int
-
-// menu states
-const (
-	MainMenu State = iota
-	Help
-	Readme
-	Settings
-)
-
-type menuIndex struct {
-	lines       []string
-	userActions map[int]func()
-	multiAction bool
-}
-
-func (m *Menu) newMenuIndex(state State) *menuIndex {
-	result := &menuIndex{}
-
-	result.lines, result.userActions = m.getMenuData(state)
-
-	if len(result.userActions) > 1 && result.userActions != nil {
-		result.multiAction = true
-	} else {
-		result.multiAction = false
-	}
-
-	return result
-}
-
-// NewMenu creates a new menu
-func NewMenu() *Menu {
+// New creates a new menu
+func New() *Menu {
 	result := &Menu{
-		state:    MainMenu,
-		reader:   bufio.NewReader(os.Stdin),
-		boardW:   ttgcommon.BaseBoardW,
-		boardH:   ttgcommon.BaseBoardH,
-		chainLen: ttgcommon.BaseChainLen,
+		settings: &settings{
+			ttgcommon.BaseChainLen,
+			ttgcommon.BaseBoardW,
+			ttgcommon.BaseBoardH,
+		},
+		done:   false,
+		pos:    mainMenu,
+		reader: bufio.NewReader(os.Stdin),
 	}
 
-	result.menus = map[State]*menuIndex{
-		MainMenu: result.newMenuIndex(MainMenu),
-		Help:     result.newMenuIndex(Help),
-		Readme:   result.newMenuIndex(Readme),
-		Settings: result.newMenuIndex(Settings),
-	}
+	result.loadMenu()
 
 	return result
 }
 
-func (m *Menu) printMenu() {
-	lines := m.menus[m.state].lines
-	if lines != nil {
-		fmt.Println(strings.Join(lines, "\n"))
+// Run runs the menu
+func (m *Menu) Run() {
+	for !m.done {
+		ttgcommon.Clear()
+		fmt.Println(m.currentPage())
+
+		num, err := m.getUserAction("What'd you like to do?")
+		if err != nil {
+			continue
+		}
+
+		if num < 0 || int16(num) > m.currentPage().Max() {
+			fmt.Printf("You must enter number from 0 to %d", m.currentPage().Max())
+
+			continue
+		}
+
+		m.currentPage().Exec(int16(num))
 	}
+}
+
+func (m *Menu) currentPage() *menuPage {
+	return m.pages[m.pos]
+}
+
+func (m *Menu) loadMenu() {
+	m.pages = []*menuPage{
+		{
+			"main menu",
+			[]*menuIndex{
+				{1, "PvC game", m.runPVC},
+				{2, "PvP game", m.runPVP},
+				{3, "Settings", func() { m.pos = settingsMenu }},
+				{4, "Help", m.printHelp},
+				{0, "Exit", func() { m.done = true }},
+			},
+		},
+		{
+			"Settings",
+			[]*menuIndex{
+				{1, "Change board size", m.changeBoardSize},
+				{2, "Reset board size", m.resetBoardSize},
+				{0, "Back", func() { m.pos = mainMenu }},
+			},
+		},
+	}
+}
+
+func (m *Menu) runPVP() {
+	game := ttggame.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPerson)
+	game.Run()
+}
+
+func (m *Menu) runPVC() {
+	var g *ttggame.TTG
+
+	rand.Seed(time.Now().UnixNano())
+	// nolint:gomnd // two players in game
+	r := rand.Intn(2) // nolint:gosec // it is ok
+
+	switch r {
+	case 0:
+		g = ttggame.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPC)
+	case 1:
+		g = ttggame.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPerson)
+	}
+
+	g.Run()
+}
+
+func (m *Menu) changeBoardSize() {
+	w, err := m.getUserAction("Enter new board width")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	h, err := m.getUserAction("Enter new board height")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	l, err := m.getUserAction("Enter new chain len")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	m.width, m.height = byte(w), byte(h)
+	m.chainLen = byte(l)
+}
+
+func (m *Menu) resetBoardSize() {
+	m.width, m.height = ttgcommon.BaseBoardW, ttgcommon.BaseBoardH
+	m.chainLen = ttgcommon.BaseChainLen
+	_, _ = m.getUserAction("Board width and height was set to default\nPress ENTER to continue")
+}
+
+func (m *Menu) printHelp() {
+	ttgcommon.Clear()
+	fmt.Println(strings.Join([]string{
+		"TicTacToe Version 1",
+		"Copyright (C) 2021 by M. Sz.",
+		"",
+		"To go around main menu use number buttons",
+		"In game use 1-9 buttons to select index",
+		"+---+---+---+",
+		"| 1 | 2 | 3 |",
+		"+---+---+---+",
+		"| 4 | 5 | 6 |",
+		"+---+---+---+",
+		"| 7 | 8 | 9 |",
+		"+---+---+---+",
+		"",
+		"Press enter to back to main menu",
+	}, "\n"),
+	)
+
+	_, _ = m.getUserAction("Press ENTER to continue")
 }
 
 func (m *Menu) getUserAction(question string) (int, error) {
@@ -214,43 +187,8 @@ func (m *Menu) getUserAction(question string) (int, error) {
 
 	num, err := strconv.Atoi(text)
 	if err != nil {
-		if m.menus[m.state].multiAction {
-			return 0, fmt.Errorf("error reading user action: %w", err)
-		}
-
-		return 0, nil
+		return num, fmt.Errorf("error converting user answer: %w", err)
 	}
 
 	return num, nil
-}
-
-func (m *Menu) processUserAction(action int) {
-	var act func()
-	if m.menus[m.state].multiAction {
-		act = m.menus[m.state].userActions[action]
-	} else {
-		act = m.menus[m.state].userActions[0]
-	}
-
-	if act != nil {
-		act()
-	}
-}
-
-// Run start's main menu
-func (m *Menu) Run() {
-	for {
-		ttgcommon.Clear()
-		fmt.Println("Welcome in tic-tac-go")
-		m.printMenu()
-
-		action, err := m.getUserAction(menuQuestion)
-		if err != nil {
-			log.Print(err)
-
-			continue
-		}
-
-		m.processUserAction(action)
-	}
 }
