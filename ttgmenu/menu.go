@@ -195,6 +195,7 @@ func (m *Menu) printReadme() {
 	}
 
 	fmt.Println(text)
+
 	_, _ = m.getUserAction("Press ENTER to continue")
 }
 
