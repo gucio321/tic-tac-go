@@ -18,18 +18,18 @@ type TTG struct {
 	player1 *ttgplayer.Player
 	player2 *ttgplayer.Player
 	width,
-	height int
+	height,
 	chainLen int
 }
 
 // NewTTG creates a ne TTG
-func NewTTG(w, h, chainLen int, player1Type, player2Type ttgplayer.PlayerType) *TTG {
+func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) *TTG {
 	result := &TTG{
-		board:    ttgboard.NewBoard(w * h),
+		board:    ttgboard.NewBoard(int(w * h)),
 		reader:   bufio.NewReader(os.Stdin),
-		width:    w,
-		height:   h,
-		chainLen: chainLen,
+		width:    int(w),
+		height:   int(h),
+		chainLen: int(chainLen),
 	}
 
 	player1Letter := ttgletter.LetterX
