@@ -1,6 +1,6 @@
 module github.com/gucio321/tic-tac-go
 
-go 1.15
+go 1.16
 
 require (
 	github.com/jaytaylor/html2text v0.0.0-20200412013138-3577fbdbcff7
