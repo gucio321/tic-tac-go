@@ -10,6 +10,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jaytaylor/html2text"
+	"github.com/russross/blackfriday"
+
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 	"github.com/gucio321/tic-tac-go/ttggame"
 	"github.com/gucio321/tic-tac-go/ttggame/ttgplayer"
@@ -35,10 +38,12 @@ type Menu struct {
 	done   bool
 	pos    menuPosition
 	reader *bufio.Reader
+	readme *[]byte
 }
 
 // New creates a new menu
-func New() *Menu {
+// readme is a README.md file (pass nil if no readme)
+func New(readme []byte) *Menu {
 	result := &Menu{
 		settings: &settings{
 			ttgcommon.BaseChainLen,
@@ -48,6 +53,7 @@ func New() *Menu {
 		done:   false,
 		pos:    mainMenu,
 		reader: bufio.NewReader(os.Stdin),
+		readme: &readme,
 	}
 
 	result.loadMenu()
@@ -89,6 +95,7 @@ func (m *Menu) loadMenu() {
 				{2, "PvP game", m.runPVP},
 				{3, "Settings", func() { m.pos = settingsMenu }},
 				{4, "Help", m.printHelp},
+				{5, "README", m.printReadme},
 				{0, "Exit", func() { m.done = true }},
 			},
 		},
@@ -170,6 +177,24 @@ func (m *Menu) printHelp() {
 		"Press enter to back to main menu",
 	}, "\n"),
 	)
+
+	_, _ = m.getUserAction("Press ENTER to continue")
+}
+
+func (m *Menu) printReadme() {
+	var err error
+
+	html := blackfriday.MarkdownBasic(*m.readme)
+
+	text, err := html2text.FromString(string(html), html2text.Options{PrettyTables: true})
+	if err != nil {
+		fmt.Printf(
+			"Unable to convert readme's html to text: %v\n%s", err,
+			"Please raport it on https://github.com/gucio321/tic-tac-go",
+		)
+	}
+
+	fmt.Println(text)
 
 	_, _ = m.getUserAction("Press ENTER to continue")
 }
