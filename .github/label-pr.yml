@@ -8,3 +8,10 @@
   labels: ["code"]
 - regExp: ".*_test\\.go+$"
   labels: ["unittests"]
+
+- regExp: ["ttggame"]
+  labels: ["game engine"]
+- regExp: ["ttgmenu"]
+  labels: ["menu engine"]
+- regExp: ["main.go"]
+  labels: ["main.go"]
