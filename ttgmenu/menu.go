@@ -11,12 +11,15 @@ import (
 	"time"
 
 	"github.com/jaytaylor/html2text"
+	"github.com/pkg/browser"
 	"github.com/russross/blackfriday"
 
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 	"github.com/gucio321/tic-tac-go/ttggame"
 	"github.com/gucio321/tic-tac-go/ttggame/ttgplayer"
 )
+
+const githubURL = "https://github.com/gucio321/tic-tac-go"
 
 type menuPosition byte
 
@@ -96,6 +99,7 @@ func (m *Menu) loadMenu() {
 				{3, "Settings", func() { m.pos = settingsMenu }},
 				{4, "Help", m.printHelp},
 				{5, "README", m.printReadme},
+				{6, "website", m.openWebsite},
 				{0, "Exit", func() { m.done = true }},
 			},
 		},
@@ -197,6 +201,13 @@ func (m *Menu) printReadme() {
 	fmt.Println(text)
 
 	_, _ = m.getUserAction("Press ENTER to continue")
+}
+
+func (m *Menu) openWebsite() {
+	err := browser.OpenURL(githubURL)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func (m *Menu) getUserAction(question string) (int, error) {
