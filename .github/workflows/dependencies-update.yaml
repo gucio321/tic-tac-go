@@ -1,0 +1,36 @@
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  createPullRequest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2.1.3
+        with:
+          go-version: 1.16
+        id: go
+
+      - name: Update dependencies
+        run: |
+          go get -d ./...
+          go mod tidy
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: Update dependencies
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          branch: master
+          delete-branch: true
+          title: 'update golang dependencies'
+          body: ""
+          draft: false
