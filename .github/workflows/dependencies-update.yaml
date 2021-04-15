@@ -27,7 +27,6 @@ jobs:
           git config user.name ${{ github.actor }}
           git config user.email ${{ github.actor }}@users.noreply.github.com
           git fetch origin
-          #git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/dependencies-update
           git add .
           git commit -am "all: dependencies update"
       - name: Create Pull Request
