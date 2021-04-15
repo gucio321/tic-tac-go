@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -100,6 +101,7 @@ func (m *Menu) loadMenu() {
 				{4, "Help", m.printHelp},
 				{5, "README", m.printReadme},
 				{6, "website", m.openWebsite},
+				{7, "Report Bug on GitHub", m.reportBug},
 				{0, "Exit", func() { m.done = true }},
 			},
 		},
@@ -207,6 +209,44 @@ func (m *Menu) openWebsite() {
 	err := browser.OpenURL(githubURL)
 	if err != nil {
 		log.Println(err)
+	}
+}
+
+func (m *Menu) reportBug() {
+	var err error
+
+	osInfo := ttgcommon.NewOS()
+
+	body := []string{
+		"%23%23 Describe the bug",
+		"A clear and concise description of what the bug is.",
+		"",
+		"%23%23 To Reproduce",
+		"Steps to reproduce the behavior:",
+		"1. Go to '...'",
+		"2. Click on '....'",
+		"3. Scroll down to '....'",
+		"4. See error",
+		"",
+		"%23%23 Expected behavior",
+		"A clear and concise description of what you expected to happen.",
+		"",
+		"%23%23 Screenshots",
+		"If applicable, add screenshots to help explain your problem.",
+		"",
+		"%23%23 Desktop:",
+		"- OS: " + osInfo.Name,
+		"- Version: " + osInfo.Version,
+		"- Arch: " + osInfo.Arch,
+		"- Go version: " + runtime.Version(),
+		"",
+		"%23%23 Additional context",
+		"Add any other context about the problem here.",
+	}
+
+	err = browser.OpenURL("https://github.com/gucio321/tic-tac-go/issues/new?body=" + strings.Join(body, "%0D"))
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 

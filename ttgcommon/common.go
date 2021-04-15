@@ -9,6 +9,11 @@ import (
 	"unicode"
 )
 
+const (
+	strWindows = "windows"
+	strLinux   = "linux"
+)
+
 // IntToCords converts intager to X-Y cords
 func IntToCords(w, h, i int) (x, y int) {
 	for {
@@ -36,11 +41,11 @@ func Clear() {
 	var err error
 
 	switch runtime.GOOS {
-	case "linux", "darwin":
+	case strLinux, "darwin":
 		cmd := exec.Command("clear")
 		cmd.Stdout = os.Stdout
 		err = cmd.Run()
-	case "windows":
+	case strWindows:
 		cmd := exec.Command("cmd", "/c", "cls")
 		cmd.Stdout = os.Stdout
 		err = cmd.Run()
