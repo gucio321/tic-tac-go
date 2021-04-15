@@ -30,9 +30,9 @@ func NewOS() *OS {
 	}
 
 	switch runtime.GOOS {
-	case "windows":
+	case strWindows:
 		result.Version = GetWindowsVersion()
-	case "linux":
+	case strLinux:
 		result.Name, result.Version = GetLinuxVersion()
 	}
 
