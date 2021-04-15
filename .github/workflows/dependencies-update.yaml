@@ -28,7 +28,11 @@ jobs:
           git config user.email ${{ github.actor }}@users.noreply.github.com
           git fetch origin
           git add .
-          git commit -am "all: dependencies update"
+          if [[ $(git diff --stat) != '' ]]; then
+            git commit -am "all: dependencies update"
+          else
+            echo "clean - nothing to commit"
+          fi
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
