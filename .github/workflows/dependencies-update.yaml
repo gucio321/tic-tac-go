@@ -20,11 +20,20 @@ jobs:
         id: go
 
       - name: Update dependencies
+        id: update
         run: |
-          go get -u ./...
+          go get -u ./... &> /tmp/output.txt
           go mod tidy
+          echo 'diffs<<EOF' >> $GITHUB_ENV
+          cat /tmp/output.txt |grep upgraded >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
 
-      - name: Create Pull Request
+      - name: Check building
+        id: test
+        run: make build
+
+      - if: success()
+        name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
@@ -36,5 +45,7 @@ jobs:
           branch: dependencies-update
           delete-branch: true
           title: 'update golang dependencies'
-          body: $(git --diff)
+          body: |
+            "Automatic action updates the following dependencies:"
+            ${{ env.diffs }}
           draft: false
