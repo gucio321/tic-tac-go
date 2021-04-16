@@ -24,17 +24,6 @@ jobs:
           go get -u ./...
           go mod tidy
 
-     #- name: Create commits
-     #   run: |
-     #     git config user.name ${{ github.actor }}
-     #     git config user.email ${{ github.actor }}@users.noreply.github.com
-     #     git fetch origin
-     #     git add .
-     #     if [[ $(git diff --stat) != '' ]]; then
-     #       git commit -am "all: dependencies update"
-     #     else
-     #       echo "clean - nothing to commit"
-     #     fi
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
@@ -47,5 +36,5 @@ jobs:
           branch: dependencies-update
           delete-branch: true
           title: 'update golang dependencies'
-          body: ""
+          body: $(git --diff)
           draft: false
