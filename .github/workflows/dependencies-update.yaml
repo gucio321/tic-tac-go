@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: master
 
       - name: Set up Go
         uses: actions/setup-go@v2.1.3
@@ -21,6 +19,7 @@ jobs:
 
       - name: Update dependencies
         id: update
+        continue-on-error: true
         run: |
           go get -u ./... &> /tmp/output.txt
           go mod tidy
@@ -28,12 +27,8 @@ jobs:
           cat /tmp/output.txt |grep upgraded >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Check building
-        id: test
-        run: |
-          make build &> /tmp/building.txt
-
-      - name: Create Pull Request
+      - if: success()
+        name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
@@ -60,8 +55,3 @@ jobs:
             "Hi there!"
             "GitHub action found an issues while updating the following dependencies"
             ${{ env.diffs }}
-            ""
-            "The build errors occures:"
-            ${{ env.building }}
-            ""
-            "Please visit " ${{ steps.cpr.outputs.pull-request-url }} "to get moer informations"
