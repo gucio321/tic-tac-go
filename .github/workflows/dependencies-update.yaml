@@ -30,10 +30,10 @@ jobs:
 
       - name: Check building
         id: test
-        run: make build
+        run: |
+          make build &> /tmp/building.txt
 
-      - if: success()
-        name: Create Pull Request
+      - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
@@ -49,3 +49,19 @@ jobs:
             "Automatic action updates the following dependencies:"
             ${{ env.diffs }}
           draft: false
+
+      - if: steps.test.exitcode > 0 
+        name: open issue
+        uses: alialaa/issue-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Error updating dependencies!"
+          body: |
+            "Hi there!"
+            "GitHub action found an issues while updating the following dependencies"
+            ${{ env.diffs }}
+            ""
+            "The build errors occures:"
+            ${{ env.building }}
+            ""
+            "Please visit " ${{ steps.cpr.outputs.pull-request-url }} "to get moer informations"
