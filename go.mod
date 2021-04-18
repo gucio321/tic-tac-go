@@ -3,6 +3,7 @@ module github.com/gucio321/tic-tac-go
 go 1.16
 
 require (
+	gist.github.com/2335e953b45f46591839a21c502588ea.git v0.0.0-20210416061157-43cb9e1dfd27
 	github.com/jaytaylor/html2text v0.0.0-20200412013138-3577fbdbcff7
 	github.com/mattn/go-runewidth v0.0.12 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect

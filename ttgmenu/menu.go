@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	osinfo "gist.github.com/2335e953b45f46591839a21c502588ea.git"
 	"github.com/jaytaylor/html2text"
 	"github.com/pkg/browser"
 	"github.com/russross/blackfriday"
@@ -215,7 +216,7 @@ func (m *Menu) openWebsite() {
 func (m *Menu) reportBug() {
 	var err error
 
-	osInfo := ttgcommon.NewOS()
+	osInfo := osinfo.NewOS()
 
 	body := []string{
 		"%23%23 Describe the bug",
