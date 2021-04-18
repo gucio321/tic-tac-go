@@ -1,4 +1,4 @@
-name: go-package
+name: release-packages
 
 on:
   push:
