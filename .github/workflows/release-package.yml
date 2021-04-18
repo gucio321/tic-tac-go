@@ -2,7 +2,8 @@ name: go-package
 
 on:
   push:
-    branches: ['releases']
+    branches:
+      - releases
 
 jobs:
   build-packages:
