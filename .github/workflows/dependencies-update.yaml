@@ -25,8 +25,16 @@ jobs:
           echo 'diffs<<EOF' >> $GITHUB_ENV
           cat /tmp/output.txt >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
+      
+      - uses: nickderobertis/check-if-issue-exists-action@master
+        id: check_if_issue_exists
+        with:
+          repo: gucio321/tic-tac-go
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Error updating dependencies!"
 
-      - if: env.update-success > 0
+
+      - if: env.update-success > 0 && steps.check_if_issue_exists.outputs.exists == 'false'
         name: open issue
         uses: alialaa/issue-action@v1
         with:
