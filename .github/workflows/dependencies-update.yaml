@@ -14,6 +14,9 @@ jobs:
         with:
           go-version: 1.16
 
+      - name: download dependencies
+        run: go get -d ./...
+
       - name: Update dependencies # updates go depenencies, saves output
         id: update
         continue-on-error: true
@@ -22,6 +25,7 @@ jobs:
           go get -u ./... &>> /tmp/output.txt
           echo "update-success=$?" >> $GITHUB_ENV # saves exit code
           go mod tidy
+          cat /tmp/output.txt # inform user about diffs
           echo 'diffs<<EOF' >> $GITHUB_ENV
           cat /tmp/output.txt >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
