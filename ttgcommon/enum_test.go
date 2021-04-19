@@ -1,6 +1,7 @@
 package ttgcommon
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -57,9 +58,10 @@ func Test_GetCorners(t *testing.T) {
 }
 
 func Test_GetMiddles(t *testing.T) {
-	// for now, GetMiddles works only for 3x3 board
-	correctMiddles := []int{1, 3, 5, 7}
-	middles := GetMiddles()
+	correctMiddles := []int{1, 2, 4, 7, 8, 11, 13, 14}
+	w, h := 4, 4
+	middles := GetMiddles(w, h)
+	fmt.Println(middles)
 
 	if len(middles) != len(correctMiddles) {
 		t.Fatal("invalid board middles returned")

@@ -82,8 +82,6 @@ func GetMiddles(w, h int) (result []int) {
 	}
 	for i := 1; i < h-1; i++ {
 		result = append(result, i*w)
-	}
-	for i := 1; i < h-1; i++ {
 		result = append(result, (i*w)+w-1)
 	}
 	for i := 1; i < w-1; i++ {
