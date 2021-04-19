@@ -76,11 +76,21 @@ func GetCorners(w, h int) (result []int) {
 }
 
 // GetMiddles returns middles of board's edges
-func GetMiddles() (result []int) {
-	// https://github.com/gucio321/tic-tac-go/issues/27
-	result = []int{1, 3, 5, 7}
+func GetMiddles(w, h int) (result []int) {
+	for i := 1; i < w-1; i++ {
+		result = append(result, i)
+	}
+	for i := 1; i < h-1; i++ {
+		result = append(result, i*w)
+	}
+	for i := 1; i < h-1; i++ {
+		result = append(result, (i*w)+w-1)
+	}
+	for i := 1; i < w-1; i++ {
+		result = append(result, h*(w-1)+i)
+	}
 
-	return
+	return result
 }
 
 // GetCenter returns bard center (if exists)
