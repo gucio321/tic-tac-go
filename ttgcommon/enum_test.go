@@ -99,3 +99,43 @@ func Test_GetCenterWrongBoard(t *testing.T) {
 		t.Fatal("Unexpected board center returned")
 	}
 }
+
+func Test_ConvertIndex(t *testing.T) {
+	fw, fh := 3, 3
+	rw, rh := 7, 7
+	idx := 4       // the center of 3x3 board
+	expected := 24 // should be 24 on 7x7 board
+	returned := ConvertIndex(fw, fh, rw, rh, idx)
+
+	if returned != expected {
+		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
+	}
+
+	rw, rh = 5, 5
+	expected = 12 // should be 12 on 5x5 board
+	returned = ConvertIndex(fw, fh, rw, rh, idx)
+
+	if returned != expected {
+		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
+	}
+
+	fw, fh = 2, 2
+	rw, rh = 4, 4
+	idx = 2
+	expected = 9
+	returned = ConvertIndex(fw, fh, rw, rh, idx)
+
+	if returned != expected {
+		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
+	}
+
+	fw, fh = 2, 3
+	rw, rh = 4, 5
+	idx = 3
+	expected = 10
+	returned = ConvertIndex(fw, fh, rw, rh, idx)
+
+	if returned != expected {
+		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
+	}
+}

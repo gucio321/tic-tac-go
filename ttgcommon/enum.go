@@ -1,5 +1,7 @@
 package ttgcommon
 
+import "log"
+
 // BoardW, BoardH are board's width and height
 const (
 	BaseBoardW   = 3
@@ -73,6 +75,101 @@ func GetCorners(w, h int) (result []int) {
 	}
 
 	return
+}
+
+// ConvertIndex converts index from smaller to larger board (fiction-width, fiction-height, real-width, real-height)
+/*
++---+---+---+---+---+
+| x | x | x | x | x |
++---+---+---+---+---+    +---+---+---+
+| x | o | o | o | x |    | o | o | o |
++---+---+---+---+---+    +---+---+---+
+| x | o | o | o | x | => | o | o | o |
++---+---+---+---+---+    +---+---+---+
+| x | o | o | o | x |    | o | o | o |
++---+---+---+---+---+    +---+---+---+
+| x | x | x | x | x |
++---+---+---+---+---+
+
+                 +---+---+---+---+---+
+                 | 0 | 1 | 2 | 3 | 4 |
++---+---+---+    +---+---+---+---+---+
+| 0 | 1 | 2 |    | 5 | 6 | 7 | 8 | 9 |
++---+---+---+    +---+---+---+---+---+
+| 3 | 4 | 5 | => |10 |11 |12 |13 |14 |
++---+---+---+    +---+---+---+---+---+
+| 6 | 7 | 8 |    |15 |16 |17 |18 |19 |
++---+---+---+    +---+---+---+---+---+
+		 |20 |21 |22 |23 |24 |
+		 +---+---+---+---+---+
+*/
+func ConvertIndex(fw, fh, rw, rh, idx int) int {
+	// static checks: check if fiction size isn't greater than real
+	if !(fh < rh) || !(fw < rw) {
+		log.Fatal("invalid input: input should be: fh > rh || fw > rw")
+	}
+
+	// static check: check if one dimension isn't odd and second even number
+	if fh%2 != rh%2 || fw%2 != rw%2 {
+		log.Fatal("invalid input: cannot process even and odd numbers together")
+	}
+
+	// idx is a list index, we need to make it a... index in real bord starting from 1
+	idx++
+
+	// create result:
+	/* example:
+	+---+---+---+---+---+ rows containing "x" should be added
+	| x | x | x | x | x | independently from idx.
+	+---+---+---+---+---+
+	| x | o | o | o | x | the number of indexes in this rows
+	+---+---+---+---+---+ ("x" rows on top) is equal to the half
+	| x | o | u | o | x | of a diffrence the big board's ("x") height
+	+---+---+---+---+---+ and a small board's ("o") height multiplied by "o" board's width
+	| x | o | o | o | x |
+	+---+---+---+---+---+ here: 4 * [ ( 5-3) / 2 ] = 4 * (2/2) = 4
+	| x | x | x | x | x |
+	+---+---+---+---+---+ the result of this operation is the last index of "x" rows on top
+	*/
+	result := rw * ((rh - fh) / 2) // nolint:gomnd // half of real and fiction size diffrence
+
+	for idx > 0 {
+		// when idx - fiction board's width it means,
+		// that we need to continue loop
+		// example:
+		// let's suppose, that input idx = 4
+		// it means, that it is a 4 index on "o" board (see above - marked as "u")
+		// in first loop iteration, 4 - 2 > 0, so
+		// idx is decreased by 3 ("o"-board's width) and
+		// our result is increased by real board's size (4)
+		// so our result is equal to 8 for now
+		//
+		// if this condition is passed our loop starts again.
+		if idx-fw > 0 {
+			idx -= fw
+			result += rw
+
+			continue
+		}
+
+		/*
+			if above condition isn't passed, it means, that
+			the index, we're searching for is in current line
+			in our example:
+			we need to add a starting column index (one "x" index before "o"/"u" line in my draw above)
+			like the first rows, they are equal to:
+			(rw - fw) / 2 = (5 - 3)/2 = 2 / 2 = 1
+			later, we just add current idx value and... tada!
+		*/
+		result += (rw - fw) / 2 // nolint:gomnd // half of real and fiction size diffrence
+
+		result += idx
+
+		break
+	}
+
+	// we must make it an list index (which starts from 0
+	return result - 1
 }
 
 // GetMiddles returns middles of board's edges
