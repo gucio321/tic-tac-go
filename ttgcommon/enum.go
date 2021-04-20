@@ -191,8 +191,37 @@ func GetMiddles(w, h int) (result []int) {
 
 // GetCenter returns bard center (if exists)
 func GetCenter(w, h int) []int {
+	const doubbleRow = 2
+
+	result := make([]int, 0)
+	nw := w - doubbleRow
+	nh := h - doubbleRow
+
+	for nw != 0 && nh != 0 {
+		corners := GetCorners(nw, nh)
+		for _, i := range corners {
+			result = append(result, ConvertIndex(nw, nh, w, h, i))
+		}
+
+		if len(result) > 0 {
+			return result
+		}
+
+		middles := GetMiddles(nw, nh)
+		for _, i := range middles {
+			result = append(result, ConvertIndex(nw, nh, w, h, i))
+		}
+
+		if len(result) > 0 {
+			return result
+		}
+
+		nw -= doubbleRow
+		nh -= doubbleRow
+	}
+
 	if w%2 == 0 || h%2 == 0 {
-		return nil
+		return []int{}
 	}
 
 	return []int{(h-1)/2*w + (w-1)/2}

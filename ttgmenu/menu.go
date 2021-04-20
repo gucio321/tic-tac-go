@@ -131,9 +131,9 @@ func (m *Menu) runPVC() {
 
 	switch r {
 	case 0:
-		g = ttggame.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPC)
+		g = ttggame.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPC)
 	case 1:
-		g = ttggame.NewTTG(ttgcommon.BaseBoardW, ttgcommon.BaseBoardH, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPerson)
+		g = ttggame.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPerson)
 	}
 
 	g.Run()
