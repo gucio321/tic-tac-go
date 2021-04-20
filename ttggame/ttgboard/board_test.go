@@ -73,3 +73,16 @@ func Test_Copy(t *testing.T) {
 		}
 	}
 }
+
+func Test_Cut(t *testing.T) {
+	board := NewBoard(9)
+	board.SetIndexState(4, ttgletter.LetterX)
+	result := board.Cut(3, 3, 1, 1)
+	if len(*result) != 1 {
+		t.Fatal("unexpected board cut")
+	}
+
+	if *(*result)[0] != ttgletter.LetterX {
+		t.Fatal("unexpected board cut")
+	}
+}

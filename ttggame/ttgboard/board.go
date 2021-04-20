@@ -1,6 +1,7 @@
 package ttgboard
 
 import (
+	"github.com/gucio321/tic-tac-go/ttgcommon"
 	"github.com/gucio321/tic-tac-go/ttggame/ttgletter"
 )
 
@@ -42,4 +43,12 @@ func (b *Board) Copy() *Board {
 	}
 
 	return newBoard
+}
+
+func (b *Board) Cut(bw, bh, w, h int) *Board {
+	result := NewBoard(w * h)
+	for i := range *result {
+		*(*result)[i] = *(*b)[ttgcommon.ConvertIndex(w, h, bw, bh, i)]
+	}
+	return result
 }
