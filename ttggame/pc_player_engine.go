@@ -72,7 +72,7 @@ func (t *TTG) getPCMove(letter ttgletter.Letter) (i int) {
 		return result
 	}
 
-	for _, i := range ttgcommon.GetMiddles() {
+	for _, i := range ttgcommon.GetMiddles(t.width, t.height) {
 		if t.board.IsIndexFree(i) {
 			options = append(options, i)
 		}
