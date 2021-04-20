@@ -45,44 +45,54 @@ func (t *TTG) getPCMove(letter ttgletter.Letter) (i int) {
 		return i
 	}
 
-	for _, i := range ttgcommon.GetCorners(t.width, t.height) {
-		if t.board.IsIndexFree(i) {
-			options = append(options, i)
+	const doubbleRow = 2
+
+	nw := t.width
+	nh := t.height
+
+	for nw != 0 && nh != 0 {
+		for _, i := range ttgcommon.GetCorners(nw, nh) {
+			if t.board.IsIndexFree(ttgcommon.ConvertIndex(t.width, t.height, nw, nh, i)) {
+				options = append(options, i)
+			}
 		}
-	}
 
-	if options != nil {
-		// nolint:gosec // it's ok
-		result := options[rand.Intn(len(options))]
+		if options != nil {
+			// nolint:gosec // it's ok
+			result := options[rand.Intn(len(options))]
 
-		return result
-	}
-
-	// try to get center
-	for _, i := range ttgcommon.GetCenter(t.width, t.height) {
-		if t.board.IsIndexFree(i) {
-			options = append(options, i)
+			return result
 		}
-	}
 
-	if options != nil {
-		// nolint:gosec // it's ok
-		result := options[rand.Intn(len(options))]
-
-		return result
-	}
-
-	for _, i := range ttgcommon.GetMiddles(t.width, t.height) {
-		if t.board.IsIndexFree(i) {
-			options = append(options, i)
+		// try to get center
+		for _, i := range ttgcommon.GetCenter(t.width, t.height) {
+			if t.board.IsIndexFree(i) {
+				options = append(options, i)
+			}
 		}
-	}
 
-	if options != nil {
-		// nolint:gosec // it's ok
-		result := options[rand.Intn(len(options))]
+		if options != nil {
+			// nolint:gosec // it's ok
+			result := options[rand.Intn(len(options))]
 
-		return result
+			return result
+		}
+
+		for _, i := range ttgcommon.GetMiddles(nw, nh) {
+			if t.board.IsIndexFree(ttgcommon.ConvertIndex(t.width, t.height, nw, nh, i)) {
+				options = append(options, i)
+			}
+		}
+
+		if options != nil {
+			// nolint:gosec // it's ok
+			result := options[rand.Intn(len(options))]
+
+			return result
+		}
+
+		nw -= doubbleRow
+		nh -= doubbleRow
 	}
 
 	log.Fatal("Cannot make move (board is full) and this fact wasn't detected")
