@@ -105,7 +105,7 @@ func GetCorners(w, h int) (result []int) {
 */
 func ConvertIndex(fw, fh, rw, rh, idx int) int {
 	// static checks: check if fiction size isn't greater than real
-	if !(fh < rh) || !(fw < rw) {
+	if !(fh <= rh) || !(fw <= rw) {
 		log.Fatal("invalid input: input should be: fh > rh || fw > rw")
 	}
 
@@ -192,7 +192,7 @@ func GetMiddles(w, h int) (result []int) {
 // GetCenter returns bard center (if exists)
 func GetCenter(w, h int) []int {
 	if w%2 == 0 || h%2 == 0 {
-		return nil
+		return []int{}
 	}
 
 	return []int{(h-1)/2*w + (w-1)/2}
