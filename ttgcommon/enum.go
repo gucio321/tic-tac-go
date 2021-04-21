@@ -210,8 +210,5 @@ func IsEdgeIndex(w, h, i int) bool {
 		}
 	}
 
-	if i >= (h-1)*w {
-		return true
-	}
-	return false
+	return i >= (h-1)*w
 }

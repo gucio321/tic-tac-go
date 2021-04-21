@@ -141,6 +141,7 @@ func Test_ConvertIndex(t *testing.T) {
 func Test_IsEdgeIndex(t *testing.T) {
 	w, h := 3, 3
 	i := 4
+
 	if IsEdgeIndex(w, h, i) {
 		t.Fatal("center of 3x3 board isn't edge")
 	}
