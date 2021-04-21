@@ -63,7 +63,7 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) 
 }
 
 func (t *TTG) isWinner(board *ttgboard.Board, player ttgletter.Letter) bool {
-	b := ttgcommon.GetWinBoard(t.width, t.height, t.chainLen)
+	b := ttgcommon.GetWinBoard(board.Width(), board.Height(), t.chainLen)
 
 	for _, i := range b {
 		line := 0
