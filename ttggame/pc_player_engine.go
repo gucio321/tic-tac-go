@@ -20,7 +20,7 @@ func (t *TTG) canWin(player ttgletter.Letter) (i int, result bool) {
 
 		board.SetIndexState(i, player)
 
-		if t.isWinner(board, t.chainLen, player) {
+		if board.IsWinner(t.chainLen, player) {
 			return i, true
 		}
 	}
