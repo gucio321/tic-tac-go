@@ -30,7 +30,7 @@ func (t *TTG) canWin(player ttgletter.Letter) (i int, result bool) {
 
 /*
 This method should find situations like that:
-chain lenght = 4
+chain length = 4
 +---+---+---+---+---+
 |   |   | o |   |   |
 +---+---+---+---+---+
@@ -58,14 +58,9 @@ the O-player will not be able to keep X from winning.
 O-player lost.
 */
 func (t *TTG) canWinTwoMoves(player ttgletter.Letter) (result []int) {
+	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
 	minimalChainLen := t.chainLen - 2
-	// processing this doesn't make sense
-	if minimalChainLen == 1 {
-		return nil
-	}
-
 	b := ttgcommon.GetWinBoard(t.board.Width(), t.board.Height(), minimalChainLen)
-
 	options := make([][]int, 0)
 
 	for _, i := range b {
@@ -96,6 +91,7 @@ func (t *TTG) canWinTwoMoves(player ttgletter.Letter) (result []int) {
 	return result
 }
 
+// nolint:gocognit,gocyclo // it is ok
 func (t *TTG) getPCMove(letter ttgletter.Letter) (i int) {
 	pcLetter := letter
 	playerLetter := pcLetter.Opposite()
