@@ -98,11 +98,12 @@ func (m *Menu) loadMenu() {
 			[]*menuIndex{
 				{1, "PvC game", m.runPVC},
 				{2, "PvP game", m.runPVP},
-				{3, "Settings", func() { m.pos = settingsMenu }},
-				{4, "Help", m.printHelp},
-				{5, "README", m.printReadme},
-				{6, "website", m.openWebsite},
-				{7, "Report Bug on GitHub", m.reportBug},
+				{3, "Demo", m.runDemo},
+				{4, "Settings", func() { m.pos = settingsMenu }},
+				{5, "Help", m.printHelp},
+				{6, "README", m.printReadme},
+				{7, "website", m.openWebsite},
+				{8, "Report Bug on GitHub", m.reportBug},
 				{0, "Exit", func() { m.done = true }},
 			},
 		},
@@ -137,6 +138,11 @@ func (m *Menu) runPVC() {
 	}
 
 	g.Run()
+}
+
+func (m *Menu) runDemo() {
+	game := ttggame.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPC)
+	game.Run()
 }
 
 func (m *Menu) changeBoardSize() {
