@@ -104,3 +104,19 @@ func Test_Cut(t *testing.T) {
 		t.Fatal("unexpected board cut")
 	}
 }
+
+func Test_IsBoardFull(t *testing.T) {
+	board := NewBoard(2, 2, 2)
+	if board.IsBoardFull() {
+		t.Fatal("unexbected value returned by isBoardFull method")
+	}
+
+	board.SetIndexState(0, ttgletter.LetterX)
+	board.SetIndexState(1, ttgletter.LetterO)
+	board.SetIndexState(2, ttgletter.LetterO)
+	board.SetIndexState(3, ttgletter.LetterX)
+
+	if !board.IsBoardFull() {
+		t.Fatal("unexbected value returned by isBoardFull method")
+	}
+}

@@ -107,3 +107,14 @@ func (b *Board) String() string {
 
 	return s
 }
+
+// IsBoardFull returns true, if there is no more space on the board
+func (b *Board) IsBoardFull() bool {
+	for _, i := range b.board {
+		if i.IsNone() {
+			return false
+		}
+	}
+
+	return true
+}
