@@ -82,16 +82,6 @@ func (t *TTG) isWinner(board *ttgboard.Board, chainLen int, player ttgletter.Let
 	return false
 }
 
-func (t *TTG) isBoardFull() bool {
-	for i := 0; i < t.width*t.height; i++ {
-		if t.board.IsIndexFree(i) {
-			return false
-		}
-	}
-
-	return true
-}
-
 // Run runs the game
 func (t *TTG) Run() {
 	for {
@@ -106,7 +96,7 @@ func (t *TTG) Run() {
 			t.pressAnyKeyPrompt()
 
 			break
-		} else if t.isBoardFull() {
+		} else if t.board.IsBoardFull() {
 			ttgcommon.Clear()
 			fmt.Println(t.board)
 			fmt.Println("DRAW")
@@ -126,7 +116,7 @@ func (t *TTG) Run() {
 			t.pressAnyKeyPrompt()
 
 			break
-		} else if t.isBoardFull() {
+		} else if t.board.IsBoardFull() {
 			ttgcommon.Clear()
 			fmt.Println(t.board)
 			fmt.Println("DRAW")
