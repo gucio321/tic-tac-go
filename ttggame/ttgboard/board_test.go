@@ -29,6 +29,19 @@ func Test_NewBoard(t *testing.T) {
 	}
 }
 
+func Test_Width(t *testing.T) {
+	w, h := 3, 3
+	board := NewBoard(w, h, 3)
+
+	if board.Width() != w {
+		t.Fatal("Unexpected with returned")
+	}
+
+	if board.Height() != h {
+		t.Fatal("Unexpected board height returned")
+	}
+}
+
 func Test_setIndexState(t *testing.T) {
 	board := NewBoard(3, 3, 3)
 

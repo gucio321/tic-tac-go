@@ -29,6 +29,16 @@ func NewBoard(w, h, chainLen int) *Board {
 	return result
 }
 
+// Width returns board's width
+func (b *Board) Width() int {
+	return b.width
+}
+
+// Height returns board's height
+func (b *Board) Height() int {
+	return b.height
+}
+
 // SetIndexState set index's state
 func (b *Board) SetIndexState(i int, state ttgletter.Letter) {
 	b.board[i].SetState(state)
