@@ -118,3 +118,24 @@ func (b *Board) IsBoardFull() bool {
 
 	return true
 }
+
+// IsWinner returns true if the 'player' is a winner using specified 'chainLen'
+func (b *Board) IsWinner(chainLen int, player ttgletter.Letter) bool {
+	combos := ttgcommon.GetWinBoard(b.Width(), b.Height(), chainLen)
+
+	for _, i := range combos {
+		line := 0
+
+		for _, c := range i {
+			if b.GetIndexState(c) == player {
+				line++
+			}
+		}
+
+		if line == chainLen {
+			return true
+		}
+	}
+
+	return false
+}
