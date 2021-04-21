@@ -82,6 +82,7 @@ func Test_Cut(t *testing.T) {
 	board := NewBoard(3, 3, 3)
 	board.SetIndexState(4, ttgletter.LetterX)
 	result := board.Cut(1, 1)
+
 	if len(result.board) != 1 {
 		t.Fatal("unexpected board cut")
 	}

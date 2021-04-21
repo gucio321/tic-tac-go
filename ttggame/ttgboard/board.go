@@ -1,6 +1,8 @@
 package ttgboard
 
 import (
+	"log"
+
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 	"github.com/gucio321/tic-tac-go/ttggame/ttgletter"
 )
@@ -52,11 +54,17 @@ func (b *Board) Copy() *Board {
 	return newBoard
 }
 
+// Cut cuts a smaller board from a larger
 func (b *Board) Cut(w, h int) *Board {
+	if w > b.width || h > b.height {
+		log.Fatal("cannot cat larger board from smaller")
+	}
+
 	result := NewBoard(w, h, b.chainLen)
 	for i := range result.board {
 		result.SetIndexState(i, b.GetIndexState(ttgcommon.ConvertIndex(w, h, b.width, b.height, i)))
 	}
+
 	return result
 }
 
