@@ -13,11 +13,14 @@ to run the game you only need to install [golang](https://golang.org)
 
 ### Installation
 
-To install the game simple run `go install github.com/gucio321/tic-tac-go`
+To install the game, first download it: `go get github.com/gucio321/tic-tac-go`
+and let's GO!
+Since now, an executale binary will be present in `$GOPATH/bin/`
 
 ### How to run?
 
 After installation, just execute `go run github.com/gucio321/tic-tac-go`
+or `$GOPATH/bin/tic-tac-go`
 
 You can also download the source by `git clone https://github.com/gucio321/tic-tac-go`
 and then:
