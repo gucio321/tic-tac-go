@@ -9,6 +9,7 @@ import (
 	"github.com/gucio321/tic-tac-go/ttggame/ttgletter"
 )
 
+// func (t *TTG) canWinOneMove(player ttgletter.Letter) (i int, result bool) {
 func (t *TTG) canWin(player ttgletter.Letter) (i int, result bool) {
 	for i := 0; i < t.width*t.height; i++ {
 		if !t.board.IsIndexFree(i) {
@@ -22,6 +23,29 @@ func (t *TTG) canWin(player ttgletter.Letter) (i int, result bool) {
 		if t.isWinner(board, player) {
 			return i, true
 		}
+	}
+
+	return 0, false
+}
+
+func (t *TTG) canWinTwoMoves(player ttgletter.Letter) (i int, result bool) {
+	for i := 0; i < t.width*t.height; i++ {
+		/*if t.board.GetIndexState(i) != player {
+			continue
+		}
+
+		if ttgcommon.IsEdgeIndex(t.width, t.height, i) {
+			continue
+		}*/
+
+		// board := t.board.Copy().Cut(t.width-2, t.height-2)
+
+		// minimalChainLen := t.chainLen - 2
+		// ...
+
+		/*if t.isWinner(board, player) {
+			return i, true
+		}*/
 	}
 
 	return 0, false
