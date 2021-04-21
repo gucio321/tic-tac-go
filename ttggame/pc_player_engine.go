@@ -1,7 +1,6 @@
 package ttggame
 
 import (
-	"fmt"
 	"log"
 	"math/rand"
 	"time"
@@ -83,65 +82,14 @@ func (t *TTG) canWinTwoMoves(player ttgletter.Letter) (result []int) {
 		}
 	}
 
-	for _, option := range options {
-		/*row := make([]int, len(option))
-		for n := range option {
-			row[n] = ttgcommon.ConvertIndex(
-				board.Width(),
-				board.Height(),
-				t.board.Width(),
-				t.board.Width(),
-				option[n],
-			)
-		}
-		*/
-		switch option[0] {
-		case option[1] - 1: // horizontal
-			separator := 1
-			if option[0]-separator < 0 {
-				continue
+	b = ttgcommon.GetWinBoard(t.board.Width(), t.board.Height(), t.chainLen+1)
+	for _, i := range b {
+		for _, o := range options {
+			if i[1] == o[0] && i[2] == o[1] {
+				result = append(result, i[len(i)-2])
+			} else if i[2] == o[0] && i[3] == o[1] {
+				result = append(result, i[1])
 			}
-
-			if !t.board.IsIndexFree(option[0] - separator) {
-				continue
-			}
-
-			if option[len(option)-1]+separator >= t.width*t.height {
-				continue
-			}
-
-			if !t.board.IsIndexFree(option[len(option)-1] + separator) {
-				continue
-			}
-
-			// special case
-			if (option[0]+1-1)%t.width == 0 { // will move back to the previous line
-				continue
-			}
-
-			if (option[len(option)-1]+1)%t.width == 1 { // will move back to the previous line
-				continue
-			}
-
-			if index := option[0] - 2*separator; index > 0 {
-				if t.board.IsIndexFree(index) &&
-					(index+1)%t.width != 0 {
-					result = append(result, index+separator)
-				}
-			}
-			if index := option[len(option)-1] + 2*separator; index < t.width*t.height {
-				if t.board.IsIndexFree(index) &&
-					(index+1)%t.width != 1 {
-					result = append(result, index-separator)
-				}
-			}
-			// index := option[len(option)-1]
-			fmt.Println(t.width, ((option[len(option)-1]+2)+1)%t.width)
-		case option[1] - t.board.Width(): // vertical
-		case option[1] - t.board.Width() + 1: // slant - forward
-		case option[1] - t.board.Width() - 1: // slant - backword
-		default: // shouldn't be reached
-			fmt.Println("Nothing batches: ", option)
 		}
 	}
 
@@ -182,7 +130,6 @@ func (t *TTG) getPCMove(letter ttgletter.Letter) (i int) {
 	for _, i := range t.canWinTwoMoves(playerLetter) {
 		if t.board.IsIndexFree(i) {
 			options = append(options, i)
-			fmt.Println(i)
 		}
 	}
 

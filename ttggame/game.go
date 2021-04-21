@@ -62,8 +62,8 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) 
 	return result
 }
 
-func (t *TTG) isWinner(board *ttgboard.Board, player ttgletter.Letter) bool {
-	b := ttgcommon.GetWinBoard(board.Width(), board.Height(), t.chainLen)
+func (t *TTG) isWinner(board *ttgboard.Board, chainLen int, player ttgletter.Letter) bool {
+	b := ttgcommon.GetWinBoard(board.Width(), board.Height(), chainLen)
 
 	for _, i := range b {
 		line := 0
@@ -74,7 +74,7 @@ func (t *TTG) isWinner(board *ttgboard.Board, player ttgletter.Letter) bool {
 			}
 		}
 
-		if line == t.chainLen {
+		if line == chainLen {
 			return true
 		}
 	}
@@ -99,7 +99,7 @@ func (t *TTG) Run() {
 		i := t.player1.Move()
 		t.board.SetIndexState(i, t.player1.Letter())
 
-		if t.isWinner(t.board, t.player1.Letter()) {
+		if t.isWinner(t.board, t.chainLen, t.player1.Letter()) {
 			ttgcommon.Clear()
 			fmt.Println(t.board)
 			fmt.Println(t.player1.Name() + " won")
@@ -119,7 +119,7 @@ func (t *TTG) Run() {
 		i = t.player2.Move()
 		t.board.SetIndexState(i, t.player2.Letter())
 
-		if t.isWinner(t.board, t.player2.Letter()) {
+		if t.isWinner(t.board, t.chainLen, t.player2.Letter()) {
 			ttgcommon.Clear()
 			fmt.Println(t.board)
 			fmt.Println(t.player2.Name() + " won")
