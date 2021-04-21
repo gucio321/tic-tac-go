@@ -32,7 +32,8 @@ jobs:
           cat /tmp/output.txt >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
       
-      - uses: nickderobertis/check-if-issue-exists-action@master
+      - if: env.update-success > 0
+        uses: nickderobertis/check-if-issue-exists-action@master
         id: check_if_issue_exists
         with:
           repo: gucio321/tic-tac-go
