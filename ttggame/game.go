@@ -8,6 +8,7 @@ import (
 	"github.com/gucio321/tic-tac-go/ttgcommon"
 	"github.com/gucio321/tic-tac-go/ttggame/ttgboard"
 	"github.com/gucio321/tic-tac-go/ttggame/ttgletter"
+	"github.com/gucio321/tic-tac-go/ttggame/ttgpcplayer"
 	"github.com/gucio321/tic-tac-go/ttggame/ttgplayer"
 )
 
@@ -39,7 +40,7 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) 
 	case ttgplayer.PlayerPC:
 		result.player1 = ttgplayer.NewPlayer(player1Type, player1Letter,
 			func() (i int) {
-				i = result.getPCMove(player1Letter)
+				i = ttgpcplayer.GetPCMove(result.board, player1Letter)
 				return i
 			},
 		)
@@ -51,7 +52,7 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) 
 	case ttgplayer.PlayerPC:
 		result.player2 = ttgplayer.NewPlayer(player2Type, player2Letter,
 			func() (i int) {
-				i = result.getPCMove(player2Letter)
+				i = ttgpcplayer.GetPCMove(result.board, player2Letter)
 				return i
 			},
 		)
