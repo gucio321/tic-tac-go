@@ -39,6 +39,11 @@ func (b *Board) Height() int {
 	return b.height
 }
 
+// ChainLength returns length of chain coded in board
+func (b *Board) ChainLength() int {
+	return b.chainLen
+}
+
 // SetIndexState set index's state
 func (b *Board) SetIndexState(i int, state ttgletter.Letter) {
 	b.board[i].SetState(state)
