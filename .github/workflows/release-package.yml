@@ -1,8 +1,12 @@
-name: go-package
+name: release-packages
 
 on:
   push:
-    branches: ['releases']
+    branches:
+      - releases
+  schedule:
+    - cron: '0 12 * * *'
+  workflow_dispatch:
 
 jobs:
   build-packages:

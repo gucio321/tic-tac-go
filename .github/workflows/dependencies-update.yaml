@@ -1,48 +1,81 @@
+name: Update golang dependencies
+
 on: 
   schedule:
     - cron: '0 12 * * *'
+  workflow_dispatch:
 
 jobs:
   createPullRequest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: master
 
       - name: Set up Go
         uses: actions/setup-go@v2.1.3
         with:
           go-version: 1.16
-        id: go
 
-      - name: Update dependencies
+      - name: download dependencies
+        run: go get -d ./...
+
+      - name: Update dependencies # updates go depenencies, saves output
+        id: update
+        continue-on-error: true
+        shell: bash -E {0} # we don't need -e (pipefile) option (disturbs)
         run: |
-          go get -u ./...
+          go get -u ./... &>> /tmp/output.txt
+          echo "update-success=$?" >> $GITHUB_ENV # saves exit code
           go mod tidy
+          cat /tmp/output.txt # inform user about diffs
+          echo 'diffs<<EOF' >> $GITHUB_ENV
+          cat /tmp/output.txt >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+      
+      - if: env.update-success > 0
+        uses: nickderobertis/check-if-issue-exists-action@master
+        id: check_if_issue_exists
+        with:
+          repo: gucio321/tic-tac-go
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Error updating dependencies!"
 
-      - name: Create commits
-        run: |
-          git config user.name ${{ github.actor }}
-          git config user.email ${{ github.actor }}@users.noreply.github.com
-          git fetch origin
-          git add .
-          if [[ $(git diff --stat) != '' ]]; then
-            git commit -am "all: dependencies update"
-          else
-            echo "clean - nothing to commit"
-          fi
-      - name: Create Pull Request
+
+      - if: env.update-success > 0 && steps.check_if_issue_exists.outputs.exists == 'false'
+        name: open issue
+        uses: alialaa/issue-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Error updating dependencies!"
+          body: |
+            Hi there!
+            GitHub action found an issues while updating golang dependencies.
+            the full stack trace is here:
+            ```
+            ${{ env.diffs }}
+            ```
+
+      - if: env.update-success == 0
+        name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Update dependencies
+          commit-message: "all: dependencies update"
           committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          author: GitHub <noreply@github.com>
           signoff: false
           branch: dependencies-update
           delete-branch: true
           title: 'update golang dependencies'
-          body: ""
+          body: |
+            Hi there!
+            Automatic GitHub action is updating your golang dependencies successfully!
+            the full logs are posted below:
+            ```
+            ${{ env.diffs }}
+            ```
+          labels: 'dependencies'
+          reviewers: gucio321
           draft: false
+

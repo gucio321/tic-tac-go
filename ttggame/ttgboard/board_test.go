@@ -7,37 +7,54 @@ import (
 )
 
 func Test_NewBoard(t *testing.T) {
-	correctBoard := make([]*ttgletter.Letter, 9)
-	for i := range correctBoard {
-		correctBoard[i] = ttgletter.NewLetter()
+	correctBoard := Board{
+		board:  make([]*ttgletter.Letter, 9),
+		width:  3,
+		height: 3,
+	}
+	for i := range correctBoard.board {
+		correctBoard.board[i] = ttgletter.NewLetter()
 	}
 
-	board := NewBoard(9)
+	board := NewBoard(3, 3, 3)
 
-	if len(*board) != len(correctBoard) {
+	if len(board.board) != len(correctBoard.board) {
 		t.Fatal("Invalid board created")
 	}
 
-	for i := range *board {
-		if *(*board)[i] != *correctBoard[i] {
+	for i := range board.board {
+		if *board.board[i] != *correctBoard.board[i] {
 			t.Fatal("Invalid board created")
 		}
 	}
 }
 
+func Test_Width(t *testing.T) {
+	w, h := 3, 3
+	board := NewBoard(w, h, 3)
+
+	if board.Width() != w {
+		t.Fatal("Unexpected with returned")
+	}
+
+	if board.Height() != h {
+		t.Fatal("Unexpected board height returned")
+	}
+}
+
 func Test_setIndexState(t *testing.T) {
-	board := NewBoard(9)
+	board := NewBoard(3, 3, 3)
 
 	board.SetIndexState(5, ttgletter.LetterX)
 
-	if *(*board)[5] != ttgletter.LetterX {
+	if *board.board[5] != ttgletter.LetterX {
 		t.Fatal("unexpected index was set by board.setIndexState")
 	}
 }
 
 func Test_getIndexState(t *testing.T) {
-	board := NewBoard(9)
-	*(*board)[5] = ttgletter.LetterX
+	board := NewBoard(3, 3, 3)
+	*board.board[5] = ttgletter.LetterX
 
 	if l := board.GetIndexState(5); l != ttgletter.LetterX {
 		t.Fatal("unexpected index was returned by board.getIndexState")
@@ -45,9 +62,9 @@ func Test_getIndexState(t *testing.T) {
 }
 
 func Test_isIndexFree(t *testing.T) {
-	board := NewBoard(9)
+	board := NewBoard(3, 3, 3)
 
-	*(*board)[5] = ttgletter.LetterX
+	*board.board[5] = ttgletter.LetterX
 
 	if board.IsIndexFree(5) {
 		t.Fatal("isIndexFree returned unexpected value")
@@ -59,17 +76,31 @@ func Test_isIndexFree(t *testing.T) {
 }
 
 func Test_Copy(t *testing.T) {
-	board := NewBoard(9)
+	board := NewBoard(3, 3, 3)
 	board.SetIndexState(4, ttgletter.LetterX)
 	newBoard := board.Copy()
 
-	if len(*board) != len(*newBoard) {
+	if len(board.board) != len(newBoard.board) {
 		t.Fatal("Unexpected board copied")
 	}
 
-	for i := range *board {
-		if *(*board)[i] != *(*newBoard)[i] {
+	for i := range board.board {
+		if *board.board[i] != *newBoard.board[i] {
 			t.Fatal("Unexpected board copied")
 		}
+	}
+}
+
+func Test_Cut(t *testing.T) {
+	board := NewBoard(3, 3, 3)
+	board.SetIndexState(4, ttgletter.LetterX)
+	result := board.Cut(1, 1)
+
+	if len(result.board) != 1 {
+		t.Fatal("unexpected board cut")
+	}
+
+	if *result.board[0] != ttgletter.LetterX {
+		t.Fatal("unexpected board cut")
 	}
 }
