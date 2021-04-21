@@ -5,37 +5,7 @@ import (
 	"log"
 	"strconv"
 	"strings"
-
-	"github.com/gucio321/tic-tac-go/ttgcommon"
 )
-
-func (t *TTG) printSeparator() {
-	sep := "+"
-	for i := 0; i < t.width; i++ {
-		sep += "---+"
-	}
-
-	fmt.Println(sep)
-}
-
-func (t *TTG) printBoard() {
-	ttgcommon.Clear()
-
-	t.printSeparator()
-
-	for y := 0; y < t.height; y++ {
-		line := "| "
-
-		for x := 0; x < t.width; x++ {
-			i := ttgcommon.CordsToInt(t.width, t.height, x, y)
-			line += (*t.board)[i].String()
-			line += " | "
-		}
-
-		fmt.Println(line)
-		t.printSeparator()
-	}
-}
 
 func (t *TTG) getPlayerMove() (i int) {
 	for {

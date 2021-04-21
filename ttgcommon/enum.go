@@ -197,3 +197,18 @@ func GetCenter(w, h int) []int {
 
 	return []int{(h-1)/2*w + (w-1)/2}
 }
+
+// IsEdgeIndex returns true if i is an index on board edge
+func IsEdgeIndex(w, h, i int) bool {
+	if i-w < 0 {
+		return true
+	}
+
+	for j := 1; j < h; j++ {
+		if i == j*w || i == j*w+w-1 {
+			return true
+		}
+	}
+
+	return i >= (h-1)*w
+}

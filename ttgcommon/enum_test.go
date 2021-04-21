@@ -137,3 +137,32 @@ func Test_ConvertIndex(t *testing.T) {
 		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
 	}
 }
+
+func Test_IsEdgeIndex(t *testing.T) {
+	w, h := 3, 3
+	i := 4
+
+	if IsEdgeIndex(w, h, i) {
+		t.Fatal("center of 3x3 board isn't edge")
+	}
+
+	i = 2
+	if !IsEdgeIndex(w, h, i) {
+		t.Fatal("invalid edge value")
+	}
+
+	i = 5
+	if !IsEdgeIndex(w, h, i) {
+		t.Fatal("invalid edge value")
+	}
+
+	i = 6
+	if !IsEdgeIndex(w, h, i) {
+		t.Fatal("invalid edge value")
+	}
+
+	i = 8
+	if !IsEdgeIndex(w, h, i) {
+		t.Fatal("invalid edge value")
+	}
+}
