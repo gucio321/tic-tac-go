@@ -15,7 +15,7 @@
   labels: ["game engine"]
 - regExp: ["ttgmenu"]
   labels: ["menu engine"]
-- regExp: ["main.go"]
+- regExp: ["main.go", "danger-zone"]
   labels: ["main.go"]
 - regExp: ["ttggame/ttgpcplayer"]
   labels: ["AI-logic"]
