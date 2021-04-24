@@ -175,7 +175,7 @@ func (m *Menu) printHelp() {
 	ttgcommon.Clear()
 	fmt.Println(strings.Join([]string{
 		"TicTacToe Version 1",
-		"Copyright (C) 2021 by M. Sz.",
+		"Copyright (C) 2021 by gucio321 (https://github.com/gucio321)",
 		"",
 		"To go around main menu use number buttons",
 		"In game use 1-9 buttons to select index",
