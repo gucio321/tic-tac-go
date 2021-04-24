@@ -12,11 +12,13 @@ func Test_canWin(t *testing.T) {
 	board := ttgboard.NewBoard(w, h, c)
 	board.SetIndexState(0, ttgletter.LetterX)
 	board.SetIndexState(2, ttgletter.LetterX)
+
 	if i, ok := canWin(board, ttgletter.LetterX); i != 1 || !ok {
 		t.Fatalf("canWin returned wrong values\n%s", board)
 	}
 
 	board.SetIndexState(1, ttgletter.LetterO)
+
 	if _, ok := canWin(board, ttgletter.LetterX); ok {
 		t.Fatalf("canWin returned true\n%s", board)
 	}
