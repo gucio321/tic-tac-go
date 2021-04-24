@@ -32,7 +32,7 @@ func Test_canWinTwoMoves(t *testing.T) {
 
 	i := canWinTwoMoves(board, ttgletter.LetterX)
 
-	if len(i) != 2 {
+	if len(i) != 1 {
 		t.Fatalf("canWin returned wrong values\n%s", board)
 	}
 
