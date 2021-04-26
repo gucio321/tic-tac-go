@@ -29,11 +29,11 @@ type Player struct {
 	name       string
 	playerType PlayerType
 	letter     ttgletter.Letter
-	moveCb     func() (i int)
+	moveCb     func()
 }
 
 // NewPlayer creates a new player
-func NewPlayer(t PlayerType, letter ttgletter.Letter, cb func() (i int)) *Player {
+func NewPlayer(t PlayerType, letter ttgletter.Letter, cb func()) *Player {
 	result := &Player{
 		playerType: t,
 		letter:     letter,
@@ -45,8 +45,10 @@ func NewPlayer(t PlayerType, letter ttgletter.Letter, cb func() (i int)) *Player
 }
 
 // Move 'makes' player's move
-func (p *Player) Move() int {
-	return p.moveCb()
+func (p *Player) Move() {
+	if p.moveCb != nil {
+		p.moveCb()
+	}
 }
 
 // Letter returns player's letter
