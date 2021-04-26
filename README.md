@@ -31,43 +31,6 @@ go get -d ./...
 go run .
 ```
 
-## Examples usage of ttggame/ttgpcplayer
-
-This simple example should show, how to use an AI game engine:
-
-```golang
-package main
-
-import (
-	"fmt"
-
-	"github.com/gucio321/tic-tac-go/ttggame/ttgboard"
-	"github.com/gucio321/tic-tac-go/ttggame/ttgpcplayer"
-	"github.com/gucio321/tic-tac-go/ttggame/ttgletter"
-)
-
-func main() {
-	// create board
-	width, height := 3, 3
-	chainLen := 3
-	board := ttgboard.NewBoard(width, height, chainLen)
-
-	// fill board
-	board.SetIndexState(0, ttgletter.LetterX)
-	board.SetIndexState(4, ttgletter.LetterO)
-	board.SetIndexState(8, ttgletter.LetterX)
-	board.SetIndexState(6, ttgletter.LetterX)
-
-	fmt.Println(board)
-
-	// make move using AI engine
-	i := ttgpcplayer.GetPCMove(board, ttgletter.LetterO)
-	board.SetIndexState(i, ttgletter.LetterO)
-
-	fmt.Println(board)
-}
-```
-
 ## Screenshots
 
 ![menu](docs/menu.png)
