@@ -6,7 +6,8 @@ import "github.com/gucio321/tic-tac-go/ttggame/ttgletter"
 type Players struct {
 	player1,
 	player2 *Player
-	current ttgletter.Letter
+	current    ttgletter.Letter
+	onContinue func()
 }
 
 // Create creates a new players set
@@ -18,6 +19,13 @@ func Create(player1Type PlayerType, cb1 func(), player2Type PlayerType, cb2 func
 	}
 
 	return result
+}
+
+// OnContinue is executed when Next called
+func (p *Players) OnContinue(cb func()) *Players {
+	p.onContinue = cb
+
+	return p
 }
 
 // Player1 returns player1
@@ -44,5 +52,9 @@ func (p *Players) Current() *Player {
 
 // Next switch to the next player
 func (p *Players) Next() {
+	if p.onContinue != nil {
+		p.onContinue()
+	}
+
 	p.current = p.current.Opposite()
 }
