@@ -82,3 +82,9 @@ there is a few wrappers of this game. see:
 
 *  [tic-tac-go in Ebiten](https://github.com/gucio321/ttg-gui)
 *  [tic-tac-go using DearImgui with GIU](https://github.com/gucio321/ttg-giu)
+
+## Motivation
+
+When I'm learning a new programming language, I'm writtin a game
+like that to chec myself. Because I liked the [golang](https://golang.org),
+I decided to share and improve my work.
