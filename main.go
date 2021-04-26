@@ -12,6 +12,6 @@ import (
 var readme []byte
 
 func main() {
-	app := app.New(readme)
-	app.Run()
+	instance := app.New(readme)
+	instance.Run()
 }
