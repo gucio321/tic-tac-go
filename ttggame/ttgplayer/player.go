@@ -60,3 +60,8 @@ func (p *Player) Letter() ttgletter.Letter {
 func (p *Player) Name() string {
 	return p.name
 }
+
+// Type returns player's type
+func (p *Player) Type() PlayerType {
+	return p.playerType
+}
