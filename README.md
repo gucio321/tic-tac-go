@@ -75,3 +75,10 @@ func main() {
 ![gameplay](docs/gameplay.png)
 
 ![help](docs/help.png)
+
+## See also
+
+there is a few wrappers of this game. see:
+
+*  [tic-tac-go in Ebiten](https://github.com/gucio321/ttg-gui)
+*  [tic-tac-go using DearImgui with GIU](https://github.com/gucio321/ttg-giu)
