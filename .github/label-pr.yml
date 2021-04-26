@@ -11,11 +11,11 @@
 - regExp: "LICENSE"
   labels: ["LICENSE", "danger-zone"]
 
-- regExp: ["ttggame"]
-  labels: ["game engine"]
-- regExp: ["ttgmenu"]
-  labels: ["menu engine"]
-- regExp: ["main.go", "danger-zone"]
-  labels: ["main.go"]
-- regExp: ["ttggame/ttgpcplayer"]
+- regExp: ["ttgapp"]
+  labels: ["app engine"]
+- regExp: ["main.go"]
+  labels: ["main.go", "danger-zone"]
+- regExp: ["ttgcore"]
+  labels: ["game core"]
+- regExp: ["ttgcore/ttgpcplayer"]
   labels: ["AI-logic"]
