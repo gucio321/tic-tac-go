@@ -22,7 +22,7 @@ func canWin(baseBoard *ttgboard.Board, player ttgletter.Letter) (i int, result b
 
 		board.SetIndexState(i, player)
 
-		if board.IsWinner(board.ChainLength(), player) {
+		if ok, _ := board.IsWinner(board.ChainLength(), player); ok {
 			return i, true
 		}
 	}

@@ -82,7 +82,7 @@ func (t *TTG) Run() {
 		fmt.Println(t.board)
 		t.players.Current().Move()
 
-		if t.board.IsWinner(t.chainLen, t.players.Current().Letter()) {
+		if ok, _ := t.board.IsWinner(t.chainLen, t.players.Current().Letter()); ok {
 			ttgcommon.Clear()
 			fmt.Println(t.board)
 			fmt.Println(t.players.Current().Name() + " won")
