@@ -1,0 +1,12 @@
+language: go
+go:
+  - 1.16
+  - master
+os:
+  - linux
+  - osx
+dist: trusty
+arch:
+  - amd64
+  - arm64
+
