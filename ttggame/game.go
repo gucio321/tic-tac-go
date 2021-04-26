@@ -16,8 +16,7 @@ import (
 type TTG struct {
 	board   *ttgboard.Board
 	reader  *bufio.Reader
-	player1 *ttgplayer.Player
-	player2 *ttgplayer.Player
+	players *ttgplayer.Players
 	width,
 	height,
 	chainLen int
@@ -36,29 +35,43 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) 
 	player1Letter := ttgletter.LetterX
 	player2Letter := ttgletter.LetterO
 
+	var cb1, cb2 func()
+
 	switch player1Type {
 	case ttgplayer.PlayerPC:
-		result.player1 = ttgplayer.NewPlayer(player1Type, player1Letter,
-			func() (i int) {
-				i = ttgpcplayer.GetPCMove(result.board, player1Letter)
-				return i
-			},
-		)
+		cb1 = func() {
+			result.board.SetIndexState(
+				ttgpcplayer.GetPCMove(result.board, player1Letter),
+				player1Letter,
+			)
+		}
 	case ttgplayer.PlayerPerson:
-		result.player1 = ttgplayer.NewPlayer(player1Type, player1Letter, result.getPlayerMove)
+		cb1 = func() {
+			result.board.SetIndexState(
+				result.getPlayerMove(),
+				player1Letter,
+			)
+		}
 	}
 
 	switch player2Type {
 	case ttgplayer.PlayerPC:
-		result.player2 = ttgplayer.NewPlayer(player2Type, player2Letter,
-			func() (i int) {
-				i = ttgpcplayer.GetPCMove(result.board, player2Letter)
-				return i
-			},
-		)
+		cb2 = func() {
+			result.board.SetIndexState(
+				ttgpcplayer.GetPCMove(result.board, player2Letter),
+				player2Letter,
+			)
+		}
 	case ttgplayer.PlayerPerson:
-		result.player2 = ttgplayer.NewPlayer(player2Type, ttgletter.LetterO, result.getPlayerMove)
+		cb2 = func() {
+			result.board.SetIndexState(
+				result.getPlayerMove(),
+				player2Letter,
+			)
+		}
 	}
+
+	result.players = ttgplayer.Create(player1Type, cb1, player2Type, cb2)
 
 	return result
 }
@@ -67,13 +80,12 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) 
 func (t *TTG) Run() {
 	for {
 		fmt.Println(t.board)
-		i := t.player1.Move()
-		t.board.SetIndexState(i, t.player1.Letter())
+		t.players.Current().Move()
 
-		if t.board.IsWinner(t.chainLen, t.player1.Letter()) {
+		if t.board.IsWinner(t.chainLen, t.players.Current().Letter()) {
 			ttgcommon.Clear()
 			fmt.Println(t.board)
-			fmt.Println(t.player1.Name() + " won")
+			fmt.Println(t.players.Current().Name() + " won")
 			t.pressAnyKeyPrompt()
 
 			break
@@ -86,24 +98,7 @@ func (t *TTG) Run() {
 			break
 		}
 
-		fmt.Println(t.board)
-		i = t.player2.Move()
-		t.board.SetIndexState(i, t.player2.Letter())
-
-		if t.board.IsWinner(t.chainLen, t.player2.Letter()) {
-			ttgcommon.Clear()
-			fmt.Println(t.board)
-			fmt.Println(t.player2.Name() + " won")
-			t.pressAnyKeyPrompt()
-
-			break
-		} else if t.board.IsBoardFull() {
-			ttgcommon.Clear()
-			fmt.Println(t.board)
-			fmt.Println("DRAW")
-			t.pressAnyKeyPrompt()
-
-			break
-		}
+		// switch to next player
+		t.players.Next()
 	}
 }
