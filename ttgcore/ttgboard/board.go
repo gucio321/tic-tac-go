@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/gucio321/tic-tac-go/ttgcommon"
-	"github.com/gucio321/tic-tac-go/ttggame/ttgletter"
+	"github.com/gucio321/tic-tac-go/ttgcore/ttgletter"
 )
 
 // Board represents game board

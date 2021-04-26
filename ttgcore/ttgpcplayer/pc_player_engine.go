@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gucio321/tic-tac-go/ttgcommon"
-	"github.com/gucio321/tic-tac-go/ttggame/ttgboard"
-	"github.com/gucio321/tic-tac-go/ttggame/ttgletter"
+	"github.com/gucio321/tic-tac-go/ttgcore/ttgboard"
+	"github.com/gucio321/tic-tac-go/ttgcore/ttgletter"
 )
 
 func canWin(baseBoard *ttgboard.Board, player ttgletter.Letter) (i int, result bool) {
