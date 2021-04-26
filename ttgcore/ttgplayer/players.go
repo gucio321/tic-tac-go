@@ -1,6 +1,6 @@
 package ttgplayer
 
-import "github.com/gucio321/tic-tac-go/ttggame/ttgletter"
+import "github.com/gucio321/tic-tac-go/ttgcore/ttgletter"
 
 // Players represents a pair of players
 type Players struct {

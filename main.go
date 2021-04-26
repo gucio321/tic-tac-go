@@ -3,7 +3,7 @@ package main
 import (
 	_ "embed"
 
-	game "github.com/gucio321/tic-tac-go/ttgmenu"
+	app "github.com/gucio321/tic-tac-go/ttgapp"
 )
 
 //go:embed README.md
@@ -12,6 +12,6 @@ import (
 var readme []byte
 
 func main() {
-	app := game.New(readme)
+	app := app.New(readme)
 	app.Run()
 }
