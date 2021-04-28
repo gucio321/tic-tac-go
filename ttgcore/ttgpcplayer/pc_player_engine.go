@@ -93,7 +93,7 @@ func canWinTwoMoves(board *ttgboard.Board, player ttgletter.Letter) (result []in
 }
 
 // GetPCMove calculates move for PC player on given board
-// nolint:gocognit,gocyclo // it is ok
+// nolint:gocognit,gocyclo,funlen // it is ok
 func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 	pcLetter := letter
 	playerLetter := pcLetter.Opposite()
@@ -144,10 +144,43 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 	nh := board.Height()
 
 	for nw != 0 && nh != 0 {
-		for _, i := range ttgboard.NewBoard(nw, nh, board.ChainLength()).GetCorners() {
-			if idx := board.ConvertIndex(nw, nh, i); board.IsIndexFree(idx) {
+		corners := ttgboard.NewBoard(nw, nh, board.ChainLength()).GetCorners()
+		pcOppositeCorners := make([]int, 0)
+		playerOppositeCorners := make([]int, 0)
+
+		for _, i := range corners {
+			idx := board.ConvertIndex(nw, nh, i)
+			if board.IsIndexFree(idx) {
 				options = append(options, idx)
+				continue
 			}
+
+			o := board.GetOppositeCorner(idx)
+
+			if !board.IsIndexFree(o) {
+				continue
+			}
+
+			switch s := board.GetIndexState(idx); s {
+			case pcLetter:
+				pcOppositeCorners = append(pcOppositeCorners, o)
+			case playerLetter:
+				playerOppositeCorners = append(playerOppositeCorners, o)
+			}
+		}
+
+		if len(pcOppositeCorners) != 0 {
+			// nolint:gosec // it's ok
+			result := pcOppositeCorners[rand.Intn(len(pcOppositeCorners))]
+
+			return result
+		}
+
+		if len(playerOppositeCorners) != 0 {
+			// nolint:gosec // it's ok
+			result := playerOppositeCorners[rand.Intn(len(playerOppositeCorners))]
+
+			return result
 		}
 
 		if options != nil {
