@@ -18,6 +18,7 @@ import (
 
 	"github.com/gucio321/tic-tac-go/ttgapp/ttggame"
 	"github.com/gucio321/tic-tac-go/ttgcommon"
+	"github.com/gucio321/tic-tac-go/ttgcore/ttgboard"
 	"github.com/gucio321/tic-tac-go/ttgcore/ttgplayer"
 )
 
@@ -51,9 +52,9 @@ type Menu struct {
 func New(readme []byte) *Menu {
 	result := &Menu{
 		settings: &settings{
-			ttgcommon.BaseChainLen,
-			ttgcommon.BaseBoardW,
-			ttgcommon.BaseBoardH,
+			ttgboard.BaseChainLen,
+			ttgboard.BaseBoardW,
+			ttgboard.BaseBoardH,
 		},
 		done:   false,
 		pos:    mainMenu,
@@ -166,8 +167,8 @@ func (m *Menu) changeBoardSize() {
 }
 
 func (m *Menu) resetBoardSize() {
-	m.width, m.height = ttgcommon.BaseBoardW, ttgcommon.BaseBoardH
-	m.chainLen = ttgcommon.BaseChainLen
+	m.width, m.height = ttgboard.BaseBoardW, ttgboard.BaseBoardH
+	m.chainLen = ttgboard.BaseChainLen
 	_, _ = m.getUserAction("Board width and height was set to default\nPress ENTER to continue")
 }
 

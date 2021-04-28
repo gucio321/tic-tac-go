@@ -77,7 +77,7 @@ func (b *Board) Cut(w, h int) *Board {
 
 	result := NewBoard(w, h, b.chainLen)
 	for i := range result.board {
-		result.SetIndexState(i, b.GetIndexState(ttgcommon.ConvertIndex(w, h, b.width, b.height, i)))
+		result.SetIndexState(i, b.GetIndexState(b.ConvertIndex(w, h, i)))
 	}
 
 	return result
@@ -126,7 +126,7 @@ func (b *Board) IsBoardFull() bool {
 
 // IsWinner returns true if the 'player' is a winner using specified 'chainLen'
 func (b *Board) IsWinner(chainLen int, player ttgletter.Letter) (ok bool, i []int) {
-	combos := ttgcommon.GetWinBoard(b.Width(), b.Height(), chainLen)
+	combos := b.GetWinBoard(chainLen)
 
 	for _, i := range combos {
 		line := 0

@@ -1,4 +1,4 @@
-package ttgcommon
+package ttgboard
 
 import (
 	"testing"
@@ -6,6 +6,7 @@ import (
 
 func Test_GetWinBoard(t *testing.T) {
 	w, h, l := 3, 3, 3
+	board := NewBoard(w, h, l)
 	correctCombinations := [][]int{
 		{0, 1, 2},
 		{3, 4, 5},
@@ -19,7 +20,7 @@ func Test_GetWinBoard(t *testing.T) {
 		{2, 4, 6},
 	}
 
-	combinations := GetWinBoard(w, h, l)
+	combinations := board.GetWinBoard(l)
 
 	if len(correctCombinations) != len(combinations) {
 		t.Fatal("Unexpected board returned")
@@ -39,11 +40,13 @@ func Test_GetWinBoard(t *testing.T) {
 }
 
 func Test_GetCorners(t *testing.T) {
-	w, h := 4, 4
+	w, h, l := 4, 4, 3
+	board := NewBoard(w, h, l)
+
 	// corners of board 4x4 should be: 0, 3, 11, 15
 	correctCorners := []int{0, 3, 12, 15}
 
-	corners := GetCorners(w, h)
+	corners := board.GetCorners()
 
 	if len(corners) != len(correctCorners) {
 		t.Fatal("Unexpected board corners returned")
@@ -58,24 +61,26 @@ func Test_GetCorners(t *testing.T) {
 
 func Test_GetMiddles(t *testing.T) {
 	correctMiddles := []int{1, 2, 4, 7, 8, 11, 13, 14}
-	w, h := 4, 4
-	middles := GetMiddles(w, h)
+	w, h, l := 4, 4, 3
+	board := NewBoard(w, h, l)
+	sides := board.GetSides()
 
-	if len(middles) != len(correctMiddles) {
+	if len(sides) != len(correctMiddles) {
 		t.Fatal("invalid board middles returned")
 	}
 
-	for i := range middles {
-		if middles[i] != correctMiddles[i] {
+	for i := range sides {
+		if sides[i] != correctMiddles[i] {
 			t.Fatal("invalid board middles returned")
 		}
 	}
 }
 
 func Test_GetCenterCorrectBoard(t *testing.T) {
-	w, h := 3, 3
+	w, h, l := 3, 3, 3
+	board := NewBoard(w, h, l)
 	correctCenter := []int{4}
-	center := GetCenter(w, h)
+	center := board.GetCenter()
 
 	if len(center) != len(correctCenter) {
 		t.Fatal("Unexpected board center returned")
@@ -90,8 +95,9 @@ func Test_GetCenterCorrectBoard(t *testing.T) {
 
 func Test_GetCenterWrongBoard(t *testing.T) {
 	// 4x4 board doesn't have any center
-	w, h := 4, 4
-	center := GetCenter(w, h)
+	w, h, l := 4, 4, 3
+	board := NewBoard(w, h, l)
+	center := board.GetCenter()
 
 	if len(center) > 0 {
 		t.Fatal("Unexpected board center returned")
@@ -99,19 +105,23 @@ func Test_GetCenterWrongBoard(t *testing.T) {
 }
 
 func Test_ConvertIndex(t *testing.T) {
+	l := 3
+
 	fw, fh := 3, 3
 	rw, rh := 7, 7
+	board := NewBoard(rw, rh, l)
 	idx := 4       // the center of 3x3 board
 	expected := 24 // should be 24 on 7x7 board
-	returned := ConvertIndex(fw, fh, rw, rh, idx)
+	returned := board.ConvertIndex(fw, fh, idx)
 
 	if returned != expected {
 		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
 	}
 
 	rw, rh = 5, 5
+	board = NewBoard(rw, rh, l)
 	expected = 12 // should be 12 on 5x5 board
-	returned = ConvertIndex(fw, fh, rw, rh, idx)
+	returned = board.ConvertIndex(fw, fh, idx)
 
 	if returned != expected {
 		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
@@ -119,9 +129,10 @@ func Test_ConvertIndex(t *testing.T) {
 
 	fw, fh = 2, 2
 	rw, rh = 4, 4
+	board = NewBoard(rw, rh, l)
 	idx = 2
 	expected = 9
-	returned = ConvertIndex(fw, fh, rw, rh, idx)
+	returned = board.ConvertIndex(fw, fh, idx)
 
 	if returned != expected {
 		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
@@ -129,9 +140,10 @@ func Test_ConvertIndex(t *testing.T) {
 
 	fw, fh = 2, 3
 	rw, rh = 4, 5
+	board = NewBoard(rw, rh, l)
 	idx = 3
 	expected = 10
-	returned = ConvertIndex(fw, fh, rw, rh, idx)
+	returned = board.ConvertIndex(fw, fh, idx)
 
 	if returned != expected {
 		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
@@ -139,30 +151,31 @@ func Test_ConvertIndex(t *testing.T) {
 }
 
 func Test_IsEdgeIndex(t *testing.T) {
-	w, h := 3, 3
+	w, h, l := 3, 3, 3
+	board := NewBoard(w, h, l)
 	i := 4
 
-	if IsEdgeIndex(w, h, i) {
+	if board.IsEdgeIndex(i) {
 		t.Fatal("center of 3x3 board isn't edge")
 	}
 
 	i = 2
-	if !IsEdgeIndex(w, h, i) {
+	if !board.IsEdgeIndex(i) {
 		t.Fatal("invalid edge value")
 	}
 
 	i = 5
-	if !IsEdgeIndex(w, h, i) {
+	if !board.IsEdgeIndex(i) {
 		t.Fatal("invalid edge value")
 	}
 
 	i = 6
-	if !IsEdgeIndex(w, h, i) {
+	if !board.IsEdgeIndex(i) {
 		t.Fatal("invalid edge value")
 	}
 
 	i = 8
-	if !IsEdgeIndex(w, h, i) {
+	if !board.IsEdgeIndex(i) {
 		t.Fatal("invalid edge value")
 	}
 }

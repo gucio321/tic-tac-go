@@ -7,7 +7,6 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/gucio321/tic-tac-go/ttgcommon"
 	"github.com/gucio321/tic-tac-go/ttgcore/ttgboard"
 	"github.com/gucio321/tic-tac-go/ttgcore/ttgletter"
 )
@@ -62,7 +61,7 @@ O-player lost.
 func canWinTwoMoves(board *ttgboard.Board, player ttgletter.Letter) (result []int) {
 	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
 	minimalChainLen := board.ChainLength() - 2
-	b := ttgcommon.GetWinBoard(board.Width(), board.Height(), minimalChainLen)
+	b := board.GetWinBoard(minimalChainLen)
 	options := make([][]int, 0)
 
 	for _, i := range b {
@@ -79,7 +78,7 @@ func canWinTwoMoves(board *ttgboard.Board, player ttgletter.Letter) (result []in
 		}
 	}
 
-	b = ttgcommon.GetWinBoard(board.Width(), board.Height(), board.ChainLength()+1)
+	b = board.GetWinBoard(board.ChainLength() + 1)
 	for _, i := range b {
 		for _, o := range options {
 			if i[1] == o[0] && i[2] == o[1] {
@@ -145,8 +144,8 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 	nh := board.Height()
 
 	for nw != 0 && nh != 0 {
-		for _, i := range ttgcommon.GetCorners(nw, nh) {
-			if idx := ttgcommon.ConvertIndex(nw, nh, board.Width(), board.Height(), i); board.IsIndexFree(idx) {
+		for _, i := range ttgboard.NewBoard(nw, nh, board.ChainLength()).GetCorners() {
+			if idx := board.ConvertIndex(nw, nh, i); board.IsIndexFree(idx) {
 				options = append(options, idx)
 			}
 		}
@@ -159,7 +158,7 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 		}
 
 		// try to get center
-		for _, i := range ttgcommon.GetCenter(board.Width(), board.Height()) {
+		for _, i := range board.GetCenter() {
 			if board.IsIndexFree(i) {
 				options = append(options, i)
 			}
@@ -172,8 +171,8 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 			return result
 		}
 
-		for _, i := range ttgcommon.GetMiddles(nw, nh) {
-			if idx := ttgcommon.ConvertIndex(nw, nh, board.Width(), board.Height(), i); board.IsIndexFree(idx) {
+		for _, i := range ttgboard.NewBoard(nw, nh, board.ChainLength()).GetSides() {
+			if idx := board.ConvertIndex(nw, nh, i); board.IsIndexFree(idx) {
 				options = append(options, idx)
 			}
 		}

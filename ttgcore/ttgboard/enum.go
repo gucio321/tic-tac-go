@@ -1,4 +1,4 @@
-package ttgcommon
+package ttgboard
 
 import "log"
 
@@ -10,7 +10,8 @@ const (
 )
 
 // GetWinBoard returns winning indexes list
-func GetWinBoard(w, h, l int) [][]int {
+func (b *Board) GetWinBoard(l int) [][]int {
+	w, h := b.Width(), b.Height()
 	// for w = h:
 	// n = (w-l+1)*h + (h-l+1) * w + 2 * ((w or h)-l+1)
 	// generally (if s = w = h) n = (s-l+1)*s + (s-l+1) *w + 2 * (s - l + 1)
@@ -66,7 +67,8 @@ func GetWinBoard(w, h, l int) [][]int {
 }
 
 // GetCorners returns board's corners
-func GetCorners(w, h int) (result []int) {
+func (b *Board) GetCorners() (result []int) {
+	w, h := b.Width(), b.Height()
 	result = []int{
 		0,
 		w - 1,
@@ -103,7 +105,8 @@ func GetCorners(w, h int) (result []int) {
 		 |20 |21 |22 |23 |24 |
 		 +---+---+---+---+---+
 */
-func ConvertIndex(fw, fh, rw, rh, idx int) int {
+func (b *Board) ConvertIndex(fw, fh, idx int) int {
+	rw, rh := b.Width(), b.Height()
 	// static checks: check if fiction size isn't greater than real
 	if !(fh <= rh) || !(fw <= rw) {
 		log.Fatal("invalid input: input should be: fh > rh || fw > rw")
@@ -172,8 +175,9 @@ func ConvertIndex(fw, fh, rw, rh, idx int) int {
 	return result - 1
 }
 
-// GetMiddles returns middles of board's edges
-func GetMiddles(w, h int) (result []int) {
+// GetSides returns sidde indexes of board's edges
+func (b *Board) GetSides() (result []int) {
+	w, h := b.Width(), b.Height()
 	for i := 1; i < w-1; i++ {
 		result = append(result, i)
 	}
@@ -190,7 +194,8 @@ func GetMiddles(w, h int) (result []int) {
 }
 
 // GetCenter returns bard center (if exists)
-func GetCenter(w, h int) []int {
+func (b *Board) GetCenter() []int {
+	w, h := b.Width(), b.Height()
 	if w%2 == 0 || h%2 == 0 {
 		return []int{}
 	}
@@ -199,7 +204,8 @@ func GetCenter(w, h int) []int {
 }
 
 // IsEdgeIndex returns true if i is an index on board edge
-func IsEdgeIndex(w, h, i int) bool {
+func (b *Board) IsEdgeIndex(i int) bool {
+	w, h := b.Width(), b.Height()
 	if i-w < 0 {
 		return true
 	}
