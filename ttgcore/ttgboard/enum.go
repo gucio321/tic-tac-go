@@ -70,13 +70,28 @@ func (b *Board) GetWinBoard(l int) [][]int {
 func (b *Board) GetCorners() (result []int) {
 	w, h := b.Width(), b.Height()
 	result = []int{
-		0,
-		w - 1,
-		w * (h - 1),
-		w*h - 1,
+		0,           // upper left
+		w - 1,       // upper right
+		w * (h - 1), // botton left
+		w*h - 1,     // botton right
 	}
 
 	return
+}
+
+// GetOppositeCorner returns a corner in an opposite to given
+func (b *Board) GetOppositeCorner(c int) int {
+	corners := b.GetCorners()
+	for n, corner := range corners {
+		if corner == c {
+			return corners[len(corners)-1-n]
+		}
+	}
+
+	log.Fatal("invalid corner value given")
+
+	// should not be reached
+	return 0
 }
 
 // ConvertIndex converts index from smaller to larger board (fiction-width, fiction-height, real-width, real-height)
