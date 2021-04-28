@@ -93,8 +93,6 @@ func (b *Board) separator() string {
 }
 
 func (b *Board) String() string {
-	ttgcommon.Clear()
-
 	s := b.separator()
 	s += "\n"
 

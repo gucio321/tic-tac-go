@@ -79,6 +79,7 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) 
 // Run runs the game
 func (t *TTG) Run() {
 	for {
+		ttgcommon.Clear()
 		fmt.Println(t.board)
 		t.players.Current().Move()
 
