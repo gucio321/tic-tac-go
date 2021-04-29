@@ -10,21 +10,21 @@ workflow:
   - .github/**/*
 
 code:
-  - ./**/*go
+  - "**/*go"
 
 unittests:
-  - ./**/*_test.go
+  - "**/*_test.go"
 
 danger-zone:
-  - ./LICENSE
-  - ./main.go
+  - LICENSE
+  - main.go
 
 
 app engine:
-  - ./ttgapp/**/*
+  - ttgapp/**/*
 
 game core:
-  - ./ttgcore/**/*
+  - ttgcore/**/*
 
 AI-logic:
   - ttgcore/ttgpcplayer/**/*
