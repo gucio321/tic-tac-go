@@ -61,7 +61,7 @@ O-player lost.
 func canWinTwoMoves(board *ttgboard.Board, player ttgletter.Letter) (result []int) {
 	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
 	minimalChainLen := board.ChainLength() - 2
-	if minimalChainLen < 3 {
+	if minimalChainLen < 2 { // nolint:gomnd // processing this values doesn't make sense with chain smaller than 3
 		return nil
 	}
 
