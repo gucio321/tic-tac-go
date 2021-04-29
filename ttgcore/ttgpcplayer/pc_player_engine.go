@@ -61,6 +61,10 @@ O-player lost.
 func canWinTwoMoves(board *ttgboard.Board, player ttgletter.Letter) (result []int) {
 	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
 	minimalChainLen := board.ChainLength() - 2
+	if minimalChainLen < 3 {
+		return nil
+	}
+
 	b := board.GetWinBoard(minimalChainLen)
 	options := make([][]int, 0)
 
@@ -144,7 +148,8 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 	nh := board.Height()
 
 	for nw != 0 && nh != 0 {
-		corners := ttgboard.NewBoard(nw, nh, board.ChainLength()).GetCorners()
+		fictionBoard := ttgboard.NewBoard(nw, nh, 0)
+		corners := fictionBoard.GetCorners()
 		pcOppositeCorners := make([]int, 0)
 		playerOppositeCorners := make([]int, 0)
 
@@ -155,7 +160,7 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 				continue
 			}
 
-			o := board.GetOppositeCorner(idx)
+			o := board.ConvertIndex(nw, nh, fictionBoard.GetOppositeCorner(i))
 
 			if !board.IsIndexFree(o) {
 				continue
@@ -204,7 +209,7 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 			return result
 		}
 
-		for _, i := range ttgboard.NewBoard(nw, nh, board.ChainLength()).GetSides() {
+		for _, i := range fictionBoard.GetSides() {
 			if idx := board.ConvertIndex(nw, nh, i); board.IsIndexFree(idx) {
 				options = append(options, idx)
 			}

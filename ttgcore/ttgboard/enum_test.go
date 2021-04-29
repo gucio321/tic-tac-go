@@ -76,6 +76,10 @@ func Test_GetOppositeCorner(t *testing.T) {
 	if expected != given {
 		t.Fatal("Unexpected corner value returned")
 	}
+
+	w, h, l = 4, 4, 4
+	board = NewBoard(w, h, l)
+	expected = 0
 }
 
 func Test_GetMiddles(t *testing.T) {
