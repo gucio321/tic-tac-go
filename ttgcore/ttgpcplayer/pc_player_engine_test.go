@@ -25,7 +25,7 @@ func Test_canWin(t *testing.T) {
 }
 
 func Test_canWinTwoMoves(t *testing.T) {
-	w, h, c := 5, 5, 4 //
+	w, h, c := 5, 5, 4
 	board := ttgboard.NewBoard(w, h, c)
 	board.SetIndexState(12, ttgletter.LetterX)
 	board.SetIndexState(13, ttgletter.LetterX)
