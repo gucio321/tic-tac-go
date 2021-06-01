@@ -24,6 +24,7 @@ func (p *menuPage) Exec(idx int16) {
 	for _, option := range p.options {
 		if option.number == idx {
 			option.cb()
+
 			return
 		}
 	}

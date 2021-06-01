@@ -157,6 +157,7 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 			idx := board.ConvertIndex(nw, nh, i)
 			if board.IsIndexFree(idx) {
 				options = append(options, idx)
+
 				continue
 			}
 

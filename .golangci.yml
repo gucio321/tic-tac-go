@@ -54,6 +54,7 @@ linters:
     - goerr113
     - gofmt
     - gofumpt
+    - goheader
     - goimports
     - gomnd
     - goprintffuncname
@@ -61,13 +62,19 @@ linters:
     - gosimple
     - govet
     - ifshort
+    - importas
     - ineffassign
     - lll
     - makezero
     - misspell
     - nakedret
+    - nestif
+    - nilerr
+    - nlreturn
     - nolintlint
     - prealloc
+    - predeclared
+    - promlinter
     - revive
     - rowserrcheck
     - staticcheck
@@ -78,6 +85,7 @@ linters:
     - unparam
     - unused
     - varcheck
+    - wastedassign
     - whitespace
     - wrapcheck
     - wsl
