@@ -37,7 +37,7 @@ type settings struct {
 	height byte
 }
 
-// Menu represents a game menu
+// Menu represents a game menu.
 type Menu struct {
 	*settings
 	pages  []*menuPage
@@ -48,7 +48,7 @@ type Menu struct {
 }
 
 // New creates a new menu
-// readme is a README.md file (pass nil if no readme)
+// readme is a README.md file (pass nil if no readme).
 func New(readme []byte) *Menu {
 	result := &Menu{
 		settings: &settings{
@@ -67,7 +67,7 @@ func New(readme []byte) *Menu {
 	return result
 }
 
-// Run runs the menu
+// Run runs the menu.
 func (m *Menu) Run() {
 	for !m.done {
 		ttgcommon.Clear()

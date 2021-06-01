@@ -2,14 +2,14 @@ package ttgboard
 
 import "log"
 
-// BoardW, BoardH are board's width and height
+// BoardW, BoardH are board's width and height.
 const (
 	BaseBoardW   = 3
 	BaseBoardH   = 3
 	BaseChainLen = 3
 )
 
-// GetWinBoard returns winning indexes list
+// GetWinBoard returns winning indexes list.
 func (b *Board) GetWinBoard(l int) [][]int {
 	w, h := b.Width(), b.Height()
 	// for w = h:
@@ -66,7 +66,7 @@ func (b *Board) GetWinBoard(l int) [][]int {
 	return winningIndexes
 }
 
-// GetCorners returns board's corners
+// GetCorners returns board's corners.
 func (b *Board) GetCorners() (result []int) {
 	w, h := b.Width(), b.Height()
 	result = []int{
@@ -79,7 +79,7 @@ func (b *Board) GetCorners() (result []int) {
 	return
 }
 
-// GetOppositeCorner returns a corner in an opposite to given
+// GetOppositeCorner returns a corner in an opposite to given.
 func (b *Board) GetOppositeCorner(c int) int {
 	corners := b.GetCorners()
 	for n, corner := range corners {
@@ -190,7 +190,7 @@ func (b *Board) ConvertIndex(fw, fh, idx int) int {
 	return result - 1
 }
 
-// GetSides returns sidde indexes of board's edges
+// GetSides returns sidde indexes of board's edges.
 func (b *Board) GetSides() (result []int) {
 	w, h := b.Width(), b.Height()
 	for i := 1; i < w-1; i++ {
@@ -208,7 +208,7 @@ func (b *Board) GetSides() (result []int) {
 	return result
 }
 
-// GetCenter returns bard center (if exists)
+// GetCenter returns bard center (if exists).
 func (b *Board) GetCenter() []int {
 	w, h := b.Width(), b.Height()
 	if w%2 == 0 || h%2 == 0 {
@@ -218,7 +218,7 @@ func (b *Board) GetCenter() []int {
 	return []int{(h-1)/2*w + (w-1)/2}
 }
 
-// IsEdgeIndex returns true if i is an index on board edge
+// IsEdgeIndex returns true if i is an index on board edge.
 func (b *Board) IsEdgeIndex(i int) bool {
 	w, h := b.Width(), b.Height()
 	if i-w < 0 {

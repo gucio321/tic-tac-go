@@ -12,7 +12,7 @@ import (
 	"github.com/gucio321/tic-tac-go/ttgcore/ttgplayer"
 )
 
-// TTG represents TicTacToe game
+// TTG represents TicTacToe game.
 type TTG struct {
 	board   *ttgboard.Board
 	reader  *bufio.Reader
@@ -22,7 +22,7 @@ type TTG struct {
 	chainLen int
 }
 
-// NewTTG creates a ne TTG
+// NewTTG creates a ne TTG.
 func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) *TTG {
 	result := &TTG{
 		board:    ttgboard.NewBoard(int(w), int(h), int(chainLen)),
@@ -76,7 +76,7 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) 
 	return result
 }
 
-// Run runs the game
+// Run runs the game.
 func (t *TTG) Run() {
 	for {
 		ttgcommon.Clear()

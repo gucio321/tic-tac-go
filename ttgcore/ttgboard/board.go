@@ -7,13 +7,13 @@ import (
 	"github.com/gucio321/tic-tac-go/ttgcore/ttgletter"
 )
 
-// Board represents game board
+// Board represents game board.
 type Board struct {
 	board                   []*ttgletter.Letter
 	width, height, chainLen int
 }
 
-// NewBoard creates a new board
+// NewBoard creates a new board.
 func NewBoard(w, h, chainLen int) *Board {
 	result := &Board{
 		board:    make([]*ttgletter.Letter, w*h),
@@ -29,37 +29,37 @@ func NewBoard(w, h, chainLen int) *Board {
 	return result
 }
 
-// Width returns board's width
+// Width returns board's width.
 func (b *Board) Width() int {
 	return b.width
 }
 
-// Height returns board's height
+// Height returns board's height.
 func (b *Board) Height() int {
 	return b.height
 }
 
-// ChainLength returns length of chain coded in board
+// ChainLength returns length of chain coded in board.
 func (b *Board) ChainLength() int {
 	return b.chainLen
 }
 
-// SetIndexState set index's state
+// SetIndexState set index's state.
 func (b *Board) SetIndexState(i int, state ttgletter.Letter) {
 	b.board[i].SetState(state)
 }
 
-// GetIndexState returns index's state
+// GetIndexState returns index's state.
 func (b *Board) GetIndexState(i int) ttgletter.Letter {
 	return *b.board[i]
 }
 
-// IsIndexFree returns true, if state of index given is None
+// IsIndexFree returns true, if state of index given is None.
 func (b *Board) IsIndexFree(i int) bool {
 	return b.board[i].IsNone()
 }
 
-// Copy returns board copy
+// Copy returns board copy.
 func (b *Board) Copy() *Board {
 	newBoard := NewBoard(b.width, b.height, b.chainLen)
 	for i := range newBoard.board {
@@ -69,7 +69,7 @@ func (b *Board) Copy() *Board {
 	return newBoard
 }
 
-// Cut cuts a smaller board from a larger
+// Cut cuts a smaller board from a larger.
 func (b *Board) Cut(w, h int) *Board {
 	if w > b.width || h > b.height {
 		log.Fatal("cannot cat larger board from smaller")
@@ -111,7 +111,7 @@ func (b *Board) String() string {
 	return s
 }
 
-// IsBoardFull returns true, if there is no more space on the board
+// IsBoardFull returns true, if there is no more space on the board.
 func (b *Board) IsBoardFull() bool {
 	for _, i := range b.board {
 		if i.IsNone() {
@@ -122,7 +122,7 @@ func (b *Board) IsBoardFull() bool {
 	return true
 }
 
-// IsWinner returns true if the 'player' is a winner using specified 'chainLen'
+// IsWinner returns true if the 'player' is a winner using specified 'chainLen'.
 func (b *Board) IsWinner(chainLen int, player ttgletter.Letter) (ok bool, i []int) {
 	combos := b.GetWinBoard(chainLen)
 

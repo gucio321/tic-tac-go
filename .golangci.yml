@@ -42,6 +42,8 @@ linters:
     - errorlint
     - exportloopref
     - funlen
+    - gci
+    - godot
     - gochecknoglobals
     - gochecknoinits
     - gocognit

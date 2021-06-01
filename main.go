@@ -8,7 +8,7 @@ import (
 
 //go:embed README.md
 // nolint:gochecknoglobals // go embed requires global variable.
-// THIS IS NOT  A LINT
+// THIS IS NOT  A LINT.
 var readme []byte
 
 func main() {
