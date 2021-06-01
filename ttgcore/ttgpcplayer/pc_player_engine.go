@@ -102,7 +102,7 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 	pcLetter := letter
 	playerLetter := pcLetter.Opposite()
 
-	var options []int = nil
+	var options []int
 
 	rand.Seed(time.Now().UnixNano())
 

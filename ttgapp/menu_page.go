@@ -30,7 +30,7 @@ func (p *menuPage) Exec(idx int16) {
 }
 
 func (p *menuPage) Max() int16 {
-	var max int16 = 0
+	var max int16
 	for _, option := range p.options {
 		if option.number > max {
 			max = option.number
