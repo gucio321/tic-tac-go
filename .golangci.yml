@@ -41,6 +41,7 @@ linters:
     - errcheck
     - errorlint
     - exportloopref
+    - forcetypeassert
     - funlen
     - gci
     - godot
