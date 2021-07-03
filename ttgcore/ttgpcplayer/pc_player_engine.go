@@ -7,7 +7,6 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/gucio321/tic-tac-go/ttgcommon"
 	"github.com/gucio321/tic-tac-go/ttgcore/ttgboard"
 	"github.com/gucio321/tic-tac-go/ttgcore/ttgletter"
 )
@@ -62,7 +61,11 @@ O-player lost.
 func canWinTwoMoves(board *ttgboard.Board, player ttgletter.Letter) (result []int) {
 	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
 	minimalChainLen := board.ChainLength() - 2
-	b := ttgcommon.GetWinBoard(board.Width(), board.Height(), minimalChainLen)
+	if minimalChainLen < 2 { // nolint:gomnd // processing this values doesn't make sense with chain smaller than 3
+		return nil
+	}
+
+	b := board.GetWinBoard(minimalChainLen)
 	options := make([][]int, 0)
 
 	for _, i := range b {
@@ -79,7 +82,7 @@ func canWinTwoMoves(board *ttgboard.Board, player ttgletter.Letter) (result []in
 		}
 	}
 
-	b = ttgcommon.GetWinBoard(board.Width(), board.Height(), board.ChainLength()+1)
+	b = board.GetWinBoard(board.ChainLength() + 1)
 	for _, i := range b {
 		for _, o := range options {
 			if i[1] == o[0] && i[2] == o[1] {
@@ -94,12 +97,12 @@ func canWinTwoMoves(board *ttgboard.Board, player ttgletter.Letter) (result []in
 }
 
 // GetPCMove calculates move for PC player on given board
-// nolint:gocognit,gocyclo // it is ok
+// nolint:gocognit,gocyclo,funlen // it is ok
 func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 	pcLetter := letter
 	playerLetter := pcLetter.Opposite()
 
-	var options []int = nil
+	var options []int
 
 	rand.Seed(time.Now().UnixNano())
 
@@ -145,10 +148,45 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 	nh := board.Height()
 
 	for nw != 0 && nh != 0 {
-		for _, i := range ttgcommon.GetCorners(nw, nh) {
-			if idx := ttgcommon.ConvertIndex(nw, nh, board.Width(), board.Height(), i); board.IsIndexFree(idx) {
+		fictionBoard := ttgboard.NewBoard(nw, nh, 0)
+		corners := fictionBoard.GetCorners()
+		pcOppositeCorners := make([]int, 0)
+		playerOppositeCorners := make([]int, 0)
+
+		for _, i := range corners {
+			idx := board.ConvertIndex(nw, nh, i)
+			if board.IsIndexFree(idx) {
 				options = append(options, idx)
+
+				continue
 			}
+
+			o := board.ConvertIndex(nw, nh, fictionBoard.GetOppositeCorner(i))
+
+			if !board.IsIndexFree(o) {
+				continue
+			}
+
+			switch s := board.GetIndexState(idx); s {
+			case pcLetter:
+				pcOppositeCorners = append(pcOppositeCorners, o)
+			case playerLetter:
+				playerOppositeCorners = append(playerOppositeCorners, o)
+			}
+		}
+
+		if len(pcOppositeCorners) != 0 {
+			// nolint:gosec // it's ok
+			result := pcOppositeCorners[rand.Intn(len(pcOppositeCorners))]
+
+			return result
+		}
+
+		if len(playerOppositeCorners) != 0 {
+			// nolint:gosec // it's ok
+			result := playerOppositeCorners[rand.Intn(len(playerOppositeCorners))]
+
+			return result
 		}
 
 		if options != nil {
@@ -159,7 +197,7 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 		}
 
 		// try to get center
-		for _, i := range ttgcommon.GetCenter(board.Width(), board.Height()) {
+		for _, i := range board.GetCenter() {
 			if board.IsIndexFree(i) {
 				options = append(options, i)
 			}
@@ -172,8 +210,8 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 			return result
 		}
 
-		for _, i := range ttgcommon.GetMiddles(nw, nh) {
-			if idx := ttgcommon.ConvertIndex(nw, nh, board.Width(), board.Height(), i); board.IsIndexFree(idx) {
+		for _, i := range fictionBoard.GetSides() {
+			if idx := board.ConvertIndex(nw, nh, i); board.IsIndexFree(idx) {
 				options = append(options, idx)
 			}
 		}

@@ -14,7 +14,7 @@ const (
 	strLinux   = "linux"
 )
 
-// IntToCords converts intager to X-Y cords
+// IntToCords converts intager to X-Y cords.
 func IntToCords(w, h, i int) (x, y int) {
 	for {
 		if i-w >= 0 {
@@ -31,12 +31,12 @@ func IntToCords(w, h, i int) (x, y int) {
 	return
 }
 
-// CordsToInt converts coordinates on board to board index
+// CordsToInt converts coordinates on board to board index.
 func CordsToInt(w, h, x, y int) int {
 	return y*w + x
 }
 
-// Clear clears console
+// Clear clears console.
 func Clear() {
 	var err error
 
@@ -56,7 +56,7 @@ func Clear() {
 	}
 }
 
-// SplitIntoLinesWithMaxWidth splits the given string into lines considering the given maxChars
+// SplitIntoLinesWithMaxWidth splits the given string into lines considering the given maxChars.
 func SplitIntoLinesWithMaxWidth(fullSentence string, maxChars int) []string {
 	lines := make([]string, 0)
 	line := ""

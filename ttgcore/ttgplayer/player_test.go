@@ -11,7 +11,7 @@ const playerString = "Player X"
 func Test_NewPlayer(t *testing.T) {
 	i := 0
 
-	var moveTest *int = &i
+	moveTest := &i
 
 	player := NewPlayer(PlayerPerson, ttgletter.LetterX, func() { *moveTest = 8 })
 
@@ -37,7 +37,7 @@ func Test_NewPlayer(t *testing.T) {
 func Test_Move(t *testing.T) {
 	i := 0
 
-	var moveTest *int = &i
+	moveTest := &i
 
 	player := NewPlayer(PlayerPerson, ttgletter.LetterX, func() { *moveTest = 8 })
 

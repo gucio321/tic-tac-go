@@ -19,9 +19,7 @@ linters-settings:
   gocyclo:
     min-complexity: 15
   goimports:
-    local-prefixes: github.com/OpenDiablo2/OpenDiablo2
-  golint:
-    min-confidence: 0.8
+    local-prefixes: github.com/gucio321/tic-tac-go
   govet:
     check-shadowing: true
   lll:
@@ -34,6 +32,7 @@ linters-settings:
 linters:
   disable-all: true
   enable:
+    - asciicheck
     - bodyclose
     - deadcode
     - depguard
@@ -42,7 +41,10 @@ linters:
     - errcheck
     - errorlint
     - exportloopref
+    - forcetypeassert
     - funlen
+    - gci
+    - godot
     - gochecknoglobals
     - gochecknoinits
     - gocognit
@@ -50,22 +52,31 @@ linters:
     - gocritic
     - gocyclo
     - godox
+    - goerr113
     - gofmt
+    - gofumpt
+    - goheader
     - goimports
-    - golint
     - gomnd
     - goprintffuncname
     - gosec
     - gosimple
     - govet
     - ifshort
+    - importas
     - ineffassign
     - lll
     - makezero
     - misspell
     - nakedret
+    - nestif
+    - nilerr
+    - nlreturn
     - nolintlint
     - prealloc
+    - predeclared
+    - promlinter
+    - revive
     - rowserrcheck
     - staticcheck
     - structcheck
@@ -75,6 +86,7 @@ linters:
     - unparam
     - unused
     - varcheck
+    - wastedassign
     - whitespace
     - wrapcheck
     - wsl
