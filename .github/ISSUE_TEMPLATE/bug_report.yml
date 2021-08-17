@@ -1,0 +1,51 @@
+name: Bug Report
+description: Create a report to help us improve
+title: "[bug]: "
+labels:
+  - bug
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: checkboxes
+    attributes:
+      label: Please ensure, you completed the following steps
+      options:
+        - label: I searched for the similar issue.
+  - type: input
+    attributes:
+      label: Build/Project URL
+      description: URL to project/build that issue is about
+      placeholder: https://console.nativeci.io/project/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: GitHub project
+      description: if possible, provide repository name
+      placeholder: username/repo
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: What happend?
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+        - Other
+  - type: textarea
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell

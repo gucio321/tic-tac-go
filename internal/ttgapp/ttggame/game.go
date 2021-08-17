@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gucio321/tic-tac-go/ttgcommon"
-	"github.com/gucio321/tic-tac-go/ttgcore/ttgboard"
-	"github.com/gucio321/tic-tac-go/ttgcore/ttgletter"
-	"github.com/gucio321/tic-tac-go/ttgcore/ttgpcplayer"
-	"github.com/gucio321/tic-tac-go/ttgcore/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcommon"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgboard"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgpcplayer"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayer"
 )
 
 // TTG represents TicTacToe game.

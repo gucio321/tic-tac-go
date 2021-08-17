@@ -3,8 +3,8 @@ package ttgboard
 import (
 	"log"
 
-	"github.com/gucio321/tic-tac-go/ttgcommon"
-	"github.com/gucio321/tic-tac-go/ttgcore/ttgletter"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcommon"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
 )
 
 // Board represents game board.

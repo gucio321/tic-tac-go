@@ -1,7 +1,7 @@
 package ttgplayer
 
 import (
-	"github.com/gucio321/tic-tac-go/ttgcore/ttgletter"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
 )
 
 // PlayerType represents players' types.
