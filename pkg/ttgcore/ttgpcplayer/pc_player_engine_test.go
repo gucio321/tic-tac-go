@@ -3,8 +3,8 @@ package ttgpcplayer
 import (
 	"testing"
 
-	"github.com/gucio321/tic-tac-go/ttgcore/ttgboard"
-	"github.com/gucio321/tic-tac-go/ttgcore/ttgletter"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgboard"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
 )
 
 func Test_canWin(t *testing.T) {
