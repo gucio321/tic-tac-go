@@ -20,7 +20,7 @@ all: build
 ## build: Builds the binary
 build:
 	@echo "Building..."
-	@$(GOCMD) build -o ${NAME}
+	@$(GOCMD) build -o ${NAME} cmd/terminal-game/main.go
 
 ## setup: Runs mod download and generate
 setup:
