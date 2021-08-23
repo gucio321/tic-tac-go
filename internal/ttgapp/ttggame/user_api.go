@@ -9,7 +9,7 @@ import (
 
 func (t *TTG) getPlayerMove() (i int) {
 	for {
-		fmt.Printf("Enter your move (1-%d): ", t.width*t.height)
+		fmt.Printf("Enter your move (1-%d): ", t.Board().Width()*t.Board().Height())
 
 		text, err := t.reader.ReadString('\n')
 		if err != nil {
@@ -32,15 +32,15 @@ func (t *TTG) getPlayerMove() (i int) {
 			continue
 		}
 
-		if num <= 0 || num > t.width*t.height {
-			println(fmt.Sprintf("You must enter number from 1 to %d", t.width*t.height))
+		if w, h := t.Board().Width(), t.Board().Height(); num <= 0 || num > w*h {
+			println(fmt.Sprintf("You must enter number from 1 to %d", w*h))
 
 			continue
 		}
 
 		num--
 
-		if t.board.IsIndexFree(num) {
+		if t.Board().IsIndexFree(num) {
 			return num
 		}
 

@@ -11,7 +11,7 @@ type Players struct {
 }
 
 // Create creates a new players set.
-func Create(player1Type PlayerType, cb1 func(), player2Type PlayerType, cb2 func()) *Players {
+func Create(player1Type PlayerType, cb1 playerCb, player2Type PlayerType, cb2 playerCb) *Players {
 	result := &Players{
 		player1: NewPlayer(player1Type, ttgletter.LetterX, cb1),
 		player2: NewPlayer(player2Type, ttgletter.LetterO, cb2),
@@ -48,6 +48,11 @@ func (p *Players) Current() *Player {
 	}
 
 	return nil
+}
+
+// Move returns a current player's move.
+func (p *Players) Move() int {
+	return p.Current().Move()
 }
 
 // Next switch to the next player.
