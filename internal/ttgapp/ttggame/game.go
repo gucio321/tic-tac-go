@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gucio321/tic-tac-go/pkg/ttgcommon"
+	ttgcommon "github.com/gucio321/tic-tac-go/pkg/common"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttggame"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"

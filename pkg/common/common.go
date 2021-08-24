@@ -1,4 +1,4 @@
-package ttgcommon
+package common
 
 import (
 	"log"
