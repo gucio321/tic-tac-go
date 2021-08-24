@@ -142,3 +142,20 @@ func (b *Board) IsWinner(chainLen int, player ttgletter.Letter) (ok bool, i []in
 
 	return false, nil
 }
+
+// ToCords converts intager to X-Y cords.
+func (b *Board) IntToCords(i int) (x, y int) {
+	for {
+		if i-b.width >= 0 {
+			y++
+
+			i -= b.width
+		} else {
+			x = i
+
+			break
+		}
+	}
+
+	return
+}

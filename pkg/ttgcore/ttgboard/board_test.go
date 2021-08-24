@@ -120,3 +120,33 @@ func Test_IsBoardFull(t *testing.T) {
 		t.Fatal("unexbected value returned by isBoardFull method")
 	}
 }
+
+func Test_IntToCords(t *testing.T) {
+	// standard 3x3 board
+	/*
+		+---+---+---+
+		| 0 | 1 | 2 |
+		+---+---+---+
+		| 3 | 4 | 5 |
+		+---+---+---+
+		| 6 | 7 | 8 |
+		+---+---+---+
+	*/
+	w, h, c := 3, 3, 3
+	b := Create(w, h, c)
+	// so index 3 should have y = 1, x = 0
+	i := 3
+	x, y := b.IntToCords(i)
+
+	if y != 1 || x != 0 {
+		t.Fatalf("IntToCords(%d, %d, %d) returned unexpected values x: %d, y: %d", w, h, i, x, y)
+	}
+
+	// index 7 should have y = 2, x = 1
+	i = 7
+	x, y = b.IntToCords(i)
+
+	if y != 2 || x != 1 {
+		t.Fatalf("IntToCords(%d, %d, %d) returned unexpected values x: %d, y: %d", w, h, i, x, y)
+	}
+}

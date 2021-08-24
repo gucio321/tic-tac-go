@@ -14,23 +14,6 @@ const (
 	strLinux   = "linux"
 )
 
-// IntToCords converts intager to X-Y cords.
-func IntToCords(w, h, i int) (x, y int) {
-	for {
-		if i-w >= 0 {
-			y++
-
-			i -= w
-		} else {
-			x = i
-
-			break
-		}
-	}
-
-	return
-}
-
 // CordsToInt converts coordinates on board to board index.
 func CordsToInt(w, h, x, y int) int {
 	return y*w + x
