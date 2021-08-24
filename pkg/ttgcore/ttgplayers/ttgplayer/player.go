@@ -4,7 +4,7 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
 )
 
-type playerCb func(ttgletter.Letter) int
+type PlayerCb func(ttgletter.Letter) int
 
 // PlayerType represents players' types.
 type PlayerType int
@@ -31,11 +31,11 @@ type Player struct {
 	name       string
 	playerType PlayerType
 	letter     ttgletter.Letter
-	moveCb     playerCb
+	moveCb     PlayerCb
 }
 
 // NewPlayer creates a new player.
-func NewPlayer(t PlayerType, letter ttgletter.Letter, cb playerCb) *Player {
+func NewPlayer(t PlayerType, letter ttgletter.Letter, cb PlayerCb) *Player {
 	result := &Player{
 		playerType: t,
 		letter:     letter,

@@ -8,7 +8,7 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/ttgcommon"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttggame"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"
 )
 
 // TTG represents TicTacToe game.

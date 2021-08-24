@@ -1,20 +1,25 @@
-package ttgplayer
+// Package ttgplayers contains an implementation of tic-tac-toe
+// players system
+package ttgplayers
 
-import "github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
+import (
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"
+)
 
 // Players represents a pair of players.
 type Players struct {
 	player1,
-	player2 *Player
+	player2 *ttgplayer.Player
 	current    ttgletter.Letter
 	onContinue func()
 }
 
 // Create creates a new players set.
-func Create(player1Type PlayerType, cb1 playerCb, player2Type PlayerType, cb2 playerCb) *Players {
+func Create(player1Type ttgplayer.PlayerType, cb1 ttgplayer.PlayerCb, player2Type ttgplayer.PlayerType, cb2 ttgplayer.PlayerCb) *Players {
 	result := &Players{
-		player1: NewPlayer(player1Type, ttgletter.LetterX, cb1),
-		player2: NewPlayer(player2Type, ttgletter.LetterO, cb2),
+		player1: ttgplayer.NewPlayer(player1Type, ttgletter.LetterX, cb1),
+		player2: ttgplayer.NewPlayer(player2Type, ttgletter.LetterO, cb2),
 		current: ttgletter.LetterX,
 	}
 
@@ -29,17 +34,17 @@ func (p *Players) OnContinue(cb func()) *Players {
 }
 
 // Player1 returns player1.
-func (p *Players) Player1() *Player {
+func (p *Players) Player1() *ttgplayer.Player {
 	return p.player1
 }
 
 // Player2 returns player2.
-func (p *Players) Player2() *Player {
+func (p *Players) Player2() *ttgplayer.Player {
 	return p.player2
 }
 
 // Current returns current player.
-func (p *Players) Current() *Player {
+func (p *Players) Current() *ttgplayer.Player {
 	switch p.current {
 	case p.player1.Letter():
 		return p.player1

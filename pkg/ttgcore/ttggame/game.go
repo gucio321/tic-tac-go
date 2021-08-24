@@ -12,7 +12,8 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgboard"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgpcplayer"
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"
 )
 
 const (
@@ -25,7 +26,7 @@ const (
 type Game struct {
 	board *ttgboard.Board
 
-	players *ttgplayer.Players
+	players *ttgplayers.Players
 
 	isRunning bool
 
@@ -64,7 +65,7 @@ func Create(p1type, p2type ttgplayer.PlayerType) *Game {
 		p2Cb = func(_ ttgletter.Letter) int { return result.getUserAction() }
 	}
 
-	result.players = ttgplayer.Create(p1type, p1Cb, p2type, p2Cb)
+	result.players = ttgplayers.Create(p1type, p1Cb, p2type, p2Cb)
 
 	return result
 }

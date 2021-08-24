@@ -4,7 +4,7 @@ import (
 	"github.com/AllenDang/giu"
 
 	"github.com/gucio321/tic-tac-go/pkg/giuwidget"
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"
 )
 
 func main() {
