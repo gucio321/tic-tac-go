@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	gist.github.com/2335e953b45f46591839a21c502588ea.git v0.0.0-20210418124924-7487e35e5bec
+	github.com/AllenDang/giu v0.5.7-0.20210822034701-177664b430a0 // indirect
 	github.com/jaytaylor/html2text v0.0.0-20200412013138-3577fbdbcff7
 	github.com/mattn/go-runewidth v0.0.12 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect

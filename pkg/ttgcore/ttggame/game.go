@@ -8,7 +8,6 @@ package ttggame
 
 import (
 	"fmt"
-	"sync"
 
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgboard"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
@@ -24,8 +23,7 @@ const (
 
 // Game represents a Tic-Tac-Go game.
 type Game struct {
-	board      *ttgboard.Board
-	boardMutex *sync.Mutex
+	board *ttgboard.Board
 
 	players *ttgplayer.Players
 
@@ -44,7 +42,6 @@ type Game struct {
 func Create(p1type, p2type ttgplayer.PlayerType) *Game {
 	result := &Game{
 		board:              ttgboard.NewBoard(defaultBoardW, defaultBoardH, defaultChainLen),
-		boardMutex:         &sync.Mutex{},
 		userAction:         make(chan int),
 		winner:             ttgletter.LetterNone,
 		onContinue:         func() {},
@@ -107,9 +104,7 @@ func (g *Game) OnContinue(cb func()) *Game {
 
 // Board returns game board.
 func (g *Game) Board() *ttgboard.Board {
-	g.boardMutex.Lock()
 	b := g.board
-	g.boardMutex.Unlock()
 
 	return b
 }
@@ -139,6 +134,10 @@ func (g *Game) CurrentPlayer() *ttgplayer.Player {
 // Run runs the game.
 // NOTE: should call in a new go routime.
 func (g *Game) Run() {
+	if g.isRunning {
+		panic("Tic-Tac-Go: ttggame.(*Game).Run: invalid call of Run when game is running.")
+	}
+
 	// prevent user from calling setter functions
 	g.isRunning = true
 
@@ -170,10 +169,12 @@ func (g *Game) Run() {
 // Dispose resets the game.
 func (g *Game) Dispose() {
 	if g.isRunning {
-		panic("Tic-Tac-Go: ttggame.(*Game).Dispose: aborted")
+		panic("Tic-Tac-Go: ttggame.(*Game).Dispose call - aborted")
 	}
 
-	*g = *Create(g.players.Player1().Type(), g.players.Player2().Type())
+	*g.board = *ttgboard.NewBoard(g.board.Width(), g.board.Height(), g.board.ChainLength())
+	g.gameOver = false
+	g.winner = ttgletter.LetterNone
 }
 
 // internal
