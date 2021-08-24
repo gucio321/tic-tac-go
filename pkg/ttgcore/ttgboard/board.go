@@ -3,7 +3,6 @@ package ttgboard
 import (
 	"log"
 
-	"github.com/gucio321/tic-tac-go/pkg/common"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
 )
 
@@ -100,7 +99,7 @@ func (b *Board) String() string {
 		line := "| "
 
 		for x := 0; x < b.width; x++ {
-			i := common.CordsToInt(b.width, b.height, x, y)
+			i := b.CordsToInt(x, y)
 			line += b.board[i].String()
 			line += " | "
 		}
@@ -158,4 +157,9 @@ func (b *Board) IntToCords(i int) (x, y int) {
 	}
 
 	return
+}
+
+// CordsToInt converts coordinates on board to board index.
+func (b *Board) CordsToInt(x, y int) int {
+	return y*b.width + x
 }
