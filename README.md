@@ -33,18 +33,15 @@ go run .
 
 ## Screenshots
 
-![menu](docs/menu.png)
+![tic tac go in terminal](docs/in_terminal.png)
 
-![gameplay](docs/gameplay.png)
-
-![help](docs/help.png)
+![tic tac go with DearImgui using GIU](docs/in_giu.png)
 
 ## See also
 
 there is a few wrappers of this game. see:
 
 *  [tic-tac-go in Ebiten](https://github.com/gucio321/ttg-gui)
-*  [tic-tac-go using DearImgui with GIU](https://github.com/gucio321/ttg-giu)
 
 ## Motivation
 
