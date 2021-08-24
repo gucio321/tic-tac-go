@@ -34,8 +34,8 @@ type Player struct {
 	moveCb     PlayerCb
 }
 
-// NewPlayer creates a new player.
-func NewPlayer(t PlayerType, letter ttgletter.Letter, cb PlayerCb) *Player {
+// Create creates a new player.
+func Create(t PlayerType, letter ttgletter.Letter, cb PlayerCb) *Player {
 	result := &Player{
 		playerType: t,
 		letter:     letter,

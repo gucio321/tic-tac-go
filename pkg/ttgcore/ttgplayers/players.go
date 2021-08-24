@@ -11,14 +11,15 @@ import (
 type Players struct {
 	player1,
 	player2 *ttgplayer.Player
+
 	current ttgletter.Letter
 }
 
 // Create creates a new players set.
 func Create(player1Type ttgplayer.PlayerType, cb1 ttgplayer.PlayerCb, player2Type ttgplayer.PlayerType, cb2 ttgplayer.PlayerCb) *Players {
 	result := &Players{
-		player1: ttgplayer.NewPlayer(player1Type, ttgletter.LetterX, cb1),
-		player2: ttgplayer.NewPlayer(player2Type, ttgletter.LetterO, cb2),
+		player1: ttgplayer.Create(player1Type, ttgletter.LetterX, cb1),
+		player2: ttgplayer.Create(player2Type, ttgletter.LetterO, cb2),
 		current: ttgletter.LetterX,
 	}
 

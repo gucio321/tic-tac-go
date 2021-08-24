@@ -8,8 +8,8 @@ import (
 
 const playerString = "Player X"
 
-func Test_NewPlayer(t *testing.T) {
-	player := NewPlayer(PlayerPerson, ttgletter.LetterX, func(_ ttgletter.Letter) int { return 8 })
+func Test_Create(t *testing.T) {
+	player := Create(PlayerPerson, ttgletter.LetterX, func(_ ttgletter.Letter) int { return 8 })
 
 	if player.playerType != PlayerPerson {
 		t.Fatal("Unexpected player created")
@@ -29,7 +29,7 @@ func Test_NewPlayer(t *testing.T) {
 }
 
 func Test_Move(t *testing.T) {
-	player := NewPlayer(PlayerPerson, ttgletter.LetterX, func(_ ttgletter.Letter) int { return 8 })
+	player := Create(PlayerPerson, ttgletter.LetterX, func(_ ttgletter.Letter) int { return 8 })
 
 	if player.Move() != 8 {
 		t.Fatal("unexpected move done")
@@ -37,7 +37,7 @@ func Test_Move(t *testing.T) {
 }
 
 func Test_Letter(t *testing.T) {
-	player := NewPlayer(PlayerPerson, ttgletter.LetterX, nil)
+	player := Create(PlayerPerson, ttgletter.LetterX, nil)
 
 	if player.Letter() != ttgletter.LetterX {
 		t.Fatal("unexpected letter returned")
@@ -45,7 +45,7 @@ func Test_Letter(t *testing.T) {
 }
 
 func Test_Name(t *testing.T) {
-	player := NewPlayer(PlayerPerson, ttgletter.LetterX, nil)
+	player := Create(PlayerPerson, ttgletter.LetterX, nil)
 
 	if player.Name() != playerString {
 		t.Fatal("unexpected name returned")
