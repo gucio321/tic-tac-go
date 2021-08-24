@@ -41,7 +41,7 @@ type Game struct {
 // Create creates a game instance.
 func Create(p1type, p2type ttgplayer.PlayerType) *Game {
 	result := &Game{
-		board:              ttgboard.NewBoard(defaultBoardW, defaultBoardH, defaultChainLen),
+		board:              ttgboard.Create(defaultBoardW, defaultBoardH, defaultChainLen),
 		userAction:         make(chan int),
 		winner:             ttgletter.LetterNone,
 		onContinue:         func() {},
@@ -77,7 +77,7 @@ func (g *Game) SetBoardSize(w, h, c int) *Game {
 		isRunningPanic("SetBoardSize")
 	}
 
-	g.board = ttgboard.NewBoard(w, h, c)
+	g.board = ttgboard.Create(w, h, c)
 
 	return g
 }
@@ -172,7 +172,7 @@ func (g *Game) Dispose() {
 		panic("Tic-Tac-Go: ttggame.(*Game).Dispose call - aborted")
 	}
 
-	*g.board = *ttgboard.NewBoard(g.board.Width(), g.board.Height(), g.board.ChainLength())
+	*g.board = *ttgboard.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
 	g.gameOver = false
 	g.winner = ttgletter.LetterNone
 }

@@ -13,8 +13,8 @@ type Board struct {
 	width, height, chainLen int
 }
 
-// NewBoard creates a new board.
-func NewBoard(w, h, chainLen int) *Board {
+// Create creates a new board.
+func Create(w, h, chainLen int) *Board {
 	result := &Board{
 		board:    make([]*ttgletter.Letter, w*h),
 		width:    w,
@@ -61,7 +61,7 @@ func (b *Board) IsIndexFree(i int) bool {
 
 // Copy returns board copy.
 func (b *Board) Copy() *Board {
-	newBoard := NewBoard(b.width, b.height, b.chainLen)
+	newBoard := Create(b.width, b.height, b.chainLen)
 	for i := range newBoard.board {
 		newBoard.SetIndexState(i, b.GetIndexState(i))
 	}
@@ -75,7 +75,7 @@ func (b *Board) Cut(w, h int) *Board {
 		log.Fatal("cannot cat larger board from smaller")
 	}
 
-	result := NewBoard(w, h, b.chainLen)
+	result := Create(w, h, b.chainLen)
 	for i := range result.board {
 		result.SetIndexState(i, b.GetIndexState(b.ConvertIndex(w, h, i)))
 	}

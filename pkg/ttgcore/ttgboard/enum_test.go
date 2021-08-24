@@ -6,7 +6,7 @@ import (
 
 func Test_GetWinBoard(t *testing.T) {
 	w, h, l := 3, 3, 3
-	board := NewBoard(w, h, l)
+	board := Create(w, h, l)
 	correctCombinations := [][]int{
 		{0, 1, 2},
 		{3, 4, 5},
@@ -41,7 +41,7 @@ func Test_GetWinBoard(t *testing.T) {
 
 func Test_GetCorners(t *testing.T) {
 	w, h, l := 4, 4, 3
-	board := NewBoard(w, h, l)
+	board := Create(w, h, l)
 
 	// corners of board 4x4 should be: 0, 3, 11, 15
 	correctCorners := []int{0, 3, 12, 15}
@@ -61,7 +61,7 @@ func Test_GetCorners(t *testing.T) {
 
 func Test_GetOppositeCorner(t *testing.T) {
 	w, h, l := 3, 3, 3
-	board := NewBoard(w, h, l)
+	board := Create(w, h, l)
 
 	expected := 8
 	given := board.GetOppositeCorner(0)
@@ -81,7 +81,7 @@ func Test_GetOppositeCorner(t *testing.T) {
 func Test_GetMiddles(t *testing.T) {
 	correctMiddles := []int{1, 2, 4, 7, 8, 11, 13, 14}
 	w, h, l := 4, 4, 3
-	board := NewBoard(w, h, l)
+	board := Create(w, h, l)
 	sides := board.GetSides()
 
 	if len(sides) != len(correctMiddles) {
@@ -97,7 +97,7 @@ func Test_GetMiddles(t *testing.T) {
 
 func Test_GetCenterCorrectBoard(t *testing.T) {
 	w, h, l := 3, 3, 3
-	board := NewBoard(w, h, l)
+	board := Create(w, h, l)
 	correctCenter := []int{4}
 	center := board.GetCenter()
 
@@ -115,7 +115,7 @@ func Test_GetCenterCorrectBoard(t *testing.T) {
 func Test_GetCenterWrongBoard(t *testing.T) {
 	// 4x4 board doesn't have any center
 	w, h, l := 4, 4, 3
-	board := NewBoard(w, h, l)
+	board := Create(w, h, l)
 	center := board.GetCenter()
 
 	if len(center) > 0 {
@@ -128,7 +128,7 @@ func Test_ConvertIndex(t *testing.T) {
 
 	fw, fh := 3, 3
 	rw, rh := 7, 7
-	board := NewBoard(rw, rh, l)
+	board := Create(rw, rh, l)
 	idx := 4       // the center of 3x3 board
 	expected := 24 // should be 24 on 7x7 board
 	returned := board.ConvertIndex(fw, fh, idx)
@@ -138,7 +138,7 @@ func Test_ConvertIndex(t *testing.T) {
 	}
 
 	rw, rh = 5, 5
-	board = NewBoard(rw, rh, l)
+	board = Create(rw, rh, l)
 	expected = 12 // should be 12 on 5x5 board
 	returned = board.ConvertIndex(fw, fh, idx)
 
@@ -148,7 +148,7 @@ func Test_ConvertIndex(t *testing.T) {
 
 	fw, fh = 2, 2
 	rw, rh = 4, 4
-	board = NewBoard(rw, rh, l)
+	board = Create(rw, rh, l)
 	idx = 2
 	expected = 9
 	returned = board.ConvertIndex(fw, fh, idx)
@@ -159,7 +159,7 @@ func Test_ConvertIndex(t *testing.T) {
 
 	fw, fh = 2, 3
 	rw, rh = 4, 5
-	board = NewBoard(rw, rh, l)
+	board = Create(rw, rh, l)
 	idx = 3
 	expected = 10
 	returned = board.ConvertIndex(fw, fh, idx)
@@ -171,7 +171,7 @@ func Test_ConvertIndex(t *testing.T) {
 
 func Test_IsEdgeIndex(t *testing.T) {
 	w, h, l := 3, 3, 3
-	board := NewBoard(w, h, l)
+	board := Create(w, h, l)
 	i := 4
 
 	if board.IsEdgeIndex(i) {

@@ -6,7 +6,7 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
 )
 
-func Test_NewBoard(t *testing.T) {
+func Test_Create(t *testing.T) {
 	correctBoard := Board{
 		board:  make([]*ttgletter.Letter, 9),
 		width:  3,
@@ -16,7 +16,7 @@ func Test_NewBoard(t *testing.T) {
 		correctBoard.board[i] = ttgletter.NewLetter()
 	}
 
-	board := NewBoard(3, 3, 3)
+	board := Create(3, 3, 3)
 
 	if len(board.board) != len(correctBoard.board) {
 		t.Fatal("Invalid board created")
@@ -31,7 +31,7 @@ func Test_NewBoard(t *testing.T) {
 
 func Test_Width(t *testing.T) {
 	w, h := 3, 3
-	board := NewBoard(w, h, 3)
+	board := Create(w, h, 3)
 
 	if board.Width() != w {
 		t.Fatal("Unexpected with returned")
@@ -43,7 +43,7 @@ func Test_Width(t *testing.T) {
 }
 
 func Test_setIndexState(t *testing.T) {
-	board := NewBoard(3, 3, 3)
+	board := Create(3, 3, 3)
 
 	board.SetIndexState(5, ttgletter.LetterX)
 
@@ -53,7 +53,7 @@ func Test_setIndexState(t *testing.T) {
 }
 
 func Test_getIndexState(t *testing.T) {
-	board := NewBoard(3, 3, 3)
+	board := Create(3, 3, 3)
 	*board.board[5] = ttgletter.LetterX
 
 	if l := board.GetIndexState(5); l != ttgletter.LetterX {
@@ -62,7 +62,7 @@ func Test_getIndexState(t *testing.T) {
 }
 
 func Test_isIndexFree(t *testing.T) {
-	board := NewBoard(3, 3, 3)
+	board := Create(3, 3, 3)
 
 	*board.board[5] = ttgletter.LetterX
 
@@ -76,7 +76,7 @@ func Test_isIndexFree(t *testing.T) {
 }
 
 func Test_Copy(t *testing.T) {
-	board := NewBoard(3, 3, 3)
+	board := Create(3, 3, 3)
 	board.SetIndexState(4, ttgletter.LetterX)
 	newBoard := board.Copy()
 
@@ -92,7 +92,7 @@ func Test_Copy(t *testing.T) {
 }
 
 func Test_Cut(t *testing.T) {
-	board := NewBoard(3, 3, 3)
+	board := Create(3, 3, 3)
 	board.SetIndexState(4, ttgletter.LetterX)
 	result := board.Cut(1, 1)
 
@@ -106,7 +106,7 @@ func Test_Cut(t *testing.T) {
 }
 
 func Test_IsBoardFull(t *testing.T) {
-	board := NewBoard(2, 2, 2)
+	board := Create(2, 2, 2)
 	if board.IsBoardFull() {
 		t.Fatal("unexbected value returned by isBoardFull method")
 	}

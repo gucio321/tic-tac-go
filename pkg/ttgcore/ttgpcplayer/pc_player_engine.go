@@ -148,7 +148,7 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 	nh := board.Height()
 
 	for nw != 0 && nh != 0 {
-		fictionBoard := ttgboard.NewBoard(nw, nh, 0)
+		fictionBoard := ttgboard.Create(nw, nh, 0)
 		corners := fictionBoard.GetCorners()
 		pcOppositeCorners := make([]int, 0)
 		playerOppositeCorners := make([]int, 0)
