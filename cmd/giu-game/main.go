@@ -10,7 +10,7 @@ import (
 func main() {
 	const (
 		boardSize        = 3
-		screenX, screenY = 64, 480
+		screenX, screenY = 640, 480
 	)
 
 	wnd := giu.NewMasterWindow("Tic-Tac-Go", screenX, screenY, 0)
