@@ -4,6 +4,7 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
 )
 
+// PlayerCb is a player move callback.
 type PlayerCb func(ttgletter.Letter) int
 
 // PlayerType represents players' types.
