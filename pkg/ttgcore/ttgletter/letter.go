@@ -10,8 +10,8 @@ const (
 	LetterO
 )
 
-// NewLetter creates a new letter.
-func NewLetter() *Letter {
+// Create creates a new letter.
+func Create() *Letter {
 	result := LetterNone
 
 	return &result

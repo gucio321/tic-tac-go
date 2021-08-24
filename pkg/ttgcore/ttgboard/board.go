@@ -23,7 +23,7 @@ func Create(w, h, chainLen int) *Board {
 	}
 
 	for i := range result.board {
-		result.board[i] = ttgletter.NewLetter()
+		result.board[i] = ttgletter.Create()
 	}
 
 	return result

@@ -5,7 +5,7 @@ import (
 )
 
 func Test_newBoardIndex(t *testing.T) {
-	letter := NewLetter()
+	letter := Create()
 
 	if *letter != LetterNone {
 		t.Fatal("Unexpected letter index created")
@@ -13,7 +13,7 @@ func Test_newBoardIndex(t *testing.T) {
 }
 
 func Test_SetState(t *testing.T) {
-	letter := NewLetter()
+	letter := Create()
 
 	letter.SetState(LetterX)
 
@@ -23,7 +23,7 @@ func Test_SetState(t *testing.T) {
 }
 
 func Test_String(t *testing.T) {
-	letter := NewLetter()
+	letter := Create()
 
 	*letter = LetterX
 
@@ -33,7 +33,7 @@ func Test_String(t *testing.T) {
 }
 
 func Test_IsNone(t *testing.T) {
-	l := NewLetter()
+	l := Create()
 	if !l.IsNone() {
 		t.Fatal("letter isn't none, but should be")
 	}
@@ -46,7 +46,7 @@ func Test_IsNone(t *testing.T) {
 }
 
 func Test_Opposite(t *testing.T) {
-	l := NewLetter()
+	l := Create()
 
 	if l.Opposite() != LetterNone {
 		t.Fatal("opposite to letter none should be letter none, but isn't")

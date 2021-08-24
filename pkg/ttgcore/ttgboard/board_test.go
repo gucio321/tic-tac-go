@@ -13,7 +13,7 @@ func Test_Create(t *testing.T) {
 		height: 3,
 	}
 	for i := range correctBoard.board {
-		correctBoard.board[i] = ttgletter.NewLetter()
+		correctBoard.board[i] = ttgletter.Create()
 	}
 
 	board := Create(3, 3, 3)
