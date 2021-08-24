@@ -8,8 +8,13 @@ import (
 )
 
 func main() {
-	wnd := giu.NewMasterWindow("Tic-Tac-Go", 640, 480, 0)
+	const (
+		boardSize        = 3
+		screenX, screenY = 64, 480
+	)
+
+	wnd := giu.NewMasterWindow("Tic-Tac-Go", screenX, screenY, 0)
 	wnd.Run(func() {
-		giu.SingleWindow().Layout(giuwidget.Game(ttgplayer.PlayerPerson, ttgplayer.PlayerPC, 3, 3, 3))
+		giu.SingleWindow().Layout(giuwidget.Game(ttgplayer.PlayerPerson, ttgplayer.PlayerPC, boardSize, boardSize, boardSize))
 	})
 }

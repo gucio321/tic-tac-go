@@ -1,3 +1,4 @@
+// Package giuwidget contains a giu implementation of game
 package giuwidget
 
 import (
@@ -18,11 +19,13 @@ const (
 	buttonW, buttonH = 100, 100
 )
 
+// GameWidget represents a giu implementation of tic-tac-go.
 type GameWidget struct {
 	w, h, chainLen int
 	p1type, p2type ttgplayer.PlayerType
 }
 
+// Game creates GameWidget.
 func Game(p1type, p2type ttgplayer.PlayerType, w, h, c int) *GameWidget {
 	return &GameWidget{
 		w:        w,
@@ -38,17 +41,24 @@ func (g *GameWidget) getGame() (state *ttggame.Game) {
 		state = ttggame.Create(g.p1type, g.p2type).SetBoardSize(g.w, g.h, g.chainLen)
 		giu.Context.SetState(id, state)
 	} else {
-		state = s.(*ttggame.Game)
+		var ok bool
+		state, ok = s.(*ttggame.Game)
+		if !ok {
+			panic("Tic-Tac-Go: ttggame.(*Game).getGame (internal): unexpected state recovered from giu")
+		}
 	}
 
 	return state
 }
 
+// Build builds the game.
 func (g *GameWidget) Build() {
 	game := g.getGame()
 
+	// nolint:ifshort,staticcheck // will use it later
 	isEnded, _ := game.Result()
 
+	// nolint:staticcheck // TODO
 	if isEnded {
 		// build end layout
 		// return
@@ -64,6 +74,7 @@ func (g *GameWidget) Build() {
 
 func (g *GameWidget) buildGameBoard(game *ttggame.Game) {
 	board := giu.Layout{}
+
 	for y := 0; y < game.Board().Height(); y++ {
 		line := giu.Layout{}
 
