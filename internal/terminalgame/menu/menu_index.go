@@ -1,4 +1,4 @@
-package ttgmenu
+package menu
 
 import "fmt"
 

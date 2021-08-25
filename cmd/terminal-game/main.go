@@ -1,7 +1,7 @@
 package main
 
 import (
-	app "github.com/gucio321/tic-tac-go/internal/ttgapp"
+	app "github.com/gucio321/tic-tac-go/internal/terminalgame/menu"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-package ttgmenu
+package menu
 
 const (
 	header = "Welcome in TicTacGo\n\n"

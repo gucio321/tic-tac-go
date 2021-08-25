@@ -1,4 +1,4 @@
-package ttggame
+package game
 
 import (
 	"fmt"

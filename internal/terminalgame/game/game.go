@@ -1,11 +1,11 @@
-package ttggame
+package game
 
 import (
 	"bufio"
 	"fmt"
 	"os"
 
-	ttgcommon "github.com/gucio321/tic-tac-go/pkg/common"
+	"github.com/gucio321/tic-tac-go/pkg/common"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttggame"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"
@@ -25,7 +25,7 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) 
 	}
 
 	result.SetBoardSize(int(w), int(h), int(chainLen)).OnContinue(func() {
-		ttgcommon.Clear()
+		common.Clear()
 		fmt.Println(result.Board())
 	})
 

@@ -1,4 +1,4 @@
-package ttgmenu
+package menu
 
 import (
 	"bufio"
@@ -16,7 +16,7 @@ import (
 	"github.com/pkg/browser"
 	"github.com/russross/blackfriday"
 
-	"github.com/gucio321/tic-tac-go/internal/ttgapp/ttggame"
+	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
 	"github.com/gucio321/tic-tac-go/pkg/common"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgboard"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"
@@ -120,12 +120,12 @@ func (m *Menu) loadMenu() {
 }
 
 func (m *Menu) runPVP() {
-	game := ttggame.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPerson)
-	game.Run()
+	pvp := game.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPerson)
+	pvp.Run()
 }
 
 func (m *Menu) runPVC() {
-	var g *ttggame.TTG
+	var g *game.TTG
 
 	rand.Seed(time.Now().UnixNano())
 	// nolint:gomnd // two players in game
@@ -133,17 +133,17 @@ func (m *Menu) runPVC() {
 
 	switch r {
 	case 0:
-		g = ttggame.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPC)
+		g = game.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPC)
 	case 1:
-		g = ttggame.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPerson)
+		g = game.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPerson)
 	}
 
 	g.Run()
 }
 
 func (m *Menu) runDemo() {
-	game := ttggame.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPC)
-	game.Run()
+	demo := game.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPC)
+	demo.Run()
 }
 
 func (m *Menu) changeBoardSize() {
