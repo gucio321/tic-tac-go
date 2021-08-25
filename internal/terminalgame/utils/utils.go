@@ -1,4 +1,5 @@
-package common
+// Package utils contains utilities used in terminal interface
+package utils
 
 import (
 	"log"

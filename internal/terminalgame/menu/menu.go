@@ -17,7 +17,7 @@ import (
 	"github.com/russross/blackfriday"
 
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
-	"github.com/gucio321/tic-tac-go/pkg/common"
+	"github.com/gucio321/tic-tac-go/internal/terminalgame/utils"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgboard"
 	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"
 )
@@ -70,7 +70,7 @@ func New(readme []byte) *Menu {
 // Run runs the menu.
 func (m *Menu) Run() {
 	for !m.done {
-		common.Clear()
+		utils.Clear()
 		fmt.Println(m.currentPage())
 
 		num, err := m.getUserAction("What'd you like to do?")
@@ -173,7 +173,7 @@ func (m *Menu) resetBoardSize() {
 }
 
 func (m *Menu) printHelp() {
-	common.Clear()
+	utils.Clear()
 	fmt.Println(strings.Join([]string{
 		"TicTacToe Version 1",
 		"Copyright (C) 2021 by gucio321 (https://github.com/gucio321)",
