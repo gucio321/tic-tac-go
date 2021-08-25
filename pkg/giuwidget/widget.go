@@ -8,9 +8,9 @@ import (
 
 	"github.com/AllenDang/giu"
 
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttggame"
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttggame"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
 )
 
 const id = "Tic-Tac-Go-game"

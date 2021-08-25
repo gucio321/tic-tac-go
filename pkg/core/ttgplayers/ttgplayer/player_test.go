@@ -3,7 +3,7 @@ package ttgplayer
 import (
 	"testing"
 
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
 )
 
 const playerString = "Player X"

@@ -3,8 +3,8 @@
 package ttgplayers
 
 import (
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
 )
 
 // Players represents a pair of players.

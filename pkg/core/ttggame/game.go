@@ -9,11 +9,11 @@ package ttggame
 import (
 	"fmt"
 
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgboard"
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgletter"
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgpcplayer"
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers"
-	"github.com/gucio321/tic-tac-go/pkg/ttgcore/ttgplayers/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttgboard"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttgpcplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers"
+	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
 )
 
 const (
