@@ -17,14 +17,18 @@ unittests:
 
 danger-zone:
   - ./LICENSE
-  - ./main.go
 
 
-app engine:
-  - ./ttgapp/**/*
+terminal implementation:
+  - ./internal/terminalgame/**/*
+  - ./cmd/terminal-game/*
+
+giu widget:
+  - ./pkg/giuwidget/**/*
+  - ./cmd/giu-game/*
 
 game core:
-  - ./ttgcore/**/*
+  - ./pkg/core/**/*
 
 AI-logic:
-  - ttgcore/ttgpcplayer/**/*
+  - ./pkg/core/pcplayer/**/*
