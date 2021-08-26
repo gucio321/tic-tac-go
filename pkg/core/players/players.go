@@ -1,10 +1,10 @@
-// Package ttgplayers contains an implementation of tic-tac-toe
+// Package players contains an implementation of tic-tac-toe
 // players system
-package ttgplayers
+package players
 
 import (
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
-	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/players/ttgplayer"
 )
 
 // Players represents a pair of players.

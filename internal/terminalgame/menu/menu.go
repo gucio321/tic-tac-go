@@ -19,7 +19,7 @@ import (
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/utils"
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
-	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/players/ttgplayer"
 )
 
 const githubURL = "https://github.com/gucio321/tic-tac-go"
