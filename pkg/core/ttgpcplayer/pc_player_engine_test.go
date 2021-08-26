@@ -3,13 +3,13 @@ package ttgpcplayer
 import (
 	"testing"
 
-	ttgboard "github.com/gucio321/tic-tac-go/pkg/core/board"
+	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
 func Test_canWin(t *testing.T) {
 	w, h, c := 3, 3, 3
-	board := ttgboard.Create(w, h, c)
+	board := board.Create(w, h, c)
 	board.SetIndexState(0, ttgletter.LetterX)
 	board.SetIndexState(2, ttgletter.LetterX)
 
@@ -26,7 +26,7 @@ func Test_canWin(t *testing.T) {
 
 func Test_canWinTwoMoves(t *testing.T) {
 	w, h, c := 5, 5, 4
-	board := ttgboard.Create(w, h, c)
+	board := board.Create(w, h, c)
 	board.SetIndexState(12, ttgletter.LetterX)
 	board.SetIndexState(13, ttgletter.LetterX)
 

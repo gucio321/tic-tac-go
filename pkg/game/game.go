@@ -11,7 +11,7 @@ package game
 import (
 	"fmt"
 
-	ttgboard "github.com/gucio321/tic-tac-go/pkg/core/board"
+	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgpcplayer"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers"
@@ -26,7 +26,7 @@ const (
 
 // Game represents a Tic-Tac-Go game.
 type Game struct {
-	board *ttgboard.Board
+	board *board.Board
 
 	players *ttgplayers.Players
 
@@ -44,7 +44,7 @@ type Game struct {
 // Create creates a game instance.
 func Create(p1type, p2type ttgplayer.PlayerType) *Game {
 	result := &Game{
-		board:              ttgboard.Create(defaultBoardW, defaultBoardH, defaultChainLen),
+		board:              board.Create(defaultBoardW, defaultBoardH, defaultChainLen),
 		userAction:         make(chan int),
 		winner:             ttgletter.LetterNone,
 		onContinue:         func() {},
@@ -80,7 +80,7 @@ func (g *Game) SetBoardSize(w, h, c int) *Game {
 		isRunningPanic("SetBoardSize")
 	}
 
-	g.board = ttgboard.Create(w, h, c)
+	g.board = board.Create(w, h, c)
 
 	return g
 }
@@ -106,7 +106,7 @@ func (g *Game) OnContinue(cb func()) *Game {
 // runners
 
 // Board returns game board.
-func (g *Game) Board() *ttgboard.Board {
+func (g *Game) Board() *board.Board {
 	b := g.board
 
 	return b
@@ -175,7 +175,7 @@ func (g *Game) Dispose() {
 		panic("Tic-Tac-Go: game.(*Game).Dispose call - aborted")
 	}
 
-	*g.board = *ttgboard.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
+	*g.board = *board.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
 	g.gameOver = false
 	g.winner = ttgletter.LetterNone
 }

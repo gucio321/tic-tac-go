@@ -18,7 +18,7 @@ import (
 
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/utils"
-	ttgboard "github.com/gucio321/tic-tac-go/pkg/core/board"
+	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
 )
 
@@ -52,9 +52,9 @@ type Menu struct {
 func New(readme []byte) *Menu {
 	result := &Menu{
 		settings: &settings{
-			ttgboard.BaseChainLen,
-			ttgboard.BaseBoardW,
-			ttgboard.BaseBoardH,
+			board.BaseChainLen,
+			board.BaseBoardW,
+			board.BaseBoardH,
 		},
 		done:   false,
 		pos:    mainMenu,
@@ -167,8 +167,8 @@ func (m *Menu) changeBoardSize() {
 }
 
 func (m *Menu) resetBoardSize() {
-	m.width, m.height = ttgboard.BaseBoardW, ttgboard.BaseBoardH
-	m.chainLen = ttgboard.BaseChainLen
+	m.width, m.height = board.BaseBoardW, board.BaseBoardH
+	m.chainLen = board.BaseChainLen
 	_, _ = m.getUserAction("Board width and height was set to default\nPress ENTER to continue")
 }
 

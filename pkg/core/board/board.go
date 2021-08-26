@@ -1,4 +1,4 @@
-package ttgboard
+package board
 
 import (
 	"log"

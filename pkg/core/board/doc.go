@@ -1,2 +1,2 @@
-// Package ttgboard provides board data
-package ttgboard
+// Package board provides board data
+package board

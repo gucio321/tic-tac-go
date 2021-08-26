@@ -7,11 +7,11 @@ import (
 	"math/rand"
 	"time"
 
-	ttgboard "github.com/gucio321/tic-tac-go/pkg/core/board"
+	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
-func canWin(baseBoard *ttgboard.Board, player ttgletter.Letter) (i int, result bool) {
+func canWin(baseBoard *board.Board, player ttgletter.Letter) (i int, result bool) {
 	for i := 0; i < baseBoard.Width()*baseBoard.Height(); i++ {
 		if !baseBoard.IsIndexFree(i) {
 			continue
@@ -58,7 +58,7 @@ the O-player will not be able to keep X from winning.
 +---+---+---+---+---+
 O-player lost.
 */
-func canWinTwoMoves(board *ttgboard.Board, player ttgletter.Letter) (result []int) {
+func canWinTwoMoves(board *board.Board, player ttgletter.Letter) (result []int) {
 	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
 	minimalChainLen := board.ChainLength() - 2
 	if minimalChainLen < 2 { // nolint:gomnd // processing this values doesn't make sense with chain smaller than 3
@@ -98,7 +98,7 @@ func canWinTwoMoves(board *ttgboard.Board, player ttgletter.Letter) (result []in
 
 // GetPCMove calculates move for PC player on given board
 // nolint:gocognit,gocyclo,funlen // it is ok
-func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
+func GetPCMove(board *board.Board, letter ttgletter.Letter) (i int) {
 	pcLetter := letter
 	playerLetter := pcLetter.Opposite()
 
@@ -148,7 +148,7 @@ func GetPCMove(board *ttgboard.Board, letter ttgletter.Letter) (i int) {
 	nh := board.Height()
 
 	for nw != 0 && nh != 0 {
-		fictionBoard := ttgboard.Create(nw, nh, 0)
+		fictionBoard := board.Create(nw, nh, 0)
 		corners := fictionBoard.GetCorners()
 		pcOppositeCorners := make([]int, 0)
 		playerOppositeCorners := make([]int, 0)
