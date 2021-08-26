@@ -11,7 +11,7 @@ package game
 import (
 	"fmt"
 
-	"github.com/gucio321/tic-tac-go/pkg/core/ttgboard"
+	ttgboard "github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgpcplayer"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers"

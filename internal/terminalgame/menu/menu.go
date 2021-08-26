@@ -18,7 +18,7 @@ import (
 
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/utils"
-	"github.com/gucio321/tic-tac-go/pkg/core/ttgboard"
+	ttgboard "github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
 )
 

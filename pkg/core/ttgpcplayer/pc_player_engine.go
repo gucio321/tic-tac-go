@@ -7,7 +7,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/gucio321/tic-tac-go/pkg/core/ttgboard"
+	ttgboard "github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
 )
 
