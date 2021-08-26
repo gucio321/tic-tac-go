@@ -8,7 +8,7 @@ import (
 	"time"
 
 	ttgboard "github.com/gucio321/tic-tac-go/pkg/core/board"
-	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
+	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
 func canWin(baseBoard *ttgboard.Board, player ttgletter.Letter) (i int, result bool) {

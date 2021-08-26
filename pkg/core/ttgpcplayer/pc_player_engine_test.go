@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	ttgboard "github.com/gucio321/tic-tac-go/pkg/core/board"
-	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
+	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
 func Test_canWin(t *testing.T) {

@@ -3,7 +3,7 @@ package ttgboard
 import (
 	"testing"
 
-	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
+	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
 func Test_Create(t *testing.T) {

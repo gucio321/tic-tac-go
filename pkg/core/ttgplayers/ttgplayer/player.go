@@ -1,7 +1,7 @@
 package ttgplayer
 
 import (
-	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
+	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
 // PlayerCb is a player move callback.
