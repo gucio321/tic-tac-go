@@ -22,11 +22,11 @@ const (
 // GameWidget represents a giu implementation of tic-tac-go.
 type GameWidget struct {
 	w, h, chainLen int
-	p1type, p2type player.PlayerType
+	p1type, p2type player.Type
 }
 
 // Game creates GameWidget.
-func Game(p1type, p2type player.PlayerType, w, h, c int) *GameWidget {
+func Game(p1type, p2type player.Type, w, h, c int) *GameWidget {
 	return &GameWidget{
 		w:        w,
 		h:        h,

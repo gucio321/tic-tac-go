@@ -16,7 +16,7 @@ type Players struct {
 }
 
 // Create creates a new players set.
-func Create(player1Type player.PlayerType, cb1 player.PlayerCb, player2Type player.PlayerType, cb2 player.PlayerCb) *Players {
+func Create(player1Type player.Type, cb1 player.Callback, player2Type player.Type, cb2 player.Callback) *Players {
 	result := &Players{
 		player1: player.Create(player1Type, letter.LetterX, cb1),
 		player2: player.Create(player2Type, letter.LetterO, cb2),

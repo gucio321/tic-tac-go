@@ -42,7 +42,7 @@ type Game struct {
 }
 
 // Create creates a game instance.
-func Create(p1type, p2type player.PlayerType) *Game {
+func Create(p1type, p2type player.Type) *Game {
 	result := &Game{
 		board:              board.Create(defaultBoardW, defaultBoardH, defaultChainLen),
 		userAction:         make(chan int),

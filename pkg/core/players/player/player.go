@@ -4,19 +4,19 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
-// PlayerCb is a player move callback.
-type PlayerCb func(letter.Letter) int
+// Callback is a player move callback.
+type Callback func(letter.Letter) int
 
-// PlayerType represents players' types.
-type PlayerType int
+// Type represents players' types.
+type Type int
 
 // player types.
 const (
-	PlayerPC PlayerType = iota
+	PlayerPC Type = iota
 	PlayerPerson
 )
 
-func (p PlayerType) String() string {
+func (p Type) String() string {
 	switch p {
 	case PlayerPC:
 		return "PC"
@@ -30,13 +30,13 @@ func (p PlayerType) String() string {
 // Player represents the game player.
 type Player struct {
 	name       string
-	playerType PlayerType
+	playerType Type
 	letter     letter.Letter
-	moveCb     PlayerCb
+	moveCb     Callback
 }
 
 // Create creates a new player.
-func Create(t PlayerType, playerLetter letter.Letter, cb PlayerCb) *Player {
+func Create(t Type, playerLetter letter.Letter, cb Callback) *Player {
 	result := &Player{
 		playerType: t,
 		letter:     playerLetter,
@@ -50,7 +50,7 @@ func Create(t PlayerType, playerLetter letter.Letter, cb PlayerCb) *Player {
 // Move 'makes' player's move.
 func (p *Player) Move() int {
 	if p.moveCb == nil {
-		panic("ttgplayer.(*Player).Move(): moveCb cannot be nil!")
+		panic("player.(*Player).Move(): moveCb cannot be nil!")
 	}
 
 	return p.moveCb(p.Letter())
@@ -67,6 +67,6 @@ func (p *Player) Name() string {
 }
 
 // Type returns player's type.
-func (p *Player) Type() PlayerType {
+func (p *Player) Type() Type {
 	return p.playerType
 }
