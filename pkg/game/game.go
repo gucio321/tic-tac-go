@@ -2,8 +2,10 @@
 //
 // Usage:
 // - create game / set everything
-// - use Board() to display board
+// - use Board() to display board in implementation
 // - run Run()
+// -- take user action when IsUserActionRequired()
+// - call Dispose() to reset
 package game
 
 import (
