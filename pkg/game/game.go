@@ -180,6 +180,11 @@ func (g *Game) Dispose() {
 	g.winner = letter.LetterNone
 }
 
+// IsRunning returns true if Run loop was invoked
+func (g *Game) IsRunning() bool {
+	return g.isRunning
+}
+
 // internal
 
 // isRunningPanic is called when a method is not allowed when `isRunning`.
