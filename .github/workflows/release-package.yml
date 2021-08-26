@@ -20,27 +20,34 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
+          sudo apt-get --allow-releaseinfo-change update
+          sudo apt-get install -y libgtk-3-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libgl1-mesa-dev libsdl2-dev libasound2-dev > /dev/null 2>&1
           sudo apt-get install -y xvfb
           sudo apt-get install -y appstream
+          sudo apt-get install -y mingw-w64
           wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
           chmod a+x appimagetool-x86_64.AppImage
 
 
       - name: Build .bin package
-        run: go build -o tic-tac-go.bin .
+        run: |
+          go build -o tic-tac-go-terminal-game.bin cmd/terminal-game/main.go
+          go build -o tic-tac-go-giu.bin cmd/giu-game/main.go
 
       - name: create ouput dir
         run: |
-          mkdir tic-tac-go.AppDir
+          mkdir tic-tac-go-terminal-game.AppDir
+          mkdir tic-tac-go-giu.AppDir
 
       - name: download icon
         run: |
-          wget https://cdn4.iconfinder.com/data/icons/core-ui-outlined/32/outlined_placeholder-512.png -o tic-tac-go.AppDir/icon.png
+          wget https://cdn4.iconfinder.com/data/icons/core-ui-outlined/32/outlined_placeholder-512.png -o tic-tac-go-terminal-game.AppDir/icon.png
+          wget https://cdn4.iconfinder.com/data/icons/core-ui-outlined/32/outlined_placeholder-512.png -o tic-tac-go-giu.AppDir/icon.png
 
       - name: build go package
         run: |
-          go build -o tic-tac-go.AppDir/main.bin
+          go build -o tic-tac-go-terminal-game.AppDir/main.bin cmd/terminal-game/main.go
+          go build -o tic-tac-go-giu.AppDir/main.bin cmd/giu-game/main.go
 
       - name: create .desktop entry
         run: |
@@ -50,20 +57,36 @@ jobs:
           Icon=icon
           NoDisplay=false\n
           StartupNotify=true\n
-          Categories=Game;\n" >> tic-tac-go.AppDir/Desktop.desktop
+          Categories=Game;\n" >> tic-tac-go-terminal-game.AppDir/Desktop.desktop
+
+          echo -e "[Desktop Entry]\n
+          Type=Application\n
+          Name=tic-tac-go\n
+          Icon=icon
+          NoDisplay=false\n
+          StartupNotify=true\n
+          Categories=Game;\n" >> tic-tac-go-giu.AppDir/Desktop.desktop
 
       - name: create AppRun
         run: |
-          echo "#!/bin/sh
+          echo -e "#!/bin/sh
           cd \"\$(dirname \"\$0\")\"
-          exec ./main.bin" >> tic-tac-go.AppDir/AppRun
-          chmod 755 tic-tac-go.AppDir/AppRun
+          exec ./main.bin">> tic-tac-go-terminal-game.AppDir/AppRun
+          echo -e "#!/bin/sh
+          cd \"\$(dirname \"\$0\")\"
+          exec ./main.bin">> tic-tac-go-giu.AppDir/AppRun
+          chmod 755 tic-tac-go-terminal-game.AppDir/AppRun
+          chmod 755 tic-tac-go-giu.AppDir/AppRun
 
       - name: building AppImage
-        run: ./appimagetool-x86_64.AppImage tic-tac-go.AppDir tic-tac-go.AppImage
+        run: |
+          ./appimagetool-x86_64.AppImage tic-tac-go-terminal-game.AppDir tic-tac-go-terminal-game.AppImage
+          ./appimagetool-x86_64.AppImage tic-tac-go-giu.AppDir tic-tac-go-giu.AppImage
 
-      - name: Build package
-        run: GOOS="windows" go build -o tic-tac-go.exe .
+      - name: Build .exe package
+        run: |
+          GOOS="windows" go build -o tic-tac-go-terminal-game.exe cmd/terminal-game/main.go
+          CGO_ENABLED="1" GOOS="windows"  CC="/usr/bin/x86_64-w64-mingw32-gcc" CXX="/usr/bin/x86_64-w64-mingw32-c++" go build -o tic-tac-go-giu.exe cmd/giu-game/main.go
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -72,6 +95,9 @@ jobs:
           prerelease: false
           title: "Tic Tac Go"
           files: |
-            tic-tac-go.bin
-            tic-tac-go.AppImage
-            tic-tac-go.exe
+            tic-tac-go-terminal-game.bin
+            tic-tac-go-terminal-game.AppImage
+            tic-tac-go-terminal-game.exe
+            tic-tac-go-giu.bin
+            tic-tac-go-giu.AppImage
+            tic-tac-go-giu.exe
