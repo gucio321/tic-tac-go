@@ -88,7 +88,7 @@ jobs:
           GOOS="windows" go build -o tic-tac-go-terminal-game.exe cmd/terminal-game/main.go
           CGO_ENABLED="1" GOOS="windows"  CC="/usr/bin/x86_64-w64-mingw32-gcc" CXX="/usr/bin/x86_64-w64-mingw32-c++" go build -o tic-tac-go-giu.exe cmd/giu-game/main.go
 
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: "marvinpinto/action-automatic-releases@v1.2.0"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
