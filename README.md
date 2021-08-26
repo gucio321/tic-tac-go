@@ -11,6 +11,14 @@ of tic-tac-toe game written in [Golang](https://golang.org)
 
 to run the game you only need to install [golang](https://golang.org)
 
+if you want to run a giu version of the game, you'll need some dependencies
+on linux, run:
+```sh
+sudo apt-get install -y libgtk-3-dev libasound2-dev libxxf86vm-dev
+```
+
+for more details, see a documentation of giu: https://github.com/AllenDang/giu#install
+
 ### Installation
 
 To install the game, first download it: `go get github.com/gucio321/tic-tac-go`
