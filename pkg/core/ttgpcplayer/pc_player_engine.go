@@ -3,7 +3,6 @@
 package ttgpcplayer
 
 import (
-	"log"
 	"math/rand"
 	"time"
 
@@ -226,7 +225,7 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 		nh -= doubbleRow
 	}
 
-	log.Fatal("Cannot make move (board is full) and this fact wasn't detected")
+	panic("Tic-Tac-Go: pcplayer.GetPCMove(...): cannot determinate pc move - board is full")
 
 	return 0
 }
