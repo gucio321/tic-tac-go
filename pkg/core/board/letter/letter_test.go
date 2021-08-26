@@ -1,4 +1,4 @@
-package ttgletter
+package letter
 
 import (
 	"testing"

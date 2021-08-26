@@ -1,4 +1,4 @@
-package ttgletter
+package letter
 
 // Letter represents board letters (x and o).
 type Letter byte

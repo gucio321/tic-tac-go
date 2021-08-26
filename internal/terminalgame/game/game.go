@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/utils"
-	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
 	"github.com/gucio321/tic-tac-go/pkg/game"
 )
@@ -45,7 +45,7 @@ func (t *TTG) Run() {
 		// handle game end
 		if reached, result := t.Result(); reached {
 			switch result {
-			case ttgletter.LetterNone:
+			case letter.LetterNone:
 				fmt.Println("DRAW")
 			default:
 				fmt.Println(t.CurrentPlayer().Name() + " won")

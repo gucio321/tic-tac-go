@@ -12,7 +12,7 @@ import (
 	"fmt"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
-	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgpcplayer"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
@@ -38,7 +38,7 @@ type Game struct {
 	userActionRequired bool
 
 	gameOver bool
-	winner   ttgletter.Letter
+	winner   letter.Letter
 }
 
 // Create creates a game instance.
@@ -46,25 +46,25 @@ func Create(p1type, p2type ttgplayer.PlayerType) *Game {
 	result := &Game{
 		board:              board.Create(defaultBoardW, defaultBoardH, defaultChainLen),
 		userAction:         make(chan int),
-		winner:             ttgletter.LetterNone,
+		winner:             letter.LetterNone,
 		onContinue:         func() {},
 		userActionRequired: false,
 	}
 
-	var p1Cb, p2Cb func(ttgletter.Letter) int
+	var p1Cb, p2Cb func(letter.Letter) int
 
 	switch p1type {
 	case ttgplayer.PlayerPC:
-		p1Cb = func(l ttgletter.Letter) int { return ttgpcplayer.GetPCMove(result.board, l) }
+		p1Cb = func(l letter.Letter) int { return ttgpcplayer.GetPCMove(result.board, l) }
 	case ttgplayer.PlayerPerson:
-		p1Cb = func(_ ttgletter.Letter) int { return result.getUserAction() }
+		p1Cb = func(_ letter.Letter) int { return result.getUserAction() }
 	}
 
 	switch p2type {
 	case ttgplayer.PlayerPC:
-		p2Cb = func(l ttgletter.Letter) int { return ttgpcplayer.GetPCMove(result.board, l) }
+		p2Cb = func(l letter.Letter) int { return ttgpcplayer.GetPCMove(result.board, l) }
 	case ttgplayer.PlayerPerson:
-		p2Cb = func(_ ttgletter.Letter) int { return result.getUserAction() }
+		p2Cb = func(_ letter.Letter) int { return result.getUserAction() }
 	}
 
 	result.players = ttgplayers.Create(p1type, p1Cb, p2type, p2Cb)
@@ -125,7 +125,7 @@ func (g *Game) TakeUserAction(idx int) {
 
 // Result returns true if game is ended. in addition it returns its result.
 // if LetterNone returned - it means that DRAW reached.
-func (g *Game) Result() (bool, ttgletter.Letter) {
+func (g *Game) Result() (bool, letter.Letter) {
 	return g.gameOver, g.winner
 }
 
@@ -158,7 +158,7 @@ func (g *Game) Run() {
 			return
 		} else if g.Board().IsBoardFull() {
 			g.onContinue()
-			g.winner = ttgletter.LetterNone
+			g.winner = letter.LetterNone
 			g.gameOver = true
 			g.isRunning = false
 
@@ -177,7 +177,7 @@ func (g *Game) Dispose() {
 
 	*g.board = *board.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
 	g.gameOver = false
-	g.winner = ttgletter.LetterNone
+	g.winner = letter.LetterNone
 }
 
 // internal

@@ -1,2 +1,2 @@
-// Package ttgletter contains letter's data
-package ttgletter
+// Package letter contains letter's data
+package letter

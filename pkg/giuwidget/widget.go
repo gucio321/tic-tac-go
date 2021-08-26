@@ -8,7 +8,7 @@ import (
 
 	"github.com/AllenDang/giu"
 
-	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
 	"github.com/gucio321/tic-tac-go/pkg/game"
 )
@@ -84,7 +84,7 @@ func (g *GameWidget) buildGameBoard(gameInstance *game.Game) {
 			btn := giu.Button(s.String()+"##BoardIndex"+strconv.Itoa(idx)).
 				Size(buttonW, buttonH).OnClick(func() {
 				if gameInstance.IsUserActionRequired() {
-					if s == ttgletter.LetterNone {
+					if s == letter.LetterNone {
 						gameInstance.TakeUserAction(idx)
 					}
 				}
@@ -93,14 +93,14 @@ func (g *GameWidget) buildGameBoard(gameInstance *game.Game) {
 			var c color.RGBA
 
 			switch s {
-			case ttgletter.LetterX:
+			case letter.LetterX:
 				c = color.RGBA{
 					R: 0,
 					G: math.MaxUint8,
 					B: 0,
 					A: math.MaxUint8,
 				}
-			case ttgletter.LetterO:
+			case letter.LetterO:
 				c = color.RGBA{
 					R: math.MaxUint8,
 					G: 0,
@@ -109,7 +109,7 @@ func (g *GameWidget) buildGameBoard(gameInstance *game.Game) {
 				}
 			}
 
-			if gameEnd, l := gameInstance.Result(); gameEnd && l != ttgletter.LetterNone {
+			if gameEnd, l := gameInstance.Result(); gameEnd && l != letter.LetterNone {
 				_, winningCombo := gameInstance.Board().IsWinner(gameInstance.Board().ChainLength(), l)
 				for _, i := range winningCombo {
 					if i == idx {

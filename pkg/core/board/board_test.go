@@ -3,17 +3,17 @@ package board
 import (
 	"testing"
 
-	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
 func Test_Create(t *testing.T) {
 	correctBoard := Board{
-		board:  make([]*ttgletter.Letter, 9),
+		board:  make([]*letter.Letter, 9),
 		width:  3,
 		height: 3,
 	}
 	for i := range correctBoard.board {
-		correctBoard.board[i] = ttgletter.Create()
+		correctBoard.board[i] = letter.Create()
 	}
 
 	board := Create(3, 3, 3)
@@ -45,18 +45,18 @@ func Test_Width(t *testing.T) {
 func Test_setIndexState(t *testing.T) {
 	board := Create(3, 3, 3)
 
-	board.SetIndexState(5, ttgletter.LetterX)
+	board.SetIndexState(5, letter.LetterX)
 
-	if *board.board[5] != ttgletter.LetterX {
+	if *board.board[5] != letter.LetterX {
 		t.Fatal("unexpected index was set by board.setIndexState")
 	}
 }
 
 func Test_getIndexState(t *testing.T) {
 	board := Create(3, 3, 3)
-	*board.board[5] = ttgletter.LetterX
+	*board.board[5] = letter.LetterX
 
-	if l := board.GetIndexState(5); l != ttgletter.LetterX {
+	if l := board.GetIndexState(5); l != letter.LetterX {
 		t.Fatal("unexpected index was returned by board.getIndexState")
 	}
 }
@@ -64,7 +64,7 @@ func Test_getIndexState(t *testing.T) {
 func Test_isIndexFree(t *testing.T) {
 	board := Create(3, 3, 3)
 
-	*board.board[5] = ttgletter.LetterX
+	*board.board[5] = letter.LetterX
 
 	if board.IsIndexFree(5) {
 		t.Fatal("isIndexFree returned unexpected value")
@@ -77,7 +77,7 @@ func Test_isIndexFree(t *testing.T) {
 
 func Test_Copy(t *testing.T) {
 	board := Create(3, 3, 3)
-	board.SetIndexState(4, ttgletter.LetterX)
+	board.SetIndexState(4, letter.LetterX)
 	newBoard := board.Copy()
 
 	if len(board.board) != len(newBoard.board) {
@@ -93,14 +93,14 @@ func Test_Copy(t *testing.T) {
 
 func Test_Cut(t *testing.T) {
 	board := Create(3, 3, 3)
-	board.SetIndexState(4, ttgletter.LetterX)
+	board.SetIndexState(4, letter.LetterX)
 	result := board.Cut(1, 1)
 
 	if len(result.board) != 1 {
 		t.Fatal("unexpected board cut")
 	}
 
-	if *result.board[0] != ttgletter.LetterX {
+	if *result.board[0] != letter.LetterX {
 		t.Fatal("unexpected board cut")
 	}
 }
@@ -111,10 +111,10 @@ func Test_IsBoardFull(t *testing.T) {
 		t.Fatal("unexbected value returned by isBoardFull method")
 	}
 
-	board.SetIndexState(0, ttgletter.LetterX)
-	board.SetIndexState(1, ttgletter.LetterO)
-	board.SetIndexState(2, ttgletter.LetterO)
-	board.SetIndexState(3, ttgletter.LetterX)
+	board.SetIndexState(0, letter.LetterX)
+	board.SetIndexState(1, letter.LetterO)
+	board.SetIndexState(2, letter.LetterO)
+	board.SetIndexState(3, letter.LetterX)
 
 	if !board.IsBoardFull() {
 		t.Fatal("unexbected value returned by isBoardFull method")

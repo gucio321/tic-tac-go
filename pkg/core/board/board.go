@@ -3,26 +3,26 @@ package board
 import (
 	"log"
 
-	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
 // Board represents game board.
 type Board struct {
-	board                   []*ttgletter.Letter
+	board                   []*letter.Letter
 	width, height, chainLen int
 }
 
 // Create creates a new board.
 func Create(w, h, chainLen int) *Board {
 	result := &Board{
-		board:    make([]*ttgletter.Letter, w*h),
+		board:    make([]*letter.Letter, w*h),
 		width:    w,
 		height:   h,
 		chainLen: chainLen,
 	}
 
 	for i := range result.board {
-		result.board[i] = ttgletter.Create()
+		result.board[i] = letter.Create()
 	}
 
 	return result
@@ -44,12 +44,12 @@ func (b *Board) ChainLength() int {
 }
 
 // SetIndexState set index's state.
-func (b *Board) SetIndexState(i int, state ttgletter.Letter) {
+func (b *Board) SetIndexState(i int, state letter.Letter) {
 	b.board[i].SetState(state)
 }
 
 // GetIndexState returns index's state.
-func (b *Board) GetIndexState(i int) ttgletter.Letter {
+func (b *Board) GetIndexState(i int) letter.Letter {
 	return *b.board[i]
 }
 
@@ -122,7 +122,7 @@ func (b *Board) IsBoardFull() bool {
 }
 
 // IsWinner returns true if the 'player' is a winner using specified 'chainLen'.
-func (b *Board) IsWinner(chainLen int, player ttgletter.Letter) (ok bool, i []int) {
+func (b *Board) IsWinner(chainLen int, player letter.Letter) (ok bool, i []int) {
 	combos := b.GetWinBoard(chainLen)
 
 	for _, i := range combos {

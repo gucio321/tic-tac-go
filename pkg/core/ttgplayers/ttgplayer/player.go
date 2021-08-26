@@ -1,11 +1,11 @@
 package ttgplayer
 
 import (
-	ttgletter "github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
 // PlayerCb is a player move callback.
-type PlayerCb func(ttgletter.Letter) int
+type PlayerCb func(letter.Letter) int
 
 // PlayerType represents players' types.
 type PlayerType int
@@ -31,17 +31,17 @@ func (p PlayerType) String() string {
 type Player struct {
 	name       string
 	playerType PlayerType
-	letter     ttgletter.Letter
+	letter     letter.Letter
 	moveCb     PlayerCb
 }
 
 // Create creates a new player.
-func Create(t PlayerType, letter ttgletter.Letter, cb PlayerCb) *Player {
+func Create(t PlayerType, playerLetter letter.Letter, cb PlayerCb) *Player {
 	result := &Player{
 		playerType: t,
-		letter:     letter,
+		letter:     playerLetter,
 		moveCb:     cb,
-		name:       t.String() + " " + letter.String(),
+		name:       t.String() + " " + playerLetter.String(),
 	}
 
 	return result
@@ -57,7 +57,7 @@ func (p *Player) Move() int {
 }
 
 // Letter returns player's letter.
-func (p *Player) Letter() ttgletter.Letter {
+func (p *Player) Letter() letter.Letter {
 	return p.letter
 }
 
