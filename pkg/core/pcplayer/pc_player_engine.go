@@ -1,6 +1,6 @@
-// Package ttgpcplayer provides megods for simple-AI logic
+// Package pcplayer provides megods for simple-AI logic
 // used in Tic-Tac-Go for calculating PC-player's move.
-package ttgpcplayer
+package pcplayer
 
 import (
 	"math/rand"

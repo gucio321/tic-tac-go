@@ -13,7 +13,7 @@ import (
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
-	"github.com/gucio321/tic-tac-go/pkg/core/ttgpcplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/pcplayer"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
 )
@@ -55,14 +55,14 @@ func Create(p1type, p2type ttgplayer.PlayerType) *Game {
 
 	switch p1type {
 	case ttgplayer.PlayerPC:
-		p1Cb = func(l letter.Letter) int { return ttgpcplayer.GetPCMove(result.board, l) }
+		p1Cb = func(l letter.Letter) int { return pcplayer.GetPCMove(result.board, l) }
 	case ttgplayer.PlayerPerson:
 		p1Cb = func(_ letter.Letter) int { return result.getUserAction() }
 	}
 
 	switch p2type {
 	case ttgplayer.PlayerPC:
-		p2Cb = func(l letter.Letter) int { return ttgpcplayer.GetPCMove(result.board, l) }
+		p2Cb = func(l letter.Letter) int { return pcplayer.GetPCMove(result.board, l) }
 	case ttgplayer.PlayerPerson:
 		p2Cb = func(_ letter.Letter) int { return result.getUserAction() }
 	}

@@ -1,4 +1,4 @@
-package ttgpcplayer
+package pcplayer
 
 import (
 	"testing"
