@@ -76,9 +76,7 @@ func Create(p1type, p2type player.Type) *Game {
 
 // SetBoardSize sets a size of board.
 func (g *Game) SetBoardSize(w, h, c int) *Game {
-	if g.isRunning {
-		isRunningPanic("SetBoardSize")
-	}
+	isRunningPanic("SetBoardSize")
 
 	g.board = board.Create(w, h, c)
 
@@ -89,9 +87,7 @@ func (g *Game) SetBoardSize(w, h, c int) *Game {
 // it could be used to update board interface e.g. to redraw board
 // in terminal.
 func (g *Game) OnContinue(cb func()) *Game {
-	if g.isRunning {
-		isRunningPanic("OnContinue")
-	}
+	isRunningPanic("OnContinue")
 
 	// don't set nil callback
 	if cb == nil {
@@ -188,8 +184,10 @@ func (g *Game) IsRunning() bool {
 // internal
 
 // isRunningPanic is called when a method is not allowed when `isRunning`.
-func isRunningPanic(methodName string) {
-	panic(fmt.Sprintf("Tic-Tac-Go: game.(*Game).%s: invalid use of setter function after invoking Run", methodName))
+func (g *Game) isRunningPanic(methodName string) {
+	if g.IsRunning() {
+		panic(fmt.Sprintf("Tic-Tac-Go: game.(*Game).%s: invalid use of setter function after invoking Run", methodName))
+	}
 }
 
 // getUserAction is set as a player callback when PlayerTypePerson.
