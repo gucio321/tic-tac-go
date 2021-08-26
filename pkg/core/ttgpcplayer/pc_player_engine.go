@@ -97,7 +97,7 @@ func canWinTwoMoves(gameBoard *board.Board, player letter.Letter) (result []int)
 }
 
 // GetPCMove calculates move for PC player on given board
-// nolint:gocognit,gocyclo,funlen // it is ok
+// nolint:gocognit,gocyclo,funlen // https://github.com/gucio321/tic-tac-go/issues/154
 func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 	playerLetter := pcLetter.Opposite()
 
