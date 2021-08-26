@@ -1,10 +1,10 @@
-// Package ttggame contains a common implementation of game.
+// Package game contains a common implementation of game.
 //
 // Usage:
 // - create game / set everything
 // - use Board() to display board
 // - run Run()
-package ttggame
+package game
 
 import (
 	"fmt"
@@ -136,7 +136,7 @@ func (g *Game) CurrentPlayer() *ttgplayer.Player {
 // NOTE: should call in a new go routime.
 func (g *Game) Run() {
 	if g.isRunning {
-		panic("Tic-Tac-Go: ttggame.(*Game).Run: invalid call of Run when game is running.")
+		panic("Tic-Tac-Go: game.(*Game).Run: invalid call of Run when game is running.")
 	}
 
 	// prevent user from calling setter functions
@@ -170,7 +170,7 @@ func (g *Game) Run() {
 // Dispose resets the game.
 func (g *Game) Dispose() {
 	if g.isRunning {
-		panic("Tic-Tac-Go: ttggame.(*Game).Dispose call - aborted")
+		panic("Tic-Tac-Go: game.(*Game).Dispose call - aborted")
 	}
 
 	*g.board = *ttgboard.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
@@ -182,7 +182,7 @@ func (g *Game) Dispose() {
 
 // isRunningPanic is called when a method is not allowed when `isRunning`.
 func isRunningPanic(methodName string) {
-	panic(fmt.Sprintf("Tic-Tac-Go: ttggame.(*Game).%s: invalid use of setter function after invoking Run", methodName))
+	panic(fmt.Sprintf("Tic-Tac-Go: game.(*Game).%s: invalid use of setter function after invoking Run", methodName))
 }
 
 // getUserAction is set as a player callback when PlayerTypePerson.

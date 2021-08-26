@@ -6,22 +6,22 @@ import (
 	"os"
 
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/utils"
-	"github.com/gucio321/tic-tac-go/pkg/core/ttggame"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/game"
 )
 
 // TTG represents TicTacToe game.
 type TTG struct {
 	reader *bufio.Reader
-	*ttggame.Game
+	*game.Game
 }
 
 // NewTTG creates a ne TTG.
 func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) *TTG {
 	result := &TTG{
 		reader: bufio.NewReader(os.Stdin),
-		Game:   ttggame.Create(player1Type, player2Type),
+		Game:   game.Create(player1Type, player2Type),
 	}
 
 	result.SetBoardSize(int(w), int(h), int(chainLen)).OnContinue(func() {

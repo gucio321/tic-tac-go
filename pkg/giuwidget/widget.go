@@ -8,9 +8,9 @@ import (
 
 	"github.com/AllenDang/giu"
 
-	"github.com/gucio321/tic-tac-go/pkg/core/ttggame"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgletter"
 	"github.com/gucio321/tic-tac-go/pkg/core/ttgplayers/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/game"
 )
 
 const id = "Tic-Tac-Go-game"
@@ -36,15 +36,15 @@ func Game(p1type, p2type ttgplayer.PlayerType, w, h, c int) *GameWidget {
 	}
 }
 
-func (g *GameWidget) getGame() (state *ttggame.Game) {
+func (g *GameWidget) getGame() (state *game.Game) {
 	if s := giu.Context.GetState(id); s == nil {
-		state = ttggame.Create(g.p1type, g.p2type).SetBoardSize(g.w, g.h, g.chainLen)
+		state = game.Create(g.p1type, g.p2type).SetBoardSize(g.w, g.h, g.chainLen)
 		giu.Context.SetState(id, state)
 	} else {
 		var ok bool
-		state, ok = s.(*ttggame.Game)
+		state, ok = s.(*game.Game)
 		if !ok {
-			panic("Tic-Tac-Go: ttggame.(*Game).getGame (internal): unexpected state recovered from giu")
+			panic("Tic-Tac-Go: game.(*Game).getGame (internal): unexpected state recovered from giu")
 		}
 	}
 
@@ -53,10 +53,10 @@ func (g *GameWidget) getGame() (state *ttggame.Game) {
 
 // Build builds the game.
 func (g *GameWidget) Build() {
-	game := g.getGame()
+	gameInstance := g.getGame()
 
-	// nolint:ifshort,staticcheck // will use it later
-	isEnded, _ := game.Result()
+	// nolint:staticcheck // will use it later
+	isEnded, _ := gameInstance.Result()
 
 	// nolint:staticcheck // TODO
 	if isEnded {
@@ -64,28 +64,28 @@ func (g *GameWidget) Build() {
 		// return
 	}
 
-	g.buildGameBoard(game)
+	g.buildGameBoard(gameInstance)
 
 	giu.Button("play new game").OnClick(func() {
-		game.Dispose()
-		go game.Run()
+		gameInstance.Dispose()
+		go gameInstance.Run()
 	}).Build()
 }
 
-func (g *GameWidget) buildGameBoard(game *ttggame.Game) {
+func (g *GameWidget) buildGameBoard(gameInstance *game.Game) {
 	board := giu.Layout{}
 
-	for y := 0; y < game.Board().Height(); y++ {
+	for y := 0; y < gameInstance.Board().Height(); y++ {
 		line := giu.Layout{}
 
-		for x := 0; x < game.Board().Width(); x++ {
-			idx := y*game.Board().Width() + x
-			s := game.Board().GetIndexState(idx)
+		for x := 0; x < gameInstance.Board().Width(); x++ {
+			idx := y*gameInstance.Board().Width() + x
+			s := gameInstance.Board().GetIndexState(idx)
 			btn := giu.Button(s.String()+"##BoardIndex"+strconv.Itoa(idx)).
 				Size(buttonW, buttonH).OnClick(func() {
-				if game.IsUserActionRequired() {
+				if gameInstance.IsUserActionRequired() {
 					if s == ttgletter.LetterNone {
-						game.TakeUserAction(idx)
+						gameInstance.TakeUserAction(idx)
 					}
 				}
 			})
@@ -109,8 +109,8 @@ func (g *GameWidget) buildGameBoard(game *ttggame.Game) {
 				}
 			}
 
-			if gameEnd, l := game.Result(); gameEnd && l != ttgletter.LetterNone {
-				_, winningCombo := game.Board().IsWinner(game.Board().ChainLength(), l)
+			if gameEnd, l := gameInstance.Result(); gameEnd && l != ttgletter.LetterNone {
+				_, winningCombo := gameInstance.Board().IsWinner(gameInstance.Board().ChainLength(), l)
 				for _, i := range winningCombo {
 					if i == idx {
 						c = color.RGBA{
