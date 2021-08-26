@@ -15,7 +15,7 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/pcplayer"
 	"github.com/gucio321/tic-tac-go/pkg/core/players"
-	"github.com/gucio321/tic-tac-go/pkg/core/players/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 )
 
 const (
@@ -42,7 +42,7 @@ type Game struct {
 }
 
 // Create creates a game instance.
-func Create(p1type, p2type ttgplayer.PlayerType) *Game {
+func Create(p1type, p2type player.PlayerType) *Game {
 	result := &Game{
 		board:              board.Create(defaultBoardW, defaultBoardH, defaultChainLen),
 		userAction:         make(chan int),
@@ -54,16 +54,16 @@ func Create(p1type, p2type ttgplayer.PlayerType) *Game {
 	var p1Cb, p2Cb func(letter.Letter) int
 
 	switch p1type {
-	case ttgplayer.PlayerPC:
+	case player.PlayerPC:
 		p1Cb = func(l letter.Letter) int { return pcplayer.GetPCMove(result.board, l) }
-	case ttgplayer.PlayerPerson:
+	case player.PlayerPerson:
 		p1Cb = func(_ letter.Letter) int { return result.getUserAction() }
 	}
 
 	switch p2type {
-	case ttgplayer.PlayerPC:
+	case player.PlayerPC:
 		p2Cb = func(l letter.Letter) int { return pcplayer.GetPCMove(result.board, l) }
-	case ttgplayer.PlayerPerson:
+	case player.PlayerPerson:
 		p2Cb = func(_ letter.Letter) int { return result.getUserAction() }
 	}
 
@@ -130,7 +130,7 @@ func (g *Game) Result() (bool, letter.Letter) {
 }
 
 // CurrentPlayer returns a current player.
-func (g *Game) CurrentPlayer() *ttgplayer.Player {
+func (g *Game) CurrentPlayer() *player.Player {
 	return g.players.Current()
 }
 

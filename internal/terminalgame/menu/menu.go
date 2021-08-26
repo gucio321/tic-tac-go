@@ -19,7 +19,7 @@ import (
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/utils"
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
-	"github.com/gucio321/tic-tac-go/pkg/core/players/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 )
 
 const githubURL = "https://github.com/gucio321/tic-tac-go"
@@ -120,7 +120,7 @@ func (m *Menu) loadMenu() {
 }
 
 func (m *Menu) runPVP() {
-	pvp := game.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPerson)
+	pvp := game.NewTTG(m.width, m.height, m.chainLen, player.PlayerPerson, player.PlayerPerson)
 	pvp.Run()
 }
 
@@ -133,16 +133,16 @@ func (m *Menu) runPVC() {
 
 	switch r {
 	case 0:
-		g = game.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPerson, ttgplayer.PlayerPC)
+		g = game.NewTTG(m.width, m.height, m.chainLen, player.PlayerPerson, player.PlayerPC)
 	case 1:
-		g = game.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPerson)
+		g = game.NewTTG(m.width, m.height, m.chainLen, player.PlayerPC, player.PlayerPerson)
 	}
 
 	g.Run()
 }
 
 func (m *Menu) runDemo() {
-	demo := game.NewTTG(m.width, m.height, m.chainLen, ttgplayer.PlayerPC, ttgplayer.PlayerPC)
+	demo := game.NewTTG(m.width, m.height, m.chainLen, player.PlayerPC, player.PlayerPC)
 	demo.Run()
 }
 

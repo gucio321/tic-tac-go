@@ -1,4 +1,4 @@
-package ttgplayer
+package player
 
 import (
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"

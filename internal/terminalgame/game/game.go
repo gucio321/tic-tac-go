@@ -7,7 +7,7 @@ import (
 
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/utils"
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
-	"github.com/gucio321/tic-tac-go/pkg/core/players/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 	"github.com/gucio321/tic-tac-go/pkg/game"
 )
 
@@ -18,7 +18,7 @@ type TTG struct {
 }
 
 // NewTTG creates a ne TTG.
-func NewTTG(w, h, chainLen byte, player1Type, player2Type ttgplayer.PlayerType) *TTG {
+func NewTTG(w, h, chainLen byte, player1Type, player2Type player.PlayerType) *TTG {
 	result := &TTG{
 		reader: bufio.NewReader(os.Stdin),
 		Game:   game.Create(player1Type, player2Type),

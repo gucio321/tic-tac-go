@@ -9,7 +9,7 @@ import (
 	"github.com/AllenDang/giu"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
-	"github.com/gucio321/tic-tac-go/pkg/core/players/ttgplayer"
+	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 	"github.com/gucio321/tic-tac-go/pkg/game"
 )
 
@@ -22,11 +22,11 @@ const (
 // GameWidget represents a giu implementation of tic-tac-go.
 type GameWidget struct {
 	w, h, chainLen int
-	p1type, p2type ttgplayer.PlayerType
+	p1type, p2type player.PlayerType
 }
 
 // Game creates GameWidget.
-func Game(p1type, p2type ttgplayer.PlayerType, w, h, c int) *GameWidget {
+func Game(p1type, p2type player.PlayerType, w, h, c int) *GameWidget {
 	return &GameWidget{
 		w:        w,
 		h:        h,

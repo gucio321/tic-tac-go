@@ -226,6 +226,4 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 	}
 
 	panic("Tic-Tac-Go: pcplayer.GetPCMove(...): cannot determinate pc move - board is full")
-
-	return 0
 }

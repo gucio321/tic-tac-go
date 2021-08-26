@@ -1,4 +1,4 @@
-package ttgplayer
+package player
 
 import (
 	"testing"
