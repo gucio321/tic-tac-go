@@ -88,10 +88,7 @@ func (b *Board) GetOppositeCorner(c int) int {
 		}
 	}
 
-	log.Fatal("invalid corner value given")
-
-	// should not be reached
-	return 0
+	panic("Tic-Tac-Go: board.(*Board).GetOppositeCorner: invalid corner index. Did you given a corner index?")
 }
 
 // ConvertIndex converts index from smaller to larger board (fiction-width, fiction-height, real-width, real-height)
