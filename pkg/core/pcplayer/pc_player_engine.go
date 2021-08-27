@@ -10,6 +10,10 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
 func canWin(baseBoard *board.Board, player letter.Letter) (canWin bool, results []int) {
 	results = make([]int, 0)
 	for i := 0; i < baseBoard.Width()*baseBoard.Height(); i++ {
@@ -97,13 +101,10 @@ func canWinTwoMoves(gameBoard *board.Board, player letter.Letter) (result []int)
 }
 
 // GetPCMove calculates move for PC player on given board
-// nolint:gocognit,gocyclo,funlen // https://github.com/gucio321/tic-tac-go/issues/154
 func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 	playerLetter := pcLetter.Opposite()
 
 	var options []int
-
-	rand.Seed(time.Now().UnixNano())
 
 	// attack: try to win now
 	if ok, indexes := canWin(gameBoard, pcLetter); ok {
@@ -114,10 +115,7 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 		}
 
 		if options != nil {
-			// nolint:gosec // it's ok
-			result := options[rand.Intn(len(options))]
-
-			return result
+			return getRandomNumber(options)
 		}
 	}
 
@@ -130,10 +128,7 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 		}
 
 		if options != nil {
-			// nolint:gosec // it's ok
-			result := options[rand.Intn(len(options))]
-
-			return result
+			return getRandomNumber(options)
 		}
 	}
 
@@ -144,10 +139,7 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 	}
 
 	if options != nil {
-		// nolint:gosec // it's ok
-		result := options[rand.Intn(len(options))]
-
-		return result
+		return getRandomNumber(options)
 	}
 
 	for _, i := range canWinTwoMoves(gameBoard, playerLetter) {
@@ -157,10 +149,7 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 	}
 
 	if options != nil {
-		// nolint:gosec // it's ok
-		result := options[rand.Intn(len(options))]
-
-		return result
+		return getRandomNumber(options)
 	}
 
 	const doubbleRow = 2
@@ -197,24 +186,15 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 		}
 
 		if len(pcOppositeCorners) != 0 {
-			// nolint:gosec // it's ok
-			result := pcOppositeCorners[rand.Intn(len(pcOppositeCorners))]
-
-			return result
+			return getRandomNumber(pcOppositeCorners)
 		}
 
 		if len(playerOppositeCorners) != 0 {
-			// nolint:gosec // it's ok
-			result := playerOppositeCorners[rand.Intn(len(playerOppositeCorners))]
-
-			return result
+			return getRandomNumber(playerOppositeCorners)
 		}
 
 		if options != nil {
-			// nolint:gosec // it's ok
-			result := options[rand.Intn(len(options))]
-
-			return result
+			return getRandomNumber(options)
 		}
 
 		// try to get center
@@ -225,10 +205,7 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 		}
 
 		if options != nil {
-			// nolint:gosec // it's ok
-			result := options[rand.Intn(len(options))]
-
-			return result
+			return getRandomNumber(options)
 		}
 
 		for _, i := range fictionBoard.GetSides() {
@@ -238,10 +215,7 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 		}
 
 		if options != nil {
-			// nolint:gosec // it's ok
-			result := options[rand.Intn(len(options))]
-
-			return result
+			return getRandomNumber(options)
 		}
 
 		nw -= doubbleRow
@@ -249,4 +223,11 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 	}
 
 	panic("Tic-Tac-Go: pcplayer.GetPCMove(...): cannot determinate pc move - board is full")
+}
+
+func getRandomNumber(numbers []int) int {
+	// nolint:gosec // it's ok
+	result := numbers[rand.Intn(len(numbers))]
+
+	return result
 }
