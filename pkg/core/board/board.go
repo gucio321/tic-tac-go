@@ -1,7 +1,7 @@
 package board
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
@@ -45,16 +45,28 @@ func (b *Board) ChainLength() int {
 
 // SetIndexState set index's state.
 func (b *Board) SetIndexState(i int, state letter.Letter) {
+	if i > len(b.board) || i < 0 {
+		panic(fmt.Sprintf("Tic-Tac-Go: board.(*Board).SetIndexState: index %d out of range", i))
+	}
+
 	b.board[i].SetState(state)
 }
 
 // GetIndexState returns index's state.
 func (b *Board) GetIndexState(i int) letter.Letter {
+	if i > len(b.board) || i < 0 {
+		panic(fmt.Sprintf("Tic-Tac-Go: board.(*Board).GetIndexState: index %d out of range", i))
+	}
+
 	return *b.board[i]
 }
 
 // IsIndexFree returns true, if state of index given is None.
 func (b *Board) IsIndexFree(i int) bool {
+	if i > len(b.board) || i < 0 {
+		panic(fmt.Sprintf("Tic-Tac-Go: board.(*Board).IsIndexFree: index %d out of range", i))
+	}
+
 	return b.board[i].IsNone()
 }
 
@@ -71,7 +83,7 @@ func (b *Board) Copy() *Board {
 // Cut cuts a smaller board from a larger.
 func (b *Board) Cut(w, h int) *Board {
 	if w > b.width || h > b.height {
-		log.Fatal("cannot cat larger board from smaller")
+		panic(fmt.Sprintf("Tic-Tac-Go: board.(*Board).Cut: cannot cut larger board from smaller: orginal board size is %dx%d, requested - %dx%d", b.width, b.height, w, h))
 	}
 
 	result := Create(w, h, b.chainLen)
@@ -144,6 +156,10 @@ func (b *Board) IsWinner(chainLen int, player letter.Letter) (ok bool, i []int) 
 
 // IntToCords converts intager to X-Y cords.
 func (b *Board) IntToCords(i int) (x, y int) {
+	if i < 0 || i > b.width*b.height {
+		panic(fmt.Sprintf("Tic-Tac-Go: board(*Board).IntToCords: index out of range"))
+	}
+
 	for {
 		if i-b.width >= 0 {
 			y++
@@ -161,5 +177,9 @@ func (b *Board) IntToCords(i int) (x, y int) {
 
 // CordsToInt converts coordinates on board to board index.
 func (b *Board) CordsToInt(x, y int) int {
+	if x*y < 0 || x > b.width || y > b.height {
+		panic("Tic-Tac-Go: board.(*Board).CordsToInt: index out of range")
+	}
+
 	return y*b.width + x
 }
