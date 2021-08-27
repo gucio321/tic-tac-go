@@ -10,22 +10,23 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
-func canWin(baseBoard *board.Board, player letter.Letter) (i int, result bool) {
+func canWin(baseBoard *board.Board, player letter.Letter) (canWin bool, results []int) {
+	results = make([]int, 0)
 	for i := 0; i < baseBoard.Width()*baseBoard.Height(); i++ {
 		if !baseBoard.IsIndexFree(i) {
 			continue
 		}
 
-		gameBoard := baseBoard.Copy()
+		fictionBoard := baseBoard.Copy()
 
-		gameBoard.SetIndexState(i, player)
+		fictionBoard.SetIndexState(i, player)
 
-		if ok, _ := gameBoard.IsWinner(player); ok {
-			return i, true
+		if ok, _ := fictionBoard.IsWinner(player); ok {
+			results = append(results, i)
 		}
 	}
 
-	return 0, false
+	return len(results) > 0, results
 }
 
 /*
@@ -104,14 +105,36 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 
 	rand.Seed(time.Now().UnixNano())
 
-	// attack: try to win
-	if i, ok := canWin(gameBoard, pcLetter); ok {
-		return i
+	// attack: try to win now
+	if ok, indexes := canWin(gameBoard, pcLetter); ok {
+		for _, i := range indexes {
+			if gameBoard.IsIndexFree(i) {
+				options = append(options, i)
+			}
+		}
+
+		if options != nil {
+			// nolint:gosec // it's ok
+			result := options[rand.Intn(len(options))]
+
+			return result
+		}
 	}
 
 	// defense: check, if user can win
-	if i, ok := canWin(gameBoard, playerLetter); ok {
-		return i
+	if ok, indexes := canWin(gameBoard, playerLetter); ok {
+		for _, i := range indexes {
+			if gameBoard.IsIndexFree(i) {
+				options = append(options, i)
+			}
+		}
+
+		if options != nil {
+			// nolint:gosec // it's ok
+			result := options[rand.Intn(len(options))]
+
+			return result
+		}
 	}
 
 	for _, i := range canWinTwoMoves(gameBoard, pcLetter) {
