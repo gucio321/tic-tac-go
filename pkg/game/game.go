@@ -76,7 +76,7 @@ func Create(p1type, p2type player.Type) *Game {
 
 // SetBoardSize sets a size of board.
 func (g *Game) SetBoardSize(w, h, c int) *Game {
-	isRunningPanic("SetBoardSize")
+	g.isRunningPanic("SetBoardSize")
 
 	g.board = board.Create(w, h, c)
 
@@ -87,7 +87,7 @@ func (g *Game) SetBoardSize(w, h, c int) *Game {
 // it could be used to update board interface e.g. to redraw board
 // in terminal.
 func (g *Game) OnContinue(cb func()) *Game {
-	isRunningPanic("OnContinue")
+	g.isRunningPanic("OnContinue")
 
 	// don't set nil callback
 	if cb == nil {
