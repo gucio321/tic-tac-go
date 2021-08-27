@@ -134,9 +134,10 @@ func (b *Board) IsBoardFull() bool {
 	return true
 }
 
-// IsWinner returns true if the 'player' is a winner using specified 'chainLen'.
-func (b *Board) IsWinner(chainLen int, player letter.Letter) (ok bool, i []int) {
-	combos := b.GetWinBoard(chainLen)
+// IsWinner returns true if the 'player' is a winner.
+// In addition IsWinner will return a list of winning combination.
+func (b *Board) IsWinner(player letter.Letter) (ok bool, i []int) {
+	combos := b.GetWinBoard(b.chainLen)
 
 	for _, i := range combos {
 		line := 0
@@ -147,7 +148,7 @@ func (b *Board) IsWinner(chainLen int, player letter.Letter) (ok bool, i []int) 
 			}
 		}
 
-		if line == chainLen {
+		if line == b.chainLen {
 			return true, i
 		}
 	}

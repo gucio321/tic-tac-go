@@ -101,7 +101,7 @@ func (g *GameWidget) buildGameBoard(gameInstance *game.Game) {
 			}
 
 			if gameEnd, l := gameInstance.Result(); gameEnd && l != letter.LetterNone {
-				_, winningCombo := gameInstance.Board().IsWinner(gameInstance.Board().ChainLength(), l)
+				_, winningCombo := gameInstance.Board().IsWinner(l)
 				for _, i := range winningCombo {
 					if i == idx {
 						c = color.RGBA{

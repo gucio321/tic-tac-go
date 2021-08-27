@@ -20,7 +20,7 @@ func canWin(baseBoard *board.Board, player letter.Letter) (i int, result bool) {
 
 		gameBoard.SetIndexState(i, player)
 
-		if ok, _ := gameBoard.IsWinner(gameBoard.ChainLength(), player); ok {
+		if ok, _ := gameBoard.IsWinner(player); ok {
 			return i, true
 		}
 	}

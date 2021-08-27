@@ -152,7 +152,7 @@ func (g *Game) Run() {
 
 		g.Board().SetIndexState(idx, g.players.Current().Letter())
 
-		if ok, _ := g.Board().IsWinner(g.Board().ChainLength(), g.players.Current().Letter()); ok {
+		if ok, _ := g.Board().IsWinner(g.players.Current().Letter()); ok {
 			g.onContinue()
 			g.winner = g.players.Current().Letter()
 			g.isRunning = false
