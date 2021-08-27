@@ -3,30 +3,25 @@ package board
 import (
 	"testing"
 
-	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+	"github.com/stretchr/testify/assert"
+
 )
 
 func Test_Create(t *testing.T) {
-	correctBoard := Board{
-		board:  make([]*letter.Letter, 9),
-		width:  3,
-		height: 3,
+	correctBoard := &Board{
+		board:    make([]letter.Letter, 9),
+		width:    3,
+		height:   3,
+		chainLen: 3,
 	}
+
 	for i := range correctBoard.board {
-		correctBoard.board[i] = letter.Create()
+		correctBoard.board[i] = letter.LetterNone
 	}
 
 	board := Create(3, 3, 3)
 
-	if len(board.board) != len(correctBoard.board) {
-		t.Fatal("Invalid board created")
-	}
-
-	for i := range board.board {
-		if *board.board[i] != *correctBoard.board[i] {
-			t.Fatal("Invalid board created")
-		}
-	}
+	assert.Equal(t, correctBoard, board, "Unexpected board created")
 }
 
 func Test_Width(t *testing.T) {
@@ -47,14 +42,14 @@ func Test_setIndexState(t *testing.T) {
 
 	board.SetIndexState(5, letter.LetterX)
 
-	if *board.board[5] != letter.LetterX {
+	if board.board[5] != letter.LetterX {
 		t.Fatal("unexpected index was set by board.setIndexState")
 	}
 }
 
 func Test_getIndexState(t *testing.T) {
 	board := Create(3, 3, 3)
-	*board.board[5] = letter.LetterX
+	board.board[5] = letter.LetterX
 
 	if l := board.GetIndexState(5); l != letter.LetterX {
 		t.Fatal("unexpected index was returned by board.getIndexState")
@@ -64,7 +59,7 @@ func Test_getIndexState(t *testing.T) {
 func Test_isIndexFree(t *testing.T) {
 	board := Create(3, 3, 3)
 
-	*board.board[5] = letter.LetterX
+	board.board[5] = letter.LetterX
 
 	if board.IsIndexFree(5) {
 		t.Fatal("isIndexFree returned unexpected value")
@@ -80,15 +75,7 @@ func Test_Copy(t *testing.T) {
 	board.SetIndexState(4, letter.LetterX)
 	newBoard := board.Copy()
 
-	if len(board.board) != len(newBoard.board) {
-		t.Fatal("Unexpected board copied")
-	}
-
-	for i := range board.board {
-		if *board.board[i] != *newBoard.board[i] {
-			t.Fatal("Unexpected board copied")
-		}
-	}
+	assert.Equal(t, board, newBoard, "unexpected board copied")
 }
 
 func Test_Cut(t *testing.T) {
@@ -100,7 +87,7 @@ func Test_Cut(t *testing.T) {
 		t.Fatal("unexpected board cut")
 	}
 
-	if *result.board[0] != letter.LetterX {
+	if result.board[0] != letter.LetterX {
 		t.Fatal("unexpected board cut")
 	}
 }

@@ -8,21 +8,21 @@ import (
 
 // Board represents game board.
 type Board struct {
-	board                   []*letter.Letter
+	board                   []letter.Letter
 	width, height, chainLen int
 }
 
 // Create creates a new board.
 func Create(w, h, chainLen int) *Board {
 	result := &Board{
-		board:    make([]*letter.Letter, w*h),
+		board:    make([]letter.Letter, w*h),
 		width:    w,
 		height:   h,
 		chainLen: chainLen,
 	}
 
 	for i := range result.board {
-		result.board[i] = letter.Create()
+		result.board[i] = letter.LetterNone
 	}
 
 	return result
@@ -49,7 +49,7 @@ func (b *Board) SetIndexState(i int, state letter.Letter) {
 		panic(fmt.Sprintf("Tic-Tac-Go: board.(*Board).SetIndexState: index %d out of range", i))
 	}
 
-	b.board[i].SetState(state)
+	b.board[i] = state
 }
 
 // GetIndexState returns index's state.
@@ -58,7 +58,7 @@ func (b *Board) GetIndexState(i int) letter.Letter {
 		panic(fmt.Sprintf("Tic-Tac-Go: board.(*Board).GetIndexState: index %d out of range", i))
 	}
 
-	return *b.board[i]
+	return b.board[i]
 }
 
 // IsIndexFree returns true, if state of index given is None.
@@ -67,7 +67,7 @@ func (b *Board) IsIndexFree(i int) bool {
 		panic(fmt.Sprintf("Tic-Tac-Go: board.(*Board).IsIndexFree: index %d out of range", i))
 	}
 
-	return b.board[i].IsNone()
+	return b.board[i] == letter.LetterNone
 }
 
 // Copy returns board copy.
@@ -125,8 +125,8 @@ func (b *Board) String() string {
 
 // IsBoardFull returns true, if there is no more space on the board.
 func (b *Board) IsBoardFull() bool {
-	for _, i := range b.board {
-		if i.IsNone() {
+	for i := range b.board {
+		if b.IsIndexFree(i) {
 			return false
 		}
 	}

@@ -2,59 +2,42 @@ package letter
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func Test_newBoardIndex(t *testing.T) {
-	letter := Create()
-
-	if *letter != LetterNone {
-		t.Fatal("Unexpected letter index created")
-	}
-}
-
-func Test_SetState(t *testing.T) {
-	letter := Create()
-
-	letter.SetState(LetterX)
-
-	if *letter != LetterX {
-		t.Fatal("Unexpected state was set")
-	}
-}
-
 func Test_String(t *testing.T) {
-	letter := Create()
-
-	*letter = LetterX
-
-	if letter.String() != "X" {
-		t.Fatal("unexpected string returned")
-	}
-}
-
-func Test_IsNone(t *testing.T) {
-	l := Create()
-	if !l.IsNone() {
-		t.Fatal("letter isn't none, but should be")
+	tests := []struct {
+		id     string
+		letter Letter
+		str    string
+	}{
+		{"letter X", LetterX, "X"},
+		{"letter O", LetterO, "O"},
+		{"letter None", LetterNone, " "},
 	}
 
-	*l = LetterX
-
-	if l.IsNone() {
-		t.Fatal("leter is none, but shouldn't")
+	for _, tt := range tests {
+		t.Run(tt.id, func(tst *testing.T) {
+			assert.Equal(tst, tt.letter.String(), tt.str, "incorrect letter string")
+		})
 	}
 }
 
 func Test_Opposite(t *testing.T) {
-	l := Create()
-
-	if l.Opposite() != LetterNone {
-		t.Fatal("opposite to letter none should be letter none, but isn't")
+	tests := []struct {
+		id       string
+		letter   Letter
+		opposite Letter
+	}{
+		{"letter none", LetterNone, LetterNone},
+		{"letter X", LetterX, LetterO},
+		{"letter O", LetterO, LetterX},
 	}
 
-	*l = LetterX
-
-	if l.Opposite() != LetterO {
-		t.Fatal("Letter.Opposite returned unexpected value")
+	for _, tt := range tests {
+		t.Run(tt.id, func(tst *testing.T) {
+			assert.Equal(tst, tt.opposite, tt.letter.Opposite(), "unexpected opposite letter.")
+		})
 	}
 }

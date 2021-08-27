@@ -10,41 +10,25 @@ const (
 	LetterO
 )
 
-// Create creates a new letter.
-func Create() *Letter {
-	result := LetterNone
-
-	return &result
-}
-
-// SetState sets index state.
-func (l *Letter) SetState(state Letter) {
-	*l = state
-}
-
 // String returns Letter's string.
-func (l *Letter) String() string {
-	switch *l {
-	case LetterNone:
-		return " "
-	case LetterX:
-		return "X"
-	case LetterO:
-		return "O"
+func (l Letter) String() string {
+	lookup := map[Letter]string{
+		LetterNone: " ",
+		LetterX:    "X",
+		LetterO:    "O",
 	}
 
-	// should not be reached
-	return "?"
-}
+	result, ok := lookup[l]
+	if !ok {
+		panic("Tic-Tac-Go: letter.(*Letter).String: unexpected letter value")
+	}
 
-// IsNone return's true if Letter == LetterNone.
-func (l *Letter) IsNone() bool {
-	return *l == LetterNone
+	return result
 }
 
 // Opposite returns letter, which is an opposite to current.
-func (l *Letter) Opposite() Letter {
-	switch *l {
+func (l Letter) Opposite() Letter {
+	switch l {
 	case LetterX:
 		return LetterO
 	case LetterO:
