@@ -55,15 +55,6 @@ func (g *GameWidget) getGame() (state *game.Game) {
 func (g *GameWidget) Build() {
 	gameInstance := g.getGame()
 
-	// nolint:staticcheck // will use it later
-	isEnded, _ := gameInstance.Result()
-
-	// nolint:staticcheck // TODO
-	if isEnded {
-		// build end layout
-		// return
-	}
-
 	g.buildGameBoard(gameInstance)
 
 	giu.Button("play new game").OnClick(func() {
