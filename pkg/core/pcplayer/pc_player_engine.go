@@ -103,6 +103,17 @@ func canWinTwoMoves(gameBoard *board.Board, player letter.Letter) (result []int)
 }
 
 // GetPCMove calculates move for PC player on given board.
+// Steps:
+// - try to win
+// - stop opponent from winning
+// - try to win in 2-moves perspective
+// - stop opponent from winning in 2-moves perspective
+// - for current board and for each smaller board (w - 2 h - 2)
+//   - take opposite (to any corner taken by pc) corner
+//   - take opponent's opposite corner
+//   - take center
+//   - take random side
+// nolint:funlen,gocognit,gocyclo // https://github.com/gucio321/tic-tac-go/issues/154
 func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 	playerLetter := pcLetter.Opposite()
 
@@ -154,74 +165,67 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 		return getRandomNumber(options)
 	}
 
-	const doubbleRow = 2
+	corners := gameBoard.GetCorners()
+	pcOppositeCorners := make([]int, 0)
+	playerOppositeCorners := make([]int, 0)
 
-	nw := gameBoard.Width()
-	nh := gameBoard.Height()
+	for _, i := range corners {
+		if gameBoard.IsIndexFree(i) {
+			options = append(options, i)
 
-	for nw != 0 && nh != 0 {
-		fictionBoard := board.Create(nw, nh, 0)
-		corners := fictionBoard.GetCorners()
-		pcOppositeCorners := make([]int, 0)
-		playerOppositeCorners := make([]int, 0)
-
-		for _, i := range corners {
-			idx := gameBoard.ConvertIndex(nw, nh, i)
-			if gameBoard.IsIndexFree(idx) {
-				options = append(options, idx)
-
-				continue
-			}
-
-			o := gameBoard.ConvertIndex(nw, nh, fictionBoard.GetOppositeCorner(i))
-
-			if !gameBoard.IsIndexFree(o) {
-				continue
-			}
-
-			switch s := gameBoard.GetIndexState(idx); s {
-			case pcLetter:
-				pcOppositeCorners = append(pcOppositeCorners, o)
-			case playerLetter:
-				playerOppositeCorners = append(playerOppositeCorners, o)
-			}
+			continue
 		}
 
-		if len(pcOppositeCorners) != 0 {
-			return getRandomNumber(pcOppositeCorners)
+		o := gameBoard.GetOppositeCorner(i)
+
+		if !gameBoard.IsIndexFree(o) {
+			continue
 		}
 
-		if len(playerOppositeCorners) != 0 {
-			return getRandomNumber(playerOppositeCorners)
+		switch s := gameBoard.GetIndexState(i); s {
+		case pcLetter:
+			pcOppositeCorners = append(pcOppositeCorners, o)
+		case playerLetter:
+			playerOppositeCorners = append(playerOppositeCorners, o)
 		}
+	}
 
-		if options != nil {
-			return getRandomNumber(options)
+	if len(pcOppositeCorners) != 0 {
+		return getRandomNumber(pcOppositeCorners)
+	}
+
+	if len(playerOppositeCorners) != 0 {
+		return getRandomNumber(playerOppositeCorners)
+	}
+
+	if options != nil {
+		return getRandomNumber(options)
+	}
+
+	// try to get center
+	for _, i := range gameBoard.GetCenter() {
+		if gameBoard.IsIndexFree(i) {
+			options = append(options, i)
 		}
+	}
 
-		// try to get center
-		for _, i := range gameBoard.GetCenter() {
-			if gameBoard.IsIndexFree(i) {
-				options = append(options, i)
-			}
+	if options != nil {
+		return getRandomNumber(options)
+	}
+
+	for _, i := range gameBoard.GetSides() {
+		if gameBoard.IsIndexFree(i) {
+			options = append(options, i)
 		}
+	}
 
-		if options != nil {
-			return getRandomNumber(options)
-		}
+	if options != nil {
+		return getRandomNumber(options)
+	}
 
-		for _, i := range fictionBoard.GetSides() {
-			if idx := gameBoard.ConvertIndex(nw, nh, i); gameBoard.IsIndexFree(idx) {
-				options = append(options, idx)
-			}
-		}
-
-		if options != nil {
-			return getRandomNumber(options)
-		}
-
-		nw -= doubbleRow
-		nh -= doubbleRow
+	const smallerBoard = 2
+	if newW, newH := gameBoard.Width()-smallerBoard, gameBoard.Height()-smallerBoard; newW > 0 && newH > 0 {
+		return gameBoard.ConvertIndex(newW, newH, GetPCMove(gameBoard.Cut(newW, newH), pcLetter))
 	}
 
 	panic("Tic-Tac-Go: pcplayer.GetPCMove(...): cannot determinate pc move - board is full")

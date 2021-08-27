@@ -9,7 +9,7 @@ import (
 
 func main() {
 	const (
-		boardSize        = 3
+		boardSize        = 5
 		screenX, screenY = 640, 480
 	)
 
