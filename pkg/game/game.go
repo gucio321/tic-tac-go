@@ -143,7 +143,14 @@ func (g *Game) Run() {
 	// main loop
 	for {
 		g.onContinue()
-		g.Board().SetIndexState(g.players.Current().Move(), g.players.Current().Letter())
+		idx := g.players.Current().Move()
+
+		// if loop was stopped by Dispose() or Stop(), exit the loop
+		if !g.isRunning {
+			return
+		}
+
+		g.Board().SetIndexState(idx, g.players.Current().Letter())
 
 		if ok, _ := g.Board().IsWinner(g.Board().ChainLength(), g.players.Current().Letter()); ok {
 			g.onContinue()
@@ -167,13 +174,33 @@ func (g *Game) Run() {
 
 // Dispose resets the game.
 func (g *Game) Dispose() {
+	g.Stop()
+	g.Reset()
+}
+
+// Reset resets the game
+func (g *Game) Reset() {
 	if g.isRunning {
-		panic("Tic-Tac-Go: game.(*Game).Dispose call - aborted")
+		panic("Tic-Tac-Go: game.(*Game).Reset() call when game is running. Did you forgot to invoke (*Game).Stop()?")
 	}
 
 	*g.board = *board.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
 	g.gameOver = false
 	g.winner = letter.LetterNone
+}
+
+// Stop savely stops the game loop invoked by (*Game).Run
+func (g *Game) Stop() {
+	if !g.isRunning {
+		return
+	}
+
+	g.isRunning = false
+
+	// if awaiting user action, pass any invalid number to exit `Run` loop
+	if g.IsUserActionRequired() {
+		g.TakeUserAction(-1)
+	}
 }
 
 // IsRunning returns true if Run loop was invoked.
