@@ -156,6 +156,23 @@ func (b *Board) IsWinner(player letter.Letter) (ok bool, i []int) {
 	return false, nil
 }
 
+// GetWinner is similar to IsWinner but returns winning letter.
+func (b *Board) GetWinner() (result letter.Letter, combo []int) {
+	isPlayerX, comboX := b.IsWinner(letter.LetterX)
+	isPlayerO, comboO := b.IsWinner(letter.LetterO)
+
+	switch {
+	case isPlayerX && isPlayerO:
+		panic("Tic-Tac-Go: board.(*Board).GetWinner: both players - X and Y are winners (cannot happen)")
+	case isPlayerX:
+		return letter.LetterX, comboX
+	case isPlayerO:
+		return letter.LetterO, comboO
+	default: // no winners
+		return letter.LetterNone, nil
+	}
+}
+
 // IntToCords converts intager to X-Y cords.
 func (b *Board) IntToCords(i int) (x, y int) {
 	if i < 0 || i > b.width*b.height {
