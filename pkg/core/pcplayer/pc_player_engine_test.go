@@ -13,7 +13,9 @@ func Test_canWin(t *testing.T) {
 	b.SetIndexState(0, letter.LetterX)
 	b.SetIndexState(2, letter.LetterX)
 
-	if ok, i := canWin(b, letter.LetterX); i == nil || i[0] != 1 || !ok {
+	if ok, i := canWin(b, letter.LetterX); i == nil ||
+		len(i) != 1 ||
+		i[0] != 1 || !ok {
 		t.Fatalf("canWin returned wrong values\n%s", b)
 	}
 

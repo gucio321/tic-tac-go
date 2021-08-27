@@ -10,12 +10,14 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
+// nolint:gochecknoinits // need to set rand seed
 func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
 func canWin(baseBoard *board.Board, player letter.Letter) (canWin bool, results []int) {
 	results = make([]int, 0)
+
 	for i := 0; i < baseBoard.Width()*baseBoard.Height(); i++ {
 		if !baseBoard.IsIndexFree(i) {
 			continue
@@ -100,7 +102,7 @@ func canWinTwoMoves(gameBoard *board.Board, player letter.Letter) (result []int)
 	return result
 }
 
-// GetPCMove calculates move for PC player on given board
+// GetPCMove calculates move for PC player on given board.
 func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 	playerLetter := pcLetter.Opposite()
 
