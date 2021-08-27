@@ -1,7 +1,5 @@
 package board
 
-import "log"
-
 // BoardW, BoardH are board's width and height.
 const (
 	BaseBoardW   = 3
@@ -121,12 +119,13 @@ func (b *Board) ConvertIndex(fw, fh, idx int) int {
 	rw, rh := b.Width(), b.Height()
 	// static checks: check if fiction size isn't greater than real
 	if !(fh <= rh) || !(fw <= rw) {
-		log.Fatal("invalid input: input should be: fh > rh || fw > rw")
+		panic("Tic-Tac-Go: board.(*Board).ConvertIndex: invalid parameters:" +
+			" fiction dimension should be smaller (or equal) than the real")
 	}
 
 	// static check: check if one dimension isn't odd and second even number
 	if fh%2 != rh%2 || fw%2 != rw%2 {
-		log.Fatal("invalid input: cannot process even and odd numbers together")
+		panic("Tic-Tac-Go: board(*Board).ConvertIndex: fiction dimension is odd/even but real isn't")
 	}
 
 	// idx is a list index, we need to make it a... index in real bord starting from 1
