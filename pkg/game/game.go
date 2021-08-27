@@ -176,7 +176,7 @@ func (g *Game) Dispose() {
 	g.winner = letter.LetterNone
 }
 
-// IsRunning returns true if Run loop was invoked
+// IsRunning returns true if Run loop was invoked.
 func (g *Game) IsRunning() bool {
 	return g.isRunning
 }
