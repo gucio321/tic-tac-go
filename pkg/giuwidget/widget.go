@@ -69,7 +69,7 @@ func (g *GameWidget) Build() {
 	giu.Button("play new game").OnClick(func() {
 		gameInstance.Dispose()
 		go gameInstance.Run()
-	}).Build()
+	}).Disabled(gameInstance.IsRunning()).Build()
 }
 
 func (g *GameWidget) buildGameBoard(gameInstance *game.Game) {
