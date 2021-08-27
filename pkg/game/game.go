@@ -178,7 +178,7 @@ func (g *Game) Dispose() {
 	g.Reset()
 }
 
-// Reset resets the game
+// Reset resets the game.
 func (g *Game) Reset() {
 	if g.isRunning {
 		panic("Tic-Tac-Go: game.(*Game).Reset() call when game is running. Did you forgot to invoke (*Game).Stop()?")
@@ -189,7 +189,7 @@ func (g *Game) Reset() {
 	g.winner = letter.LetterNone
 }
 
-// Stop savely stops the game loop invoked by (*Game).Run
+// Stop savely stops the game loop invoked by (*Game).Run.
 func (g *Game) Stop() {
 	if !g.isRunning {
 		return
