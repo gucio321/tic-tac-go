@@ -2,12 +2,12 @@ name: release-packages
 
 on:
   push:
-    branches:
-      - releases
+    tags:
+      - "v*"
   workflow_dispatch:
 
 jobs:
-  build-packages:
+  build-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -91,9 +91,8 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@v1.2.0"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
           prerelease: false
-          title: "Tic Tac Go"
+          automatic_release_tag: ${{ github.ref }}
           files: |
             tic-tac-go-terminal-game.bin
             tic-tac-go-terminal-game.AppImage
