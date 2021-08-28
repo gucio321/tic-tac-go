@@ -2,12 +2,12 @@ name: release-packages
 
 on:
   push:
-    branches:
-      - releases
+    tags:
+      - "v*"
   workflow_dispatch:
 
 jobs:
-  build-packages:
+  build-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -88,12 +88,17 @@ jobs:
           GOOS="windows" go build -o tic-tac-go-terminal-game.exe cmd/terminal-game/main.go
           CGO_ENABLED="1" GOOS="windows"  CC="/usr/bin/x86_64-w64-mingw32-gcc" CXX="/usr/bin/x86_64-w64-mingw32-c++" go build -o tic-tac-go-giu.exe cmd/giu-game/main.go
 
+      # extract tag name from github ref
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Echo
+        run: echo ${{ env.RELEASE_VERSION }}
+
       - uses: "marvinpinto/action-automatic-releases@v1.2.0"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
           prerelease: false
-          title: "Tic Tac Go"
+          automatic_release_tag: ${{ env.RELEASE_VERSION }}
           files: |
             tic-tac-go-terminal-game.bin
             tic-tac-go-terminal-game.AppImage
