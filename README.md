@@ -4,8 +4,8 @@
 
 ## About
 
-Tic-Tac-Go is a simple, command line implementation
-of tic-tac-toe game written in [Golang](https://golang.org)
+Tic-Tac-Go is an implementation
+of the tic-tac-toe game written in [Golang](https://golang.org)
 
 ## Requirements
 
@@ -44,12 +44,6 @@ go run .
 ![tic tac go in terminal](docs/in_terminal.png)
 
 ![tic tac go with DearImgui using GIU](docs/in_giu.png)
-
-## See also
-
-there is a few wrappers of this game. see:
-
-*  [tic-tac-go in Ebiten](https://github.com/gucio321/ttg-gui)
 
 ## Motivation
 
