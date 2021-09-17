@@ -90,11 +90,9 @@ func (g *Game) OnContinue(cb func()) *Game {
 	g.isRunningPanic("OnContinue")
 
 	// don't set nil callback
-	if cb == nil {
-		return g
+	if cb != nil {
+		g.onContinue = cb
 	}
-
-	g.onContinue = cb
 
 	return g
 }
