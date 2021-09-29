@@ -1,0 +1,31 @@
+name: Detect Pull Request Commands
+
+on:
+  pull_request:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+env:
+  shouldMerge: false
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: khan/pull-request-comment-trigger@master
+        id: check
+        with:
+          trigger: '!merge'
+          reaction: +1
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - run: shouldMerge=true
+  merge:
+    needs: main
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ env.shouldMerge }}
+      - run: echo $shouldMerge
+      - if: ${{ env.shouldMerge == true }}
+        run: echo "merging"
