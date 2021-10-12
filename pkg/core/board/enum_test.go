@@ -2,6 +2,8 @@ package board
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_GetWinBoard(t *testing.T) {
@@ -22,21 +24,7 @@ func Test_GetWinBoard(t *testing.T) {
 
 	combinations := board.GetWinBoard(l)
 
-	if len(correctCombinations) != len(combinations) {
-		t.Fatal("Unexpected board returned")
-	}
-
-	for i := range combinations {
-		if len(correctCombinations[i]) != len(combinations[i]) {
-			t.Fatal("Unexpected board returned")
-		}
-
-		for j := range combinations[i] {
-			if correctCombinations[i][j] != combinations[i][j] {
-				t.Fatal("Unexpected board returned")
-			}
-		}
-	}
+	assert.Equal(t, correctCombinations, combinations, "Unexpected combos returned")
 }
 
 func Test_GetCorners(t *testing.T) {
@@ -48,68 +36,36 @@ func Test_GetCorners(t *testing.T) {
 
 	corners := board.GetCorners()
 
-	if len(corners) != len(correctCorners) {
-		t.Fatal("Unexpected board corners returned")
-	}
-
-	for i := range corners {
-		if correctCorners[i] != corners[i] {
-			t.Fatal("Unexpected board corners returned")
-		}
-	}
+	assert.Equal(t, correctCorners, corners, "wrong corner values returned")
 }
 
 func Test_GetOppositeCorner(t *testing.T) {
+	a := assert.New(t)
 	w, h, l := 3, 3, 3
 	board := Create(w, h, l)
 
-	expected := 8
-	given := board.GetOppositeCorner(0)
-
-	if expected != given {
-		t.Fatal("Unexpected corner value returned")
-	}
-
-	expected = 2
-	given = board.GetOppositeCorner(6)
-
-	if expected != given {
-		t.Fatal("Unexpected corner value returned")
-	}
+	a.Equal(8, board.GetOppositeCorner(0), "unexpected corner returned")
+	a.Equal(2, board.GetOppositeCorner(6), "unexpected corner returned")
+	a.Panics(func() { board.GetOppositeCorner(1) }, "non-corner passed but GetOppositeCorner didn't panicked")
 }
 
-func Test_GetMiddles(t *testing.T) {
-	correctMiddles := []int{1, 2, 4, 7, 8, 11, 13, 14}
+func Test_GetSides(t *testing.T) {
+	expected := []int{1, 2, 4, 7, 8, 11, 13, 14}
 	w, h, l := 4, 4, 3
 	board := Create(w, h, l)
 	sides := board.GetSides()
 
-	if len(sides) != len(correctMiddles) {
-		t.Fatal("invalid board middles returned")
-	}
-
-	for i := range sides {
-		if sides[i] != correctMiddles[i] {
-			t.Fatal("invalid board middles returned")
-		}
-	}
+	assert.Equal(t, expected, sides, "unexpected sides values returned")
 }
 
 func Test_GetCenterCorrectBoard(t *testing.T) {
 	w, h, l := 3, 3, 3
 	board := Create(w, h, l)
-	correctCenter := []int{4}
+
+	expected := []int{4}
 	center := board.GetCenter()
 
-	if len(center) != len(correctCenter) {
-		t.Fatal("Unexpected board center returned")
-	}
-
-	for i := range center {
-		if center[i] != correctCenter[i] {
-			t.Fatal("Unexpected board center returned")
-		}
-	}
+	assert.Equal(t, expected, center, "unexpected center value")
 }
 
 func Test_GetCenterWrongBoard(t *testing.T) {
@@ -118,54 +74,77 @@ func Test_GetCenterWrongBoard(t *testing.T) {
 	board := Create(w, h, l)
 	center := board.GetCenter()
 
-	if len(center) > 0 {
-		t.Fatal("Unexpected board center returned")
-	}
+	assert.NotNil(t, center, "GetCenter on incorrect board returned nil")
+	assert.Equal(t, center, []int{}, "GetCenter on incorrect board didn't returned correct value")
 }
 
 func Test_ConvertIndex(t *testing.T) {
-	l := 3
-
-	fw, fh := 3, 3
-	rw, rh := 7, 7
-	board := Create(rw, rh, l)
-	idx := 4       // the center of 3x3 board
-	expected := 24 // should be 24 on 7x7 board
-	returned := board.ConvertIndex(fw, fh, idx)
-
-	if returned != expected {
-		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
+	tests := []struct {
+		name               string
+		chainLen           int
+		boardW, boardH     int
+		fictionW, fictionH int
+		index              int
+		expectedValue      int
+	}{
+		{
+			"Test 1",
+			3,
+			7, 7,
+			3, 3,
+			4,
+			24,
+		},
+		{
+			"Test 2",
+			3,
+			5, 5,
+			3, 3,
+			4,
+			12,
+		},
+		{
+			"Test 3",
+			3,
+			4, 4,
+			2, 2,
+			2,
+			9,
+		},
+		{
+			"Test 3",
+			3,
+			4, 5,
+			2, 3,
+			3,
+			10,
+		},
 	}
 
-	rw, rh = 5, 5
-	board = Create(rw, rh, l)
-	expected = 12 // should be 12 on 5x5 board
-	returned = board.ConvertIndex(fw, fh, idx)
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			board := Create(test.boardW, test.boardH, test.chainLen)
+			assert.Equal(tt, test.expectedValue, board.ConvertIndex(test.fictionW, test.fictionH, test.index))
+		})
+	}
+}
 
-	if returned != expected {
-		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
+func Test_ConvertIndex_incorrect_convertions(t *testing.T) {
+	tests := []struct {
+		name string
+		realW, realH,
+		fictionW, fictionH int
+	}{
+		{"convert to larger board 1", 3, 3, 5, 3},
+		{"convert to larger board 2", 3, 3, 9, 9},
+		{"odd and even numbers", 4, 4, 3, 3},
 	}
 
-	fw, fh = 2, 2
-	rw, rh = 4, 4
-	board = Create(rw, rh, l)
-	idx = 2
-	expected = 9
-	returned = board.ConvertIndex(fw, fh, idx)
-
-	if returned != expected {
-		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
-	}
-
-	fw, fh = 2, 3
-	rw, rh = 4, 5
-	board = Create(rw, rh, l)
-	idx = 3
-	expected = 10
-	returned = board.ConvertIndex(fw, fh, idx)
-
-	if returned != expected {
-		t.Fatalf("Returned index isn't equal to expected (%d != %d)", returned, expected)
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			assert.Panics(tt, func() { Create(test.realW, test.realH, 3).ConvertIndex(test.fictionW, test.fictionH, 0) },
+				"invalid conversion didn't panicked")
+		})
 	}
 }
 
