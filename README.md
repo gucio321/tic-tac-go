@@ -1,6 +1,7 @@
 ![CircleCI](https://img.shields.io/circleci/build/github/gucio321/tic-tac-go/master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gucio321/tic-tac-go)](https://goreportcard.com/report/github.com/gucio321/tic-tac-go)
 [![GoDoc](https://pkg.go.dev/badge/github.com/gucio321/tic-tac-go?utm_source=godoc)](https://pkg.go.dev/mod/github.com/gucio321/tic-tac-go)
+[![codecov](https://codecov.io/gh/gucio321/tic-tac-go/branch/master/graph/badge.svg)](https://codecov.io/gh/gucio321/tic-tac-go)
 
 ## About
 
