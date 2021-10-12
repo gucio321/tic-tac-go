@@ -8,7 +8,7 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
-func Test_Create(t *testing.T) {
+func Test_Board_Create(t *testing.T) {
 	correctBoard := &Board{
 		board:    make([]letter.Letter, 9),
 		width:    3,
@@ -25,50 +25,42 @@ func Test_Create(t *testing.T) {
 	assert.Equal(t, correctBoard, board, "Unexpected board created")
 }
 
-func Test_Width(t *testing.T) {
-	w, h := 3, 3
-	board := Create(w, h, 3)
+func Test_Board_getting_size(t *testing.T) {
+	a := assert.New(t)
+	w, h, c := 4, 3, 2
+	board := Create(w, h, c)
 
-	if board.Width() != w {
-		t.Fatal("Unexpected with returned")
-	}
-
-	if board.Height() != h {
-		t.Fatal("Unexpected board height returned")
-	}
+	a.Equal(w, board.Width(), "unexpected board width")
+	a.Equal(h, board.Height(), "unexpected board height")
+	a.Equal(c, board.ChainLength(), "unexpected board height")
 }
 
-func Test_setIndexState(t *testing.T) {
+func Test_Board_SetIndexState(t *testing.T) {
 	board := Create(3, 3, 3)
 
 	board.SetIndexState(5, letter.LetterX)
 
-	if board.board[5] != letter.LetterX {
-		t.Fatal("unexpected index was set by board.setIndexState")
-	}
+	assert.Equal(t, letter.LetterX, board.board[5], "Index state was set incorrectly")
+	assert.Panics(t, func() { board.SetIndexState(20, letter.LetterO) }, "Setting state of unegzisting index didn't panicked")
 }
 
-func Test_getIndexState(t *testing.T) {
+func Test_GetIndexState(t *testing.T) {
 	board := Create(3, 3, 3)
 	board.board[5] = letter.LetterX
 
-	if l := board.GetIndexState(5); l != letter.LetterX {
-		t.Fatal("unexpected index was returned by board.getIndexState")
-	}
+	assert.Equal(t, letter.LetterX, board.GetIndexState(5), "Unexpected index state")
+	assert.Panics(t, func() { board.GetIndexState(20) }, "getting state of unegzisging index didn't panicked")
 }
 
 func Test_isIndexFree(t *testing.T) {
+	a := assert.New(t)
 	board := Create(3, 3, 3)
 
 	board.board[5] = letter.LetterX
 
-	if board.IsIndexFree(5) {
-		t.Fatal("isIndexFree returned unexpected value")
-	}
-
-	if !board.IsIndexFree(4) {
-		t.Fatal("isIndexFree returned unexpected value")
-	}
+	a.False(board.IsIndexFree(5), "IsIndexFree returned unexpected value")
+	a.True(board.IsIndexFree(4), "IsIndexFree returned unexpected value")
+	a.Panics(func() { board.IsIndexFree(20) }, "IsIndexFree returned unexpected value")
 }
 
 func Test_Copy(t *testing.T) {
@@ -80,17 +72,15 @@ func Test_Copy(t *testing.T) {
 }
 
 func Test_Cut(t *testing.T) {
+	a := assert.New(t)
 	board := Create(3, 3, 3)
 	board.SetIndexState(4, letter.LetterX)
 	result := board.Cut(1, 1)
 
-	if len(result.board) != 1 {
-		t.Fatal("unexpected board cut")
-	}
+	a.Equal(1, len(result.board), "wrong board cut")
+	a.Equal(letter.LetterX, result.board[0], "wrong board cut")
 
-	if result.board[0] != letter.LetterX {
-		t.Fatal("unexpected board cut")
-	}
+	a.Panics(func() { board.Cut(20, 20) }, "cutting larger board from smaller didn't panicked")
 }
 
 func Test_IsBoardFull(t *testing.T) {
