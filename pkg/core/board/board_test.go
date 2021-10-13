@@ -284,12 +284,13 @@ func Test_Board_GetWinner(t *testing.T) {
 		}, letter.LetterNone, nil},
 		{"X wins", &Board{
 			width:    3,
-			height:   3,
+			height:   4,
 			chainLen: 3,
 			board: []letter.Letter{
 				1, 0, 0,
 				0, 1, 0,
 				0, 0, 1,
+				0, 0, 0,
 			},
 		}, letter.LetterX, []int{0, 4, 8}},
 		{"O wins", &Board{

@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
 func Test_Board_separator(t *testing.T) {
