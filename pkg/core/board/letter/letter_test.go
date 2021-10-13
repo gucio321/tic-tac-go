@@ -25,7 +25,7 @@ func Test_String(t *testing.T) {
 }
 
 func Test_Letter_incorrect_letter(t *testing.T) {
-	assert.Panics(t, func() { Letter(5).String() }, "Getting string of incorrect letter didn't panicked")
+	assert.Panics(t, func() { _ = Letter(5).String() }, "Getting string of incorrect letter didn't panicked")
 }
 
 func Test_Opposite(t *testing.T) {
