@@ -110,21 +110,57 @@ func Test_IntToCords(t *testing.T) {
 		| 6 | 7 | 8 |
 		+---+---+---+
 	*/
-	w, h, c := 3, 3, 3
-	b := Create(w, h, c)
-	// so index 3 should have y = 1, x = 0
-	i := 3
-	x, y := b.IntToCords(i)
-
-	if y != 1 || x != 0 {
-		t.Fatalf("IntToCords(%d, %d, %d) returned unexpected values x: %d, y: %d", w, h, i, x, y)
+	const chainLen = 3
+	tests := []struct {
+		name                 string
+		w, h                 int
+		source               int
+		expectedX, expectedY int
+	}{
+		{"Test 1", 3, 3, 3, 0, 1},
+		{"Test 2", 3, 3, 7, 1, 2},
 	}
 
-	// index 7 should have y = 2, x = 1
-	i = 7
-	x, y = b.IntToCords(i)
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			b := Create(test.w, test.h, chainLen)
+			x, y := b.IntToCords(test.source)
 
-	if y != 2 || x != 1 {
-		t.Fatalf("IntToCords(%d, %d, %d) returned unexpected values x: %d, y: %d", w, h, i, x, y)
+			assert.Equal(tt, test.expectedX, x, "unexpected index converted")
+			assert.Equal(tt, test.expectedY, y, "unexpected index converted")
+		})
 	}
+}
+
+func Test_IntToCords_incorrect_cords(t *testing.T) {
+	assert.Panics(t, func() {
+		Create(2, 2, 2).IntToCords(20)
+	}, "calling IntToCords with too large index didn't panicked")
+}
+
+func Test_CordsToInt(t *testing.T) {
+	tests := []struct {
+		name             string
+		w, h             int
+		sourceX, sourceY int
+		expected         int
+	}{
+		{"Test 1", 3, 3, 0, 0, 0},
+		{"Test 2", 3, 3, 1, 2, 7},
+		{"Test 3", 3, 4, 1, 2, 7},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			assert.Equal(tt,
+				Create(test.w, test.h, 1).CordsToInt(test.sourceX, test.sourceY),
+				test.expected, "unexpected result")
+		})
+	}
+}
+
+func Test_CordsToInt_incorrect_cords(t *testing.T) {
+	assert.Panics(t, func() {
+		Create(2, 2, 2).CordsToInt(20, 20)
+	}, "calling IntToCords with too large index didn't panicked")
 }
