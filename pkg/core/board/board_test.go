@@ -111,6 +111,7 @@ func Test_IntToCords(t *testing.T) {
 		+---+---+---+
 	*/
 	const chainLen = 3
+
 	tests := []struct {
 		name                 string
 		w, h                 int

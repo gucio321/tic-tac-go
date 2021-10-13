@@ -5,14 +5,16 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
 func Test_PlayerType_String_invalid_type(t *testing.T) {
-	assert.Panics(t, func() { Type(5).String() }, "Calling string method of inocorrecty player's type didn't panicked")
+	assert.Panics(t, func() { _ = Type(5).String() }, "Calling string method of inocorrecty player's type didn't panicked")
 }
 
 func Test_Create(t *testing.T) {
 	const num = 8
+
 	a := assert.New(t)
 	player := Create(PlayerPerson, letter.LetterX, func(_ letter.Letter) int { return num })
 
