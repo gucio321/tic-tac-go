@@ -7,7 +7,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const playerString = "Player X"
+func Test_PlayerType_String_invalid_type(t *testing.T) {
+	assert.Panics(t, func() { Type(5).String() }, "Calling string method of inocorrecty player's type didn't panicked")
+}
 
 func Test_Create(t *testing.T) {
 	const num = 8
@@ -17,14 +19,30 @@ func Test_Create(t *testing.T) {
 	a.Equal(PlayerPerson, player.playerType, "Unexpected player created")
 	a.Equal(letter.LetterX, player.letter, "Unexpected player created")
 	a.Equal(num, player.moveCb(player.letter), "Unexpected player created")
-	a.Equal(playerString, player.name, "Unexpected player created")
 }
 
 func Test_Move(t *testing.T) {
-	const num = 8
-	player := Create(PlayerPerson, letter.LetterX, func(_ letter.Letter) int { return num })
+	tests := []struct {
+		name   string
+		number int
+	}{
+		{"Standard test", 8},
+	}
 
-	assert.Equal(t, num, player.Move(), "unexpected move done")
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			player := Create(PlayerPerson, letter.LetterX, func(_ letter.Letter) int { return test.number })
+
+			assert.Equal(tt, test.number, player.Move(), "unexpected move done")
+		})
+	}
+}
+
+func Test_Move_nil_callback(t *testing.T) {
+	assert.Panics(t, func() {
+		player := Create(PlayerPerson, letter.LetterX, nil)
+		player.Move()
+	}, "calling player.Move with nil callback didn't panicked")
 }
 
 func Test_Letter(t *testing.T) {
@@ -34,9 +52,23 @@ func Test_Letter(t *testing.T) {
 }
 
 func Test_Name(t *testing.T) {
-	player := Create(PlayerPerson, letter.LetterX, nil)
+	tests := []struct {
+		name     string
+		expected string
+		pt       Type
+		pl       letter.Letter
+	}{
+		{"person x", "Player X", PlayerPerson, letter.LetterX},
+		{"pc o", "PC O", PlayerPC, letter.LetterO},
+	}
 
-	assert.Equal(t, playerString, player.Name(), "unexpected name returned")
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			player := Create(test.pt, test.pl, nil)
+
+			assert.Equal(tt, test.expected, player.Name(), "unexpected name returned")
+		})
+	}
 }
 
 func Test_Type(t *testing.T) {
