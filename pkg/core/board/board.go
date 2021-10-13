@@ -117,6 +117,9 @@ func (b *Board) String() string {
 			line += " | "
 		}
 
+		// trim last space
+		line = line[:len(line)-1]
+
 		s += line + "\n" + b.separator() + "\n"
 	}
 
@@ -137,6 +140,10 @@ func (b *Board) IsBoardFull() bool {
 // IsWinner returns true if the 'player' is a winner.
 // In addition IsWinner will return a list of winning combination.
 func (b *Board) IsWinner(player letter.Letter) (ok bool, i []int) {
+	if player == letter.LetterNone {
+		return false, nil
+	}
+
 	combos := b.GetWinBoard(b.chainLen)
 
 	for _, i := range combos {

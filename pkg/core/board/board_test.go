@@ -44,7 +44,7 @@ func Test_Board_SetIndexState(t *testing.T) {
 	assert.Panics(t, func() { board.SetIndexState(20, letter.LetterO) }, "Setting state of unegzisting index didn't panicked")
 }
 
-func Test_GetIndexState(t *testing.T) {
+func Test_Board_GetIndexState(t *testing.T) {
 	board := Create(3, 3, 3)
 	board.board[5] = letter.LetterX
 
@@ -52,7 +52,7 @@ func Test_GetIndexState(t *testing.T) {
 	assert.Panics(t, func() { board.GetIndexState(20) }, "getting state of unegzisging index didn't panicked")
 }
 
-func Test_isIndexFree(t *testing.T) {
+func Test_Board_IsIndexFree(t *testing.T) {
 	a := assert.New(t)
 	board := Create(3, 3, 3)
 
@@ -63,7 +63,7 @@ func Test_isIndexFree(t *testing.T) {
 	a.Panics(func() { board.IsIndexFree(20) }, "IsIndexFree returned unexpected value")
 }
 
-func Test_Copy(t *testing.T) {
+func Test_Board_Copy(t *testing.T) {
 	board := Create(3, 3, 3)
 	board.SetIndexState(4, letter.LetterX)
 	newBoard := board.Copy()
@@ -71,7 +71,7 @@ func Test_Copy(t *testing.T) {
 	assert.Equal(t, board, newBoard, "unexpected board copied")
 }
 
-func Test_Cut(t *testing.T) {
+func Test_Board_Cut(t *testing.T) {
 	a := assert.New(t)
 	board := Create(3, 3, 3)
 	board.SetIndexState(4, letter.LetterX)
@@ -83,23 +83,50 @@ func Test_Cut(t *testing.T) {
 	a.Panics(func() { board.Cut(20, 20) }, "cutting larger board from smaller didn't panicked")
 }
 
-func Test_IsBoardFull(t *testing.T) {
-	board := Create(2, 2, 2)
-	if board.IsBoardFull() {
-		t.Fatal("unexbected value returned by isBoardFull method")
+func Test_Board_IsBoardFull(t *testing.T) {
+	tests := []struct {
+		name     string
+		board    *Board
+		expected bool
+	}{
+		{"Empty at all", &Board{
+			width:  3,
+			height: 3,
+			board: []letter.Letter{
+				0, 0, 0,
+				0, 0, 0,
+				0, 0, 0,
+			},
+		}, false},
+		{"One entry free", &Board{
+			width:  5,
+			height: 4,
+			board: []letter.Letter{
+				2, 1, 1, 1, 1,
+				1, 2, 1, 2, 2,
+				2, 1, 1, 2, 1,
+				2, 1, 2, 0, 1,
+			},
+		}, false},
+		{"Full", &Board{
+			width:  3,
+			height: 3,
+			board: []letter.Letter{
+				1, 2, 1,
+				1, 2, 2,
+				2, 1, 1,
+			},
+		}, true},
 	}
 
-	board.SetIndexState(0, letter.LetterX)
-	board.SetIndexState(1, letter.LetterO)
-	board.SetIndexState(2, letter.LetterO)
-	board.SetIndexState(3, letter.LetterX)
-
-	if !board.IsBoardFull() {
-		t.Fatal("unexbected value returned by isBoardFull method")
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			assert.Equal(tt, test.expected, test.board.IsBoardFull(), "unexpected result")
+		})
 	}
 }
 
-func Test_IntToCords(t *testing.T) {
+func Test_Board_IntToCords(t *testing.T) {
 	// standard 3x3 board
 	/*
 		+---+---+---+
@@ -133,13 +160,13 @@ func Test_IntToCords(t *testing.T) {
 	}
 }
 
-func Test_IntToCords_incorrect_cords(t *testing.T) {
+func Test_Board_IntToCords_incorrect_cords(t *testing.T) {
 	assert.Panics(t, func() {
 		Create(2, 2, 2).IntToCords(20)
 	}, "calling IntToCords with too large index didn't panicked")
 }
 
-func Test_CordsToInt(t *testing.T) {
+func Test_Board_CordsToInt(t *testing.T) {
 	tests := []struct {
 		name             string
 		w, h             int
@@ -160,8 +187,145 @@ func Test_CordsToInt(t *testing.T) {
 	}
 }
 
-func Test_CordsToInt_incorrect_cords(t *testing.T) {
+func Test_Board_CordsToInt_incorrect_cords(t *testing.T) {
 	assert.Panics(t, func() {
 		Create(2, 2, 2).CordsToInt(20, 20)
 	}, "calling IntToCords with too large index didn't panicked")
+}
+
+func Test_Board_IsWinner(t *testing.T) {
+	tests := []struct {
+		name           string
+		board          *Board
+		expectedLetter letter.Letter
+		expected       []int
+	}{
+		{"No winners", &Board{
+			width:    3,
+			height:   3,
+			chainLen: 3,
+			board: []letter.Letter{
+				0, 0, 0,
+				0, 0, 0,
+				0, 0, 0,
+			},
+		}, letter.LetterNone, nil},
+		{"X wins", &Board{
+			width:    3,
+			height:   3,
+			chainLen: 3,
+			board: []letter.Letter{
+				1, 0, 0,
+				0, 1, 0,
+				0, 0, 1,
+			},
+		}, letter.LetterX, []int{0, 4, 8}},
+		{"O wins", &Board{
+			width:    4,
+			height:   4,
+			chainLen: 4,
+			board: []letter.Letter{
+				2, 0, 2, 2,
+				1, 1, 1, 2,
+				0, 0, 2, 2,
+				0, 0, 0, 2,
+			},
+		}, letter.LetterO, []int{3, 7, 11, 15}},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			a := assert.New(tt)
+			isX, x := test.board.IsWinner(letter.LetterX)
+			isO, o := test.board.IsWinner(letter.LetterO)
+
+			if isX {
+				a.NotNil(x, "unexpected values returned")
+			} else {
+				a.Nil(x, "unexpected values returned")
+			}
+
+			if isO {
+				a.NotNil(o, "unexpected values returned")
+			} else {
+				a.Nil(o, "unexpected values returned")
+			}
+
+			isWinner, combo := test.board.IsWinner(test.expectedLetter)
+
+			switch {
+			case test.expected == nil:
+				a.False(isWinner, "IsWinner called for winning player didn't returned true")
+			default:
+				a.True(isWinner, "IsWinner called for winning player didn't returned true")
+			}
+
+			a.Equal(test.expected, combo, "unexpected winer combo returned")
+		})
+	}
+}
+
+func Test_Board_GetWinner(t *testing.T) {
+	tests := []struct {
+		name           string
+		board          *Board
+		expectedLetter letter.Letter
+		expected       []int
+	}{
+		{"No winners", &Board{
+			width:    3,
+			height:   3,
+			chainLen: 3,
+			board: []letter.Letter{
+				0, 0, 0,
+				0, 0, 0,
+				0, 0, 0,
+			},
+		}, letter.LetterNone, nil},
+		{"X wins", &Board{
+			width:    3,
+			height:   3,
+			chainLen: 3,
+			board: []letter.Letter{
+				1, 0, 0,
+				0, 1, 0,
+				0, 0, 1,
+			},
+		}, letter.LetterX, []int{0, 4, 8}},
+		{"O wins", &Board{
+			width:    4,
+			height:   4,
+			chainLen: 4,
+			board: []letter.Letter{
+				2, 0, 2, 2,
+				1, 1, 1, 2,
+				0, 0, 2, 2,
+				0, 0, 0, 2,
+			},
+		}, letter.LetterO, []int{3, 7, 11, 15}},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			a := assert.New(tt)
+			winner, combo := test.board.GetWinner()
+			a.Equal(winner, test.expectedLetter, "unexpected letter")
+			a.Equal(combo, test.expected, "unexpected combo")
+		})
+	}
+}
+
+func Test_Board_GetWinner_both_players_winns(t *testing.T) {
+	board := &Board{
+		width:    3,
+		height:   3,
+		chainLen: 3,
+		board: []letter.Letter{
+			1, 2, 0,
+			1, 2, 0,
+			1, 2, 0,
+		},
+	}
+
+	assert.Panics(t, func() { board.GetWinner() }, "scenerio when both players wins should panic but didn't!")
 }
