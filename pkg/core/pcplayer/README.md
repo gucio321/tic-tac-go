@@ -24,28 +24,28 @@ package main
 import (
 	"fmt"
 
-	"github.com/gucio321/tic-tac-go/ttggame/ttgboard"
-	"github.com/gucio321/tic-tac-go/ttggame/ttgpcplayer"
-	"github.com/gucio321/tic-tac-go/ttggame/ttgletter"
+	"github.com/gucio321/tic-tac-go/pkg/core/board"
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+	"github.com/gucio321/tic-tac-go/pkg/core/pcplayer"
 )
 
 func main() {
 	// create board
 	width, height := 3, 3
 	chainLen := 3
-	board := ttgboard.NewBoard(width, height, chainLen)
+	board := board.Create(width, height, chainLen)
 
 	// fill board
-	board.SetIndexState(0, ttgletter.LetterX)
-	board.SetIndexState(4, ttgletter.LetterO)
-	board.SetIndexState(8, ttgletter.LetterX)
-	board.SetIndexState(6, ttgletter.LetterX)
+	board.SetIndexState(0, letter.LetterX)
+	board.SetIndexState(4, letter.LetterO)
+	board.SetIndexState(8, letter.LetterX)
+	board.SetIndexState(6, letter.LetterX)
 
 	fmt.Println(board)
 
 	// make move using AI engine
-	i := ttgpcplayer.GetPCMove(board, ttgletter.LetterO)
-	board.SetIndexState(i, ttgletter.LetterO)
+	i := pcplayer.GetPCMove(board, letter.LetterO)
+	board.SetIndexState(i, letter.LetterO)
 
 	fmt.Println(board)
 }
