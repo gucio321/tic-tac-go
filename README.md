@@ -48,6 +48,6 @@ go run .
 
 ## Motivation
 
-When I'm learning a new programming language, I'm writtin a game
-like that to check myself. Because I liked the [golang](https://golang.org),
-I decided to share and improve my work.
+When I'm learning a new programming language, I write a game
+like this one to check myself. Because I liked [golang](https://golang.org)
+and decided to share and improve my work.
