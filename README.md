@@ -3,41 +3,46 @@
 [![GoDoc](https://pkg.go.dev/badge/github.com/gucio321/tic-tac-go?utm_source=godoc)](https://pkg.go.dev/mod/github.com/gucio321/tic-tac-go)
 [![codecov](https://codecov.io/gh/gucio321/tic-tac-go/branch/master/graph/badge.svg)](https://codecov.io/gh/gucio321/tic-tac-go)
 
-## About
+# About
 
 Tic-Tac-Go is an implementation
 of the tic-tac-toe game written in [Golang](https://golang.org)
 
+# Installation
+
 ## Requirements
 
-to run the game you only need to install [golang](https://golang.org)
+to run the game you just need to have
+[GO programming language](https://golang.org) installed.
 
-if you want to run a giu version of the game, you'll need some dependencies
-on linux, run:
-```sh
-sudo apt-get install -y libgtk-3-dev libasound2-dev libxxf86vm-dev
-```
+You may also want to use graphical version of the game,
+so I suggest following
+[GIU installation instruction](https://github.com/AllenDang/giu#install)
 
-for more details, see a documentation of giu: https://github.com/AllenDang/giu#install
+## Installing binaries
 
-### Installation
-
-To install the game, first download it: `go get github.com/gucio321/tic-tac-go`
+To install the game with golang api,
+first download it: `go get github.com/gucio321/tic-tac-go`
 and let's GO!
-Since now, an executale binary will be present in `$GOPATH/bin/`
+Since now, an executable will be present in `$GOPATH/bin/` directory.
 
-### How to run?
+### So how to run now?
 
-After installation, just execute `go run github.com/gucio321/tic-tac-go`
-or `$GOPATH/bin/tic-tac-go`
+After installation, just run
+`go run github.com/gucio321/tic-tac-go/cmd/terminal-game` for
+simple console game implementation or
+`go run github.com/gucio321/tic-tac-go/cmd/giu-game` for
+advanced graphical one.
 
-You can also download the source by `git clone https://github.com/gucio321/tic-tac-go`
-and then:
+## Well, but I'd like to know more about source code!
+
+You can also download the source by running
+`git clone https://github.com/gucio321/tic-tac-go`
+and then, to set up the project:
 
 ```sh
 cd tic-tac-go
 go get -d ./...
-go run .
 ```
 
 ## Screenshots
