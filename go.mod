@@ -9,8 +9,8 @@ require (
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
-	github.com/rivo/uniseg v0.2.0 // indirect
-	github.com/russross/blackfriday v1.6.0
+	github.com/russross/blackfriday v2.0.0+incompatible
+	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/image v0.0.0-20211028202545-6944b10bf410 // indirect
