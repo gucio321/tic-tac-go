@@ -34,26 +34,28 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type player.Type) *TTG {
 
 // Run runs the game.
 func (t *TTG) Run() {
-	go t.Game.Run()
+	endGame := make(chan bool, 1)
+	t.Game.Result(func(l letter.Letter) {
+		// handle game end
+		switch l {
+		case letter.LetterNone:
+			fmt.Println("DRAW")
+		default:
+			fmt.Println(t.CurrentPlayer().Name() + " won")
+		}
 
-	for {
+		t.pressAnyKeyPrompt()
+		endGame <- true
+	})
+
+	t.Game.Run()
+
+	for t.Game.IsRunning() {
 		// handle user move
 		if t.IsUserActionRequired() {
 			t.TakeUserAction(t.getPlayerMove())
 		}
-
-		// handle game end
-		if reached, result := t.Result(); reached {
-			switch result {
-			case letter.LetterNone:
-				fmt.Println("DRAW")
-			default:
-				fmt.Println(t.CurrentPlayer().Name() + " won")
-			}
-
-			t.pressAnyKeyPrompt()
-
-			break
-		}
 	}
+
+	<-endGame
 }

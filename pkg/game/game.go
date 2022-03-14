@@ -37,8 +37,7 @@ type Game struct {
 	userAction         chan int
 	userActionRequired bool
 
-	gameOver bool
-	winner   letter.Letter
+	resultCB func(letter.Letter)
 }
 
 // Create creates a game instance.
@@ -46,9 +45,9 @@ func Create(p1type, p2type player.Type) *Game {
 	result := &Game{
 		board:              board.Create(defaultBoardW, defaultBoardH, defaultChainLen),
 		userAction:         make(chan int),
-		winner:             letter.LetterNone,
 		onContinue:         func() {},
 		userActionRequired: false,
+		resultCB:           func(letter.Letter) {},
 	}
 
 	var p1Cb, p2Cb func(letter.Letter) int
@@ -119,8 +118,9 @@ func (g *Game) TakeUserAction(idx int) {
 
 // Result returns true if game is ended. in addition it returns its result.
 // if LetterNone returned - it means that DRAW reached.
-func (g *Game) Result() (bool, letter.Letter) {
-	return g.gameOver, g.winner
+func (g *Game) Result(resultCB func(letter.Letter)) *Game {
+	g.resultCB = resultCB
+	return g
 }
 
 // CurrentPlayer returns a current player.
@@ -138,36 +138,36 @@ func (g *Game) Run() {
 	// prevent user from calling setter functions
 	g.isRunning = true
 
-	// main loop
-	for {
-		g.onContinue()
-		idx := g.players.Current().Move()
-
-		// if loop was stopped by Dispose() or Stop(), exit the loop
-		if !g.isRunning {
-			return
-		}
-
-		g.Board().SetIndexState(idx, g.players.Current().Letter())
-
-		if ok, _ := g.Board().IsWinner(g.players.Current().Letter()); ok {
+	go func() {
+		// main loop
+		for {
 			g.onContinue()
-			g.winner = g.players.Current().Letter()
-			g.isRunning = false
-			g.gameOver = true
+			idx := g.players.Current().Move()
 
-			return
-		} else if g.Board().IsBoardFull() {
-			g.onContinue()
-			g.winner = letter.LetterNone
-			g.gameOver = true
-			g.isRunning = false
+			// if loop was stopped by Dispose() or Stop(), exit the loop
+			if !g.isRunning {
+				return
+			}
 
-			return
+			g.Board().SetIndexState(idx, g.players.Current().Letter())
+
+			if ok, _ := g.Board().IsWinner(g.players.Current().Letter()); ok {
+				g.onContinue()
+				g.isRunning = false
+				g.resultCB(g.players.Current().Letter())
+
+				return
+			} else if g.Board().IsBoardFull() {
+				g.onContinue()
+				g.isRunning = false
+				g.resultCB(g.players.Current().Letter())
+
+				return
+			}
+
+			g.players.Next()
 		}
-
-		g.players.Next()
-	}
+	}()
 }
 
 // Dispose resets the game.
@@ -183,8 +183,6 @@ func (g *Game) Reset() {
 	}
 
 	*g.board = *board.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
-	g.gameOver = false
-	g.winner = letter.LetterNone
 }
 
 // Stop savely stops the game loop invoked by (*Game).Run.
