@@ -32,22 +32,21 @@ type Game struct {
 
 	isRunning bool
 
-	onContinue func()
-
-	userAction         chan int
-	userActionRequired bool
-
-	resultCB func(letter.Letter)
+	onContinue   func()
+	resultCB     func(letter.Letter)
+	userActionCB func() int
 }
 
 // Create creates a game instance.
 func Create(p1type, p2type player.Type) *Game {
 	result := &Game{
-		board:              board.Create(defaultBoardW, defaultBoardH, defaultChainLen),
-		userAction:         make(chan int),
-		onContinue:         func() {},
-		userActionRequired: false,
-		resultCB:           func(letter.Letter) {},
+		board:      board.Create(defaultBoardW, defaultBoardH, defaultChainLen),
+		onContinue: func() {},
+		resultCB:   func(letter.Letter) {},
+		userActionCB: func() int {
+			panic(fmt.Sprintf("Tic-Tac-Go: game.(*Game): user action callback is not set!"))
+			return -1
+		},
 	}
 
 	var p1Cb, p2Cb func(letter.Letter) int
@@ -105,15 +104,8 @@ func (g *Game) Board() *board.Board {
 	return b
 }
 
-// IsUserActionRequired returns true if caller needs to ask user for his move.
-func (g *Game) IsUserActionRequired() bool {
-	return g.userActionRequired
-}
-
-// TakeUserAction should be used to pass player move.
-func (g *Game) TakeUserAction(idx int) {
-	g.userActionRequired = false
-	g.userAction <- idx
+func (g *Game) UserAction(cb func() int) {
+	g.userActionCB = cb
 }
 
 // Result returns true if game is ended. in addition it returns its result.
@@ -160,7 +152,7 @@ func (g *Game) Run() {
 			} else if g.Board().IsBoardFull() {
 				g.onContinue()
 				g.isRunning = false
-				g.resultCB(g.players.Current().Letter())
+				g.resultCB(letter.LetterNone)
 
 				return
 			}
@@ -192,11 +184,6 @@ func (g *Game) Stop() {
 	}
 
 	g.isRunning = false
-
-	// if awaiting user action, pass any invalid number to exit `Run` loop
-	if g.IsUserActionRequired() {
-		g.TakeUserAction(-1)
-	}
 }
 
 // IsRunning returns true if Run loop was invoked.
@@ -215,7 +202,5 @@ func (g *Game) isRunningPanic(methodName string) {
 
 // getUserAction is set as a player callback when PlayerTypePerson.
 func (g *Game) getUserAction() int {
-	g.userActionRequired = true
-
-	return <-g.userAction
+	return g.userActionCB()
 }

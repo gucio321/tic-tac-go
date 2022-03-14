@@ -48,14 +48,9 @@ func (t *TTG) Run() {
 		endGame <- true
 	})
 
-	t.Game.Run()
+	t.Game.UserAction(t.getPlayerMove)
 
-	for t.Game.IsRunning() {
-		// handle user move
-		if t.IsUserActionRequired() {
-			t.TakeUserAction(t.getPlayerMove())
-		}
-	}
+	t.Game.Run()
 
 	<-endGame
 }
