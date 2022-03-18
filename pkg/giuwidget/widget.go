@@ -10,7 +10,6 @@ import (
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
-	"github.com/gucio321/tic-tac-go/pkg/game"
 )
 
 const id = "Tic-Tac-Go-game"
@@ -36,48 +35,31 @@ func Game(p1type, p2type player.Type, w, h, c int) *GameWidget {
 	}
 }
 
-func (g *GameWidget) getGame() (state *game.Game) {
-	if s := giu.Context.GetState(id); s == nil {
-		state = game.Create(g.p1type, g.p2type).SetBoardSize(g.w, g.h, g.chainLen)
-		giu.Context.SetState(id, state)
-	} else {
-		var ok bool
-		state, ok = s.(*game.Game)
-		if !ok {
-			panic("Tic-Tac-Go: game.(*Game).getGame (internal): unexpected state recovered from giu")
-		}
-	}
-
-	return state
-}
-
 // Build builds the game.
 func (g *GameWidget) Build() {
-	gameInstance := g.getGame()
+	state := g.getState()
 
-	g.buildGameBoard(gameInstance)
+	g.buildGameBoard(state)
 
 	giu.Button("play new game").OnClick(func() {
-		gameInstance.Dispose()
-		go gameInstance.Run()
-	}).Disabled(gameInstance.IsRunning()).Build()
+		state.game.Dispose()
+		go state.game.Run()
+	}).Disabled(state.game.IsRunning()).Build()
 }
 
-func (g *GameWidget) buildGameBoard(gameInstance *game.Game) {
+func (g *GameWidget) buildGameBoard(state *gameState) {
 	board := giu.Layout{}
 
-	for y := 0; y < gameInstance.Board().Height(); y++ {
+	for y := 0; y < state.game.Board().Height(); y++ {
 		line := giu.Layout{}
 
-		for x := 0; x < gameInstance.Board().Width(); x++ {
-			idx := y*gameInstance.Board().Width() + x
-			s := gameInstance.Board().GetIndexState(idx)
+		for x := 0; x < state.game.Board().Width(); x++ {
+			idx := y*state.game.Board().Width() + x
+			s := state.game.Board().GetIndexState(idx)
 			btn := giu.Button(s.String()+"##BoardIndex"+strconv.Itoa(idx)).
 				Size(buttonW, buttonH).OnClick(func() {
-				if gameInstance.IsUserActionRequired() {
-					if s == letter.LetterNone {
-						gameInstance.TakeUserAction(idx)
-					}
+				if s == letter.LetterNone {
+					state.buttonClick <- idx
 				}
 			})
 
@@ -100,9 +82,8 @@ func (g *GameWidget) buildGameBoard(gameInstance *game.Game) {
 				}
 			}
 
-			if gameEnd, l := gameInstance.Result(); gameEnd && l != letter.LetterNone {
-				_, winningCombo := gameInstance.Board().GetWinner()
-				for _, i := range winningCombo {
+			if state.gameEnded {
+				for _, i := range state.winningCombo {
 					if i == idx {
 						c = color.RGBA{
 							R: 0,
