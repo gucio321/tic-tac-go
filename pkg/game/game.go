@@ -40,6 +40,7 @@ type Game struct {
 // Create creates a game instance.
 func Create(p1type, p2type player.Type) *Game {
 	result := &Game{
+		isRunning:  false,
 		board:      board.Create(defaultBoardW, defaultBoardH, defaultChainLen),
 		onContinue: func() {},
 		resultCB:   func(letter.Letter) {},
@@ -95,15 +96,7 @@ func (g *Game) OnContinue(cb func()) *Game {
 	return g
 }
 
-// runners
-
-// Board returns game board.
-func (g *Game) Board() *board.Board {
-	b := g.board
-
-	return b
-}
-
+// UserAction sets user action callback called when game needs to get user's action
 func (g *Game) UserAction(cb func() int) {
 	g.userActionCB = cb
 }
@@ -115,8 +108,19 @@ func (g *Game) Result(resultCB func(letter.Letter)) *Game {
 	return g
 }
 
+// runners
+
+// Board returns game board.
+func (g *Game) Board() *board.Board {
+	g.notRunningPanic("Board")
+	b := g.board
+
+	return b
+}
+
 // CurrentPlayer returns a current player.
 func (g *Game) CurrentPlayer() *player.Player {
+	g.notRunningPanic("CurrentPlayer")
 	return g.players.Current()
 }
 
@@ -197,6 +201,13 @@ func (g *Game) IsRunning() bool {
 func (g *Game) isRunningPanic(methodName string) {
 	if g.IsRunning() {
 		panic(fmt.Sprintf("Tic-Tac-Go: game.(*Game).%s: invalid use of setter function after invoking Run", methodName))
+	}
+}
+
+// notRunningPanic is called when a method is not allowed when `isRunning`.
+func (g *Game) notRunningPanic(methodName string) {
+	if !g.IsRunning() {
+		panic(fmt.Sprintf("Tic-Tac-Go: game.(*Game).%s: invalid use of in-game function before calling Run", methodName))
 	}
 }
 
