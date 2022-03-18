@@ -43,7 +43,7 @@ func (g *GameWidget) Build() {
 
 	giu.Button("play new game").OnClick(func() {
 		state.game.Dispose()
-		go state.game.Run()
+		state.game.Run()
 	}).Disabled(state.game.IsRunning()).Build()
 }
 
