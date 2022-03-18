@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	gist.github.com/2335e953b45f46591839a21c502588ea.git v0.0.0-20210418124924-7487e35e5bec
-	github.com/AllenDang/giu v0.6.2-0.20220307070231-492e5a43166f
+	github.com/AllenDang/giu v0.6.2-0.20220311070631-6602fc86f078
 	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba
 	github.com/mattn/go-runewidth v0.0.13 // indirect
