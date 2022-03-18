@@ -2,6 +2,7 @@ package giuwidget
 
 import (
 	"github.com/AllenDang/giu"
+	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/game"
 )
@@ -13,6 +14,7 @@ type gameState struct {
 	buttonClick  chan int
 	gameEnded    bool
 	winningCombo []int
+	currentBoard *board.Board
 }
 
 // Dispose implements giu.Disposable
@@ -44,7 +46,7 @@ func (g *GameWidget) newState() *gameState {
 	}
 
 	state.game.Result(func(l letter.Letter) {
-		_, state.winningCombo = state.game.Board().GetWinner()
+		_, state.winningCombo = state.currentBoard.GetWinner()
 		state.gameEnded = true
 	})
 

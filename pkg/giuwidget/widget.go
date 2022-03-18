@@ -50,14 +50,18 @@ func (g *GameWidget) Build() {
 }
 
 func (g *GameWidget) buildGameBoard(state *gameState) {
+	if state.game.IsRunning() {
+		state.currentBoard = state.game.Board()
+	}
+
 	board := giu.Layout{}
 
-	for y := 0; y < state.game.Board().Height(); y++ {
+	for y := 0; y < state.currentBoard.Height(); y++ {
 		line := giu.Layout{}
 
-		for x := 0; x < state.game.Board().Width(); x++ {
-			idx := y*state.game.Board().Width() + x
-			s := state.game.Board().GetIndexState(idx)
+		for x := 0; x < state.currentBoard.Width(); x++ {
+			idx := y*state.currentBoard.Width() + x
+			s := state.currentBoard.GetIndexState(idx)
 			btn := giu.Button(s.String()+"##BoardIndex"+strconv.Itoa(idx)).
 				Size(buttonW, buttonH).OnClick(func() {
 				if s == letter.LetterNone {
