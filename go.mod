@@ -18,3 +18,5 @@ require (
 	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
 	golang.org/x/sys v0.0.0-20220318055525-2edf467146b5 // indirect
 )
+
+replace github.com/AllenDang/giu => github.com/gucio321/giu v0.5.3-0.20220319132015-02e72d9237d6
