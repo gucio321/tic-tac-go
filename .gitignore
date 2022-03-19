@@ -20,7 +20,7 @@
 coverage.txt
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
 .DS_Store
 
 # binary on *nix
