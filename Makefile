@@ -20,7 +20,10 @@ all: build
 ## build: Builds the binary
 build:
 	@echo "Building..."
-	@$(GOCMD) build -o ${NAME} cmd/terminal-game/main.go
+	@echo "Building - terminal game..."
+	@$(GOCMD) build -o tic-tac-go-terminal cmd/terminal-game/tic-tac-go.go
+	@echo "Building - windowed game..."
+	@$(GOCMD) build -o tic-tac-go-windowed cmd/giu-game/tic-tac-go.go
 
 ## setup: Runs mod download and generate
 setup:
