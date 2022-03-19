@@ -15,6 +15,7 @@ type gameState struct {
 	gameEnded    bool
 	winningCombo []int
 	currentBoard *board.Board
+	displayBoard bool
 }
 
 // Dispose implements giu.Disposable

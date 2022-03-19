@@ -39,12 +39,13 @@ func Game(p1type, p2type player.Type, w, h, c int) *GameWidget {
 func (g *GameWidget) Build() {
 	state := g.getState()
 
-	if state.game.IsRunning() {
+	if state.displayBoard {
 		g.buildGameBoard(state)
 	}
 
 	giu.Button("play new game").OnClick(func() {
-		state.game.Dispose()
+		state.displayBoard = true
+		state.Dispose()
 		state.game.Run()
 	}).Disabled(state.game.IsRunning()).Build()
 }
