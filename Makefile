@@ -19,14 +19,27 @@ all: build
 
 ## build: Builds the binary
 build:
+	@echo "files will be saved in build/"
+	@mkdir -p build
 	@echo "Building..."
-	@echo "Building - terminal game..."
-	@$(GOCMD) build -o tic-tac-go-terminal cmd/terminal-game/tic-tac-go.go
-	@echo "Building - windowed game..."
-	@$(GOCMD) build -o tic-tac-go-windowed cmd/giu-game/tic-tac-go.go
+	@echo "Building - terminal game; linux..."
+	@GOOS="linux" $(GOCMD) build -o build/tic-tac-go-terminal.bin cmd/terminal-game/tic-tac-go.go
+	@echo "Building - terminal game; windows..."
+	@GOOS="windows" $(GOCMD) build -o build/tic-tac-go-terminal.exe cmd/terminal-game/tic-tac-go.go
+	@echo "Building - windowed game; linux..."
+	@GOOS="linux" $(GOCMD) build -o build/tic-tac-go-windowed.bin cmd/giu-game/tic-tac-go.go
+	@echo "Building - windowed game; windows..."
+	@CGO_ENABLED="1" GOOS="windows" CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ \
+		HOST=x86_64-w64-mingw32 \
+		$(GOCMD) build -ldflags "-s -w -H=windowsgui -extldflags=-static" \
+		-o build/tic-tac-go-windowed.exe cmd/giu-game/tic-tac-go.go
 
 ## setup: Runs mod download and generate
 setup:
+	@echo "Tic-Tac-Go INFO: to cross-platform build windowed version of an app,"
+	@echo "Tic-Tac-Go INFO: make sure you've mingw compiller installed."
+	@echo "Tic-Tac-Go INFO:"
+	@echo "Tic-Tac-Go INFO: For more details check https://github.com/AllenDang/giu"
 	@echo "Downloading tools and dependencies..."
 	@git submodule update --init --recursive
 	@$(GOCMD) get -d ./...

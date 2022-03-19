@@ -28,3 +28,6 @@ tic-tac-go
 
 # goland binary when build dir is the repo dir
 go_build*
+
+# build directory create dby Makefile
+build/
