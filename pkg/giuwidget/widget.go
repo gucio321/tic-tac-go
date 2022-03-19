@@ -109,6 +109,9 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 
 		board = append(board, giu.Row(line...))
 	}
-
-	board.Build()
+	giu.Layout{
+		giu.Style().SetFontSize(80).To(
+			board,
+		),
+	}.Build()
 }
