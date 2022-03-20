@@ -29,25 +29,26 @@ jobs:
           chmod a+x appimagetool-x86_64.AppImage
 
 
+      - name: setup go packages
+        run: make setup
       - name: Build .bin package
         run: |
-          go build -o tic-tac-go-terminal-game.bin cmd/terminal-game/main.go
-          go build -o tic-tac-go-giu.bin cmd/giu-game/main.go
+          make build
 
       - name: create ouput dir
         run: |
-          mkdir tic-tac-go-terminal-game.AppDir
-          mkdir tic-tac-go-giu.AppDir
+          mkdir build/tic-tac-go-terminal.AppDir
+          mkdir build/tic-tac-go-windowed.AppDir
 
       - name: download icon
         run: |
-          wget https://cdn4.iconfinder.com/data/icons/core-ui-outlined/32/outlined_placeholder-512.png -o tic-tac-go-terminal-game.AppDir/icon.png
-          wget https://cdn4.iconfinder.com/data/icons/core-ui-outlined/32/outlined_placeholder-512.png -o tic-tac-go-giu.AppDir/icon.png
+          wget https://cdn4.iconfinder.com/data/icons/core-ui-outlined/32/outlined_placeholder-512.png -o build/tic-tac-go-terminal.AppDir/icon.png
+          wget https://cdn4.iconfinder.com/data/icons/core-ui-outlined/32/outlined_placeholder-512.png -o build/tic-tac-go-windowed.AppDir/icon.png
 
       - name: build go package
         run: |
-          go build -o tic-tac-go-terminal-game.AppDir/main.bin cmd/terminal-game/main.go
-          go build -o tic-tac-go-giu.AppDir/main.bin cmd/giu-game/main.go
+          cp build/tic-tac-go-terminal.bin build/tic-tac-go-terminal.AppDir/main.bin 
+          cp build/tic-tac-go-windowed.bin build/tic-tac-go-windowed.AppDir/main.bin 
 
       - name: create .desktop entry
         run: |
@@ -57,7 +58,7 @@ jobs:
           Icon=icon
           NoDisplay=false\n
           StartupNotify=true\n
-          Categories=Game;\n" >> tic-tac-go-terminal-game.AppDir/Desktop.desktop
+          Categories=Game;\n" >> build/tic-tac-go-terminal.AppDir/Desktop.desktop
 
           echo -e "[Desktop Entry]\n
           Type=Application\n
@@ -65,28 +66,23 @@ jobs:
           Icon=icon
           NoDisplay=false\n
           StartupNotify=true\n
-          Categories=Game;\n" >> tic-tac-go-giu.AppDir/Desktop.desktop
+          Categories=Game;\n" >> build/tic-tac-go-windowed.AppDir/Desktop.desktop
 
       - name: create AppRun
         run: |
           echo -e "#!/bin/sh
           cd \"\$(dirname \"\$0\")\"
-          exec ./main.bin">> tic-tac-go-terminal-game.AppDir/AppRun
+          exec ./main.bin">> build/tic-tac-go-terminal.AppDir/AppRun
           echo -e "#!/bin/sh
           cd \"\$(dirname \"\$0\")\"
-          exec ./main.bin">> tic-tac-go-giu.AppDir/AppRun
-          chmod 755 tic-tac-go-terminal-game.AppDir/AppRun
-          chmod 755 tic-tac-go-giu.AppDir/AppRun
+          exec ./main.bin">> build/tic-tac-go-windowed.AppDir/AppRun
+          chmod 755 build/tic-tac-go-terminal.AppDir/AppRun
+          chmod 755 build/tic-tac-go-windowed.AppDir/AppRun
 
       - name: building AppImage
         run: |
-          ./appimagetool-x86_64.AppImage tic-tac-go-terminal-game.AppDir tic-tac-go-terminal-game.AppImage
-          ./appimagetool-x86_64.AppImage tic-tac-go-giu.AppDir tic-tac-go-giu.AppImage
-
-      - name: Build .exe package
-        run: |
-          GOOS="windows" go build -o tic-tac-go-terminal-game.exe cmd/terminal-game/main.go
-          CGO_ENABLED="1" GOOS="windows"  CC="/usr/bin/x86_64-w64-mingw32-gcc" CXX="/usr/bin/x86_64-w64-mingw32-c++" go build -o tic-tac-go-giu.exe cmd/giu-game/main.go
+          ./appimagetool-x86_64.AppImage build/tic-tac-go-terminal.AppDir build/tic-tac-go-terminal.AppImage
+          ./appimagetool-x86_64.AppImage build/tic-tac-go-windowed.AppDir build/tic-tac-go-windowed.AppImage
 
       # extract tag name from github ref
       - name: Set env
@@ -100,9 +96,9 @@ jobs:
           prerelease: false
           automatic_release_tag: ${{ env.RELEASE_VERSION }}
           files: |
-            tic-tac-go-terminal-game.bin
-            tic-tac-go-terminal-game.AppImage
-            tic-tac-go-terminal-game.exe
-            tic-tac-go-giu.bin
-            tic-tac-go-giu.AppImage
-            tic-tac-go-giu.exe
+            build/tic-tac-go-terminal.bin
+            build/tic-tac-go-terminal.AppImage
+            build/tic-tac-go-terminal.exe
+            build/tic-tac-go-windowed.bin
+            build/tic-tac-go-windowed.AppImage
+            build/tic-tac-go-windowed.exe
