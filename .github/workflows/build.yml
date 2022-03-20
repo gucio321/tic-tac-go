@@ -23,7 +23,10 @@ jobs:
         with:
           fetch-depth: 0
           submodules: 'true'
-
+      - name: Set up MinGW
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: x64
       - name: Set up Go environment
         uses: actions/setup-go@v3
         with:
