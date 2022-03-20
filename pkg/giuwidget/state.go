@@ -23,6 +23,7 @@ func (s *gameState) Dispose() {
 	s.game.Dispose()
 	s.gameEnded = false
 	s.winningCombo = nil
+	s.displayBoard = false
 }
 
 func (g *GameWidget) getState() (state *gameState) {
@@ -42,6 +43,7 @@ func (g *GameWidget) getState() (state *gameState) {
 
 func (g *GameWidget) newState() *gameState {
 	state := &gameState{
+		gameEnded:   false,
 		game:        game.Create(g.p1type, g.p2type).SetBoardSize(g.w, g.h, g.chainLen),
 		buttonClick: make(chan int),
 	}

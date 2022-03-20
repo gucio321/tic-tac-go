@@ -36,6 +36,13 @@ func Game(p1type, p2type player.Type, w, h, c int) *GameWidget {
 	}
 }
 
+func (g *GameWidget) RunGame() {
+	state := g.getState()
+
+	state.displayBoard = true
+	state.game.Run()
+}
+
 // Build builds the game.
 func (g *GameWidget) Build() {
 	state := g.getState()
@@ -45,9 +52,7 @@ func (g *GameWidget) Build() {
 	}
 
 	giu.Button("play new game").OnClick(func() {
-		state.displayBoard = true
-		state.Dispose()
-		state.game.Run()
+		g.RunGame()
 	}).Disabled(state.game.IsRunning()).Build()
 }
 
@@ -72,9 +77,15 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 			s := state.currentBoard.GetIndexState(idx)
 			btn := giu.Button(s.String()+"##BoardIndex"+strconv.Itoa(idx)).
 				Size(buttonW, buttonH).OnClick(func() {
-				if state.game.IsRunning() && s == letter.LetterNone {
-					state.buttonClick <- idx
+				if state.game.IsRunning() {
+					if s == letter.LetterNone {
+						state.buttonClick <- idx
+					}
+
+					return
 				}
+
+				state.Dispose()
 			})
 
 			var c color.RGBA
