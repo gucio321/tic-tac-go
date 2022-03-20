@@ -66,7 +66,7 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 			s := state.currentBoard.GetIndexState(idx)
 			btn := giu.Button(s.String()+"##BoardIndex"+strconv.Itoa(idx)).
 				Size(buttonW, buttonH).OnClick(func() {
-				if s == letter.LetterNone {
+				if state.game.IsRunning() && s == letter.LetterNone {
 					state.buttonClick <- idx
 				}
 			})
