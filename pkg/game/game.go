@@ -1,10 +1,9 @@
 // Package game contains a common implementation of game.
 //
 // Usage:
-// - create game / set everything
+// - create game / set all callbacks
 // - use Board() to display board in implementation
-// - run Run()
-// -- take user action when IsUserActionRequired()
+// - execute Run()
 // - call Dispose() to reset
 package game
 
@@ -100,7 +99,7 @@ func (g *Game) UserAction(cb func() int) {
 	g.userActionCB = cb
 }
 
-// Result returns true if game is ended. in addition it returns its result.
+// Result returns true if game is ended. in addition, it returns its result.
 // if LetterNone returned - it means that DRAW reached.
 func (g *Game) Result(resultCB func(letter.Letter)) *Game {
 	g.resultCB = resultCB
@@ -126,7 +125,7 @@ func (g *Game) CurrentPlayer() *player.Player {
 }
 
 // Run runs the game.
-// NOTE: should call in a new go routime.
+// NOTE: should call in a new go routine.
 func (g *Game) Run() {
 	if g.isRunning {
 		panic("Tic-Tac-Go: game.(*Game).Run: invalid call of Run when game is running.")
@@ -182,7 +181,7 @@ func (g *Game) Reset() {
 	*g.board = *board.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
 }
 
-// Stop savely stops the game loop invoked by (*Game).Run.
+// Stop safely stops the game loop invoked by (*Game).Run.
 func (g *Game) Stop() {
 	if !g.isRunning {
 		return
