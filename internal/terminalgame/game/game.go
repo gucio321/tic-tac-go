@@ -17,7 +17,7 @@ type TTG struct {
 	*game.Game
 }
 
-// NewTTG creates a ne TTG.
+// NewTTG creates a new TTG.
 func NewTTG(w, h, chainLen byte, player1Type, player2Type player.Type) *TTG {
 	result := &TTG{
 		reader: bufio.NewReader(os.Stdin),
@@ -35,6 +35,7 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type player.Type) *TTG {
 // Run runs the game.
 func (t *TTG) Run() {
 	endGame := make(chan bool, 1)
+
 	t.Game.Result(func(l letter.Letter) {
 		// handle game end
 		switch l {
