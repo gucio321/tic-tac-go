@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/AllenDang/giu"
+	"golang.org/x/image/colornames"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
@@ -109,8 +110,14 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 
 		board = append(board, giu.Row(line...))
 	}
+
 	giu.Layout{
-		giu.Style().SetFontSize(80).To(
+		giu.Style().
+			SetStyle(giu.StyleVarItemSpacing, 0, 0).
+			SetColor(giu.StyleColorButton, colornames.Black).
+			SetColor(giu.StyleColorButtonHovered, color.RGBA{20, 20, 20, 255}).
+			SetColor(giu.StyleColorButtonActive, colornames.Black).
+			SetFontSize(80).To(
 			board,
 		),
 	}.Build()
