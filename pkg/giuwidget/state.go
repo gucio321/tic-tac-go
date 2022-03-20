@@ -10,12 +10,13 @@ import (
 var _ giu.Disposable = &gameState{}
 
 type gameState struct {
-	game         *game.Game
-	buttonClick  chan int
-	gameEnded    bool
-	winningCombo []int
-	currentBoard *board.Board
-	displayBoard bool
+	w, h, chainLen int32
+	game           *game.Game
+	buttonClick    chan int
+	gameEnded      bool
+	winningCombo   []int
+	currentBoard   *board.Board
+	displayBoard   bool
 }
 
 // Dispose implements giu.Disposable
@@ -43,8 +44,11 @@ func (g *GameWidget) getState() (state *gameState) {
 
 func (g *GameWidget) newState() *gameState {
 	state := &gameState{
+		w:           defaultBoardSize,
+		h:           defaultBoardSize,
+		chainLen:    defaultBoardSize,
 		gameEnded:   false,
-		game:        game.Create(g.p1type, g.p2type).SetBoardSize(g.w, g.h, g.chainLen),
+		game:        game.Create(g.p1type, g.p2type),
 		buttonClick: make(chan int),
 	}
 

@@ -16,29 +16,28 @@ import (
 const id = "Tic-Tac-Go-game"
 
 const (
-	buttonsSpacing = 3
+	buttonsSpacing   = 3
+	defaultBoardSize = 3
+	inputIntW        = 30
 )
 
 // GameWidget represents a giu implementation of tic-tac-go.
 type GameWidget struct {
-	w, h, chainLen int
 	p1type, p2type player.Type
 }
 
 // Game creates GameWidget.
-func Game(p1type, p2type player.Type, w, h, c int) *GameWidget {
+func Game(p1type, p2type player.Type) *GameWidget {
 	return &GameWidget{
-		w:        w,
-		h:        h,
-		chainLen: c,
-		p1type:   p1type,
-		p2type:   p2type,
+		p1type: p1type,
+		p2type: p2type,
 	}
 }
 
 func (g *GameWidget) RunGame() {
 	state := g.getState()
 
+	state.game.SetBoardSize(int(state.w), int(state.h), int(state.chainLen))
 	state.displayBoard = true
 	state.game.Run()
 }
@@ -54,6 +53,18 @@ func (g *GameWidget) Build() {
 
 	giu.Layout{
 		giu.Align(giu.AlignCenter).To(
+			giu.Row(
+				giu.Label("Width: "),
+				giu.InputInt(&state.w).Size(inputIntW),
+			),
+			giu.Row(
+				giu.Label("Heigh: "),
+				giu.InputInt(&state.h).Size(inputIntW),
+			),
+			giu.Row(
+				giu.Label("Chain Length: "),
+				giu.InputInt(&state.chainLen).Size(inputIntW),
+			),
 			giu.Button("play new game").OnClick(func() {
 				g.RunGame()
 			}),
