@@ -2,6 +2,7 @@ package giuwidget
 
 import (
 	"github.com/AllenDang/giu"
+
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/game"
@@ -19,7 +20,7 @@ type gameState struct {
 	displayBoard   bool
 }
 
-// Dispose implements giu.Disposable
+// Dispose implements giu.Disposable.
 func (s *gameState) Dispose() {
 	s.game.Dispose()
 	s.gameEnded = false
@@ -28,15 +29,18 @@ func (s *gameState) Dispose() {
 }
 
 func (g *GameWidget) getState() (state *gameState) {
-	if s := giu.Context.GetState(id); s == nil {
+	s := giu.Context.GetState(id)
+	if s == nil {
 		giu.Context.SetState(id, g.newState())
+
 		return g.getState()
-	} else {
-		var ok bool
-		state, ok = s.(*gameState)
-		if !ok {
-			panic("Tic-Tac-Go: game.(*Game).getGame (internal): unexpected state recovered from giu")
-		}
+	}
+
+	var ok bool
+
+	state, ok = s.(*gameState)
+	if !ok {
+		panic("Tic-Tac-Go: game.(*Game).getGame (internal): unexpected state recovered from giu")
 	}
 
 	return state

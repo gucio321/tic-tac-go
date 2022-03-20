@@ -43,7 +43,7 @@ linters:
     - exportloopref
     - forcetypeassert
     - funlen
-    - gci
+    #- gci
     - godot
     - gochecknoglobals
     - gochecknoinits

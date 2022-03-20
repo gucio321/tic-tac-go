@@ -45,8 +45,7 @@ func Create(p1type, p2type player.Type) *Game {
 		onContinue: func() {},
 		resultCB:   func(letter.Letter) {},
 		userActionCB: func() int {
-			panic(fmt.Sprintf("Tic-Tac-Go: game.(*Game): user action callback is not set!"))
-			return -1
+			panic("Tic-Tac-Go: game.(*Game): user action callback is not set!")
 		},
 	}
 
@@ -96,7 +95,7 @@ func (g *Game) OnContinue(cb func()) *Game {
 	return g
 }
 
-// UserAction sets user action callback called when game needs to get user's action
+// UserAction sets user action callback called when game needs to get user's action.
 func (g *Game) UserAction(cb func() int) {
 	g.userActionCB = cb
 }
@@ -105,6 +104,7 @@ func (g *Game) UserAction(cb func() int) {
 // if LetterNone returned - it means that DRAW reached.
 func (g *Game) Result(resultCB func(letter.Letter)) *Game {
 	g.resultCB = resultCB
+
 	return g
 }
 
@@ -121,6 +121,7 @@ func (g *Game) Board() *board.Board {
 // CurrentPlayer returns a current player.
 func (g *Game) CurrentPlayer() *player.Player {
 	g.notRunningPanic("CurrentPlayer")
+
 	return g.players.Current()
 }
 

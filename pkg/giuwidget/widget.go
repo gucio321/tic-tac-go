@@ -34,7 +34,7 @@ func Game(p1type, p2type player.Type) *GameWidget {
 	}
 }
 
-func (g *GameWidget) RunGame() {
+func (g *GameWidget) runGame() {
 	state := g.getState()
 
 	state.game.SetBoardSize(int(state.w), int(state.h), int(state.chainLen))
@@ -44,10 +44,12 @@ func (g *GameWidget) RunGame() {
 
 // Build builds the game.
 func (g *GameWidget) Build() {
+	// nolint:ifshort // https://github.com/golangci/golangci-lint/issues/2662
 	state := g.getState()
 
 	if state.displayBoard {
 		g.buildGameBoard(state)
+
 		return
 	}
 
@@ -66,7 +68,7 @@ func (g *GameWidget) Build() {
 				giu.InputInt(&state.chainLen).Size(inputIntW),
 			),
 			giu.Button("play new game").OnClick(func() {
-				g.RunGame()
+				g.runGame()
 			}),
 		),
 	}.Build()
