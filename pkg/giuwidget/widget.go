@@ -17,6 +17,7 @@ const id = "Tic-Tac-Go-game"
 
 const (
 	buttonW, buttonH = 100, 100
+	buttonsSpacing   = 1
 )
 
 // GameWidget represents a giu implementation of tic-tac-go.
@@ -55,6 +56,9 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 	if state.game.IsRunning() {
 		state.currentBoard = state.game.Board()
 	}
+
+	boardW, boardH := float32((buttonW+buttonsSpacing)*state.currentBoard.Width())-buttonsSpacing,
+		float32((buttonH+buttonsSpacing)*state.currentBoard.Height()-buttonsSpacing)
 
 	board := giu.Layout{}
 
@@ -113,7 +117,7 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 
 	giu.Layout{
 		giu.Style().
-			SetStyle(giu.StyleVarItemSpacing, 1, 1).
+			SetStyle(giu.StyleVarItemSpacing, buttonsSpacing, buttonsSpacing).
 			SetStyle(giu.StyleVarFrameRounding, 0, 0).
 			SetStyle(giu.StyleVarFrameBorderSize, 0, 0).
 			SetStyle(giu.StyleVarChildBorderSize, 0, 0).
@@ -122,7 +126,7 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 			SetColor(giu.StyleColorButtonActive, colornames.Black).
 			SetColor(giu.StyleColorChildBg, colornames.White).
 			SetFontSize(80).To(
-			giu.Child().Size(float32((buttonW+1)*state.currentBoard.Width())-1, float32((buttonH+1)*state.currentBoard.Height()-1)).Layout(
+			giu.Child().Size(boardW, boardH).Layout(
 				board,
 			),
 		),
