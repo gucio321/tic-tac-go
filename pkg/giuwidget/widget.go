@@ -49,11 +49,16 @@ func (g *GameWidget) Build() {
 
 	if state.displayBoard {
 		g.buildGameBoard(state)
+		return
 	}
 
-	giu.Button("play new game").OnClick(func() {
-		g.RunGame()
-	}).Disabled(state.game.IsRunning()).Build()
+	giu.Layout{
+		giu.Align(giu.AlignCenter).To(
+			giu.Button("play new game").OnClick(func() {
+				g.RunGame()
+			}),
+		),
+	}.Build()
 }
 
 func (g *GameWidget) buildGameBoard(state *gameState) {
