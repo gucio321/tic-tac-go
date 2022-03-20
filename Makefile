@@ -27,7 +27,7 @@ build:
 	@echo "Building - terminal game; windows..."
 	@GOOS="windows" $(GOCMD) build -o build/tic-tac-go-terminal.exe cmd/terminal-game/tic-tac-go.go
 	@echo "Building - windowed game; linux..."
-	@GOOS="linux" $(GOCMD) build -o build/tic-tac-go-windowed.bin cmd/giu-game/tic-tac-go.go
+	@CGO_ENABLED="1" GOOS="linux" $(GOCMD) build -o build/tic-tac-go-windowed.bin cmd/giu-game/tic-tac-go.go
 	@echo "Building - windowed game; windows..."
 	@CGO_ENABLED="1" GOOS="windows" CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ \
 		HOST=x86_64-w64-mingw32 \
