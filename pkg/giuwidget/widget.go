@@ -113,12 +113,18 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 
 	giu.Layout{
 		giu.Style().
-			SetStyle(giu.StyleVarItemSpacing, 0, 0).
+			SetStyle(giu.StyleVarItemSpacing, 1, 1).
+			SetStyle(giu.StyleVarFrameRounding, 0, 0).
+			SetStyle(giu.StyleVarFrameBorderSize, 0, 0).
+			SetStyle(giu.StyleVarChildBorderSize, 0, 0).
 			SetColor(giu.StyleColorButton, colornames.Black).
 			SetColor(giu.StyleColorButtonHovered, color.RGBA{20, 20, 20, 255}).
 			SetColor(giu.StyleColorButtonActive, colornames.Black).
+			SetColor(giu.StyleColorChildBg, colornames.White).
 			SetFontSize(80).To(
-			board,
+			giu.Child().Size(float32((buttonW+1)*state.currentBoard.Width())-1, float32((buttonH+1)*state.currentBoard.Height()-1)).Layout(
+				board,
+			),
 		),
 	}.Build()
 }
