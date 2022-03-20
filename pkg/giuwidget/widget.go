@@ -130,7 +130,9 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 			line = append(line, styled)
 		}
 
-		board = append(board, giu.Row(line...))
+		board = append(board,
+			giu.Row(line...),
+		)
 	}
 
 	giu.Layout{
@@ -144,8 +146,10 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 			SetColor(giu.StyleColorButtonActive, colornames.Black).
 			SetColor(giu.StyleColorChildBg, colornames.White).
 			SetFontSize(80).To(
-			giu.Child().Size(boardContainerSize, boardContainerSize).Layout(
-				board,
+			giu.Align(giu.AlignCenter).To(
+				giu.Child().Size(boardContainerSize, boardContainerSize).Layout(
+					board,
+				),
 			),
 		),
 	}.Build()
