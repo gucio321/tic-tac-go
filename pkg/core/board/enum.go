@@ -39,22 +39,22 @@ func (b *Board) GetWinBoard(l int) [][]int {
 		}
 	}
 
-	for x := 0; x < h; x++ {
-		for xIdx := 0; (x*w+xIdx*w+xIdx)+((l-1)*w+(l-1)) <= h*w-1; xIdx++ {
+	for y := 0; y < h-l+1; y++ {
+		for xIdx := 0; xIdx <= w-l; xIdx++ {
 			line := make([]int, l)
 			for idx := range line {
-				line[idx] = (x*w + xIdx) + (idx*w + idx)
+				line[idx] = (y*w + xIdx) + (idx*w + idx)
 			}
 
 			winningIndexes = append(winningIndexes, line)
 		}
 	}
 
-	for bx := 0; bx < h; bx++ {
-		for bxIdx := 0; bx*w+(bxIdx+l)*w <= h*w; bxIdx++ {
+	for by := 0; by < h-l+1; by++ {
+		for bxIdx := w - l; bxIdx < w; bxIdx++ {
 			line := make([]int, l)
 			for idx := range line {
-				line[idx] = (bx * w) + (bxIdx+idx)*w + (l - idx - 1)
+				line[idx] = (by*w + bxIdx) + (idx*w - idx)
 			}
 
 			winningIndexes = append(winningIndexes, line)
