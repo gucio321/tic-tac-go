@@ -18,7 +18,9 @@ const id = "Tic-Tac-Go-game"
 const (
 	buttonsSpacing   = 3
 	defaultBoardSize = 3
-	inputIntW        = 30
+	inputIntW        = 40
+	menuFontSize     = 30
+	headerFontSize   = 80
 )
 
 // GameWidget represents a giu implementation of tic-tac-go.
@@ -55,21 +57,50 @@ func (g *GameWidget) Build() {
 
 	giu.Layout{
 		giu.Align(giu.AlignCenter).To(
-			giu.Row(
-				giu.Label("Width: "),
-				giu.InputInt(&state.w).Size(inputIntW),
+			giu.Style().SetFontSize(headerFontSize).To(
+				giu.Row(
+					giu.Style().SetColor(giu.StyleColorText, colornames.Red).To(
+						giu.Label("TIC"),
+					),
+					giu.Label("-"),
+					giu.Style().SetColor(giu.StyleColorText, colornames.Blue).To(
+						giu.Label("TAC"),
+					),
+					giu.Label("-"),
+					giu.Style().SetColor(giu.StyleColorText, colornames.Green).To(
+						giu.Label("GO"),
+					),
+				),
 			),
 			giu.Row(
-				giu.Label("Heigh: "),
-				giu.InputInt(&state.h).Size(inputIntW),
+				giu.Style().SetFontSize(menuFontSize).To(
+					giu.Label("Width: "),
+				),
+				giu.Style().SetFontSize(menuFontSize).To(
+					giu.InputInt(&state.w).Size(inputIntW),
+				),
 			),
 			giu.Row(
-				giu.Label("Chain Length: "),
-				giu.InputInt(&state.chainLen).Size(inputIntW),
+				giu.Style().SetFontSize(menuFontSize).To(
+					giu.Label("Heigh: "),
+				),
+				giu.Style().SetFontSize(menuFontSize).To(
+					giu.InputInt(&state.h).Size(inputIntW),
+				),
 			),
-			giu.Button("play new game").OnClick(func() {
-				g.runGame()
-			}),
+			giu.Row(
+				giu.Style().SetFontSize(menuFontSize).To(
+					giu.Label("Chain Length: "),
+				),
+				giu.Style().SetFontSize(menuFontSize).To(
+					giu.InputInt(&state.chainLen).Size(inputIntW),
+				),
+			),
+			giu.Style().SetFontSize(menuFontSize).To(
+				giu.Button("START GAME").OnClick(func() {
+					g.runGame()
+				}),
+			),
 		),
 	}.Build()
 }
