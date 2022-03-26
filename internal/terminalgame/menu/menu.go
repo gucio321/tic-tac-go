@@ -38,6 +38,11 @@ type settings struct {
 	height byte
 }
 
+// nolint:gochecknoinits // need to set up random and it is the easiest way to do it
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
 // Menu represents a game menu.
 type Menu struct {
 	*settings
@@ -128,7 +133,6 @@ func (m *Menu) runPVP() {
 func (m *Menu) runPVC() {
 	var g *game.TTG
 
-	rand.Seed(time.Now().UnixNano())
 	// nolint:gomnd // two players in game
 	r := rand.Intn(2) // nolint:gosec // it is ok
 
