@@ -161,27 +161,162 @@ func TestGetPCMove(t *testing.T) {
 func Test_canWin(t *testing.T) {
 	type args struct {
 		baseBoard *board.Board
-		player    letter.Letter
 	}
 
 	tests := []struct {
-		name        string
-		args        args
-		wantCanWin  bool
-		wantResults []int
+		name         string
+		args         args
+		wantCanWinX  bool
+		wantResultsX []int
+		wantCanWinO  bool
+		wantResultsO []int
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Empty board 3x3",
+			args: args{
+				baseBoard: board.Create(3, 3, 3),
+			},
+			wantCanWinX:  false,
+			wantResultsX: []int{},
+			wantCanWinO:  false,
+			wantResultsO: []int{},
+		},
+		{
+			name: "3x3 board: X can win",
+			args: args{
+				baseBoard: board.Create(3, 3, 3).
+					SetIndexState(0, letter.LetterX).
+					SetIndexState(8, letter.LetterX),
+			},
+			wantCanWinX:  true,
+			wantResultsX: []int{4},
+			wantCanWinO:  false,
+			wantResultsO: []int{},
+		},
+		{
+			name: "3x3 board: X can win (two ways)",
+			args: args{
+				baseBoard: board.Create(3, 3, 3).
+					SetIndexState(0, letter.LetterX).
+					SetIndexState(2, letter.LetterX).
+					SetIndexState(6, letter.LetterX).
+					SetIndexState(4, letter.LetterO),
+			},
+			wantCanWinX:  true,
+			wantResultsX: []int{1, 3},
+			wantCanWinO:  false,
+			wantResultsO: []int{},
+		},
+		{
+			name: "3x3 board: X can win (3 ways)",
+			args: args{
+				baseBoard: board.Create(3, 3, 3).
+					SetIndexState(2, letter.LetterX).
+					SetIndexState(6, letter.LetterX).
+					SetIndexState(8, letter.LetterX),
+			},
+			wantCanWinX:  true,
+			wantResultsX: []int{4, 5, 7},
+			wantCanWinO:  false,
+			wantResultsO: []int{},
+		},
+		{
+			name: "3x3 board: X and O can win",
+			args: args{
+				baseBoard: board.Create(3, 3, 3).
+					SetIndexState(0, letter.LetterX).
+					SetIndexState(6, letter.LetterX).
+					SetIndexState(2, letter.LetterO).
+					SetIndexState(8, letter.LetterO),
+			},
+			wantCanWinX:  true,
+			wantResultsX: []int{3},
+			wantCanWinO:  true,
+			wantResultsO: []int{5},
+		},
+
+		{
+			name: "Empty board 4x4",
+			args: args{
+				baseBoard: board.Create(4, 4, 4),
+			},
+			wantCanWinX:  false,
+			wantResultsX: []int{},
+			wantCanWinO:  false,
+			wantResultsO: []int{},
+		},
+		{
+			name: "4x4 board: X can win",
+			args: args{
+				baseBoard: board.Create(4, 4, 4).
+					SetIndexState(5, letter.LetterX).
+					SetIndexState(10, letter.LetterX).
+					SetIndexState(15, letter.LetterX),
+			},
+			wantCanWinX:  true,
+			wantResultsX: []int{0},
+			wantCanWinO:  false,
+			wantResultsO: []int{},
+		},
+		{
+			name: "4x4 board: X can win (two ways)",
+			args: args{
+				baseBoard: board.Create(4, 4, 4).
+					SetIndexState(0, letter.LetterX).
+					SetIndexState(4, letter.LetterX).
+					SetIndexState(8, letter.LetterX).
+					SetIndexState(1, letter.LetterX).
+					SetIndexState(9, letter.LetterX).
+					SetIndexState(13, letter.LetterX),
+			},
+			wantCanWinX:  true,
+			wantResultsX: []int{5, 12},
+			wantCanWinO:  false,
+			wantResultsO: []int{},
+		},
+		{
+			name: "4x4 board: X can win (3 ways)",
+			args: args{
+				baseBoard: board.Create(4, 4, 4).
+					SetIndexState(0, letter.LetterX).
+					SetIndexState(1, letter.LetterX).
+					SetIndexState(4, letter.LetterX).
+					SetIndexState(5, letter.LetterX).
+					SetIndexState(7, letter.LetterX).
+					SetIndexState(9, letter.LetterX).
+					SetIndexState(15, letter.LetterX),
+			},
+			wantCanWinX:  true,
+			wantResultsX: []int{6, 10, 13},
+			wantCanWinO:  false,
+			wantResultsO: []int{},
+		},
+		{
+			name: "4x4 board: X and O can win",
+			args: args{
+				baseBoard: board.Create(4, 4, 4).
+					SetIndexState(0, letter.LetterX).
+					SetIndexState(4, letter.LetterX).
+					SetIndexState(8, letter.LetterX).
+					SetIndexState(3, letter.LetterO).
+					SetIndexState(6, letter.LetterO).
+					SetIndexState(9, letter.LetterO),
+			},
+			wantCanWinX:  true,
+			wantResultsX: []int{12},
+			wantCanWinO:  true,
+			wantResultsO: []int{12},
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotCanWin, gotResults := canWin(tt.args.baseBoard, tt.args.player)
-			if gotCanWin != tt.wantCanWin {
-				t.Errorf("canWin() gotCanWin = %v, want %v", gotCanWin, tt.wantCanWin)
-			}
-			if !reflect.DeepEqual(gotResults, tt.wantResults) {
-				t.Errorf("canWin() gotResults = %v, want %v", gotResults, tt.wantResults)
-			}
+			gotCanWinX, gotResultsX := canWin(tt.args.baseBoard, letter.LetterX)
+			gotCanWinO, gotResultsO := canWin(tt.args.baseBoard, letter.LetterO)
+			assert.Equal(t, gotCanWinX, tt.wantCanWinX, "canWin returned unexpected value")
+			assert.Equal(t, gotResultsX, tt.wantResultsX, "canWin returned unexpected value (list of winning combos)")
+			assert.Equal(t, gotCanWinO, tt.wantCanWinO, "canWin returned unexpected value")
+			assert.Equal(t, gotResultsO, tt.wantResultsO, "canWin returned unexpected value (list of winning combos)")
 		})
 	}
 }
