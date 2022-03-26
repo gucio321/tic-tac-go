@@ -163,6 +163,7 @@ func Test_canWin(t *testing.T) {
 		baseBoard *board.Board
 		player    letter.Letter
 	}
+
 	tests := []struct {
 		name        string
 		args        args
@@ -171,6 +172,7 @@ func Test_canWin(t *testing.T) {
 	}{
 		// TODO: Add test cases.
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			gotCanWin, gotResults := canWin(tt.args.baseBoard, tt.args.player)
@@ -189,6 +191,7 @@ func Test_canWinTwoMoves(t *testing.T) {
 		gameBoard *board.Board
 		player    letter.Letter
 	}
+
 	tests := []struct {
 		name       string
 		args       args
@@ -196,6 +199,7 @@ func Test_canWinTwoMoves(t *testing.T) {
 	}{
 		// TODO: Add test cases.
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if gotResult := canWinTwoMoves(tt.args.gameBoard, tt.args.player); !reflect.DeepEqual(gotResult, tt.wantResult) {
@@ -209,6 +213,7 @@ func Test_getRandomNumber(t *testing.T) {
 	type args struct {
 		numbers []int
 	}
+
 	tests := []struct {
 		name string
 		args args
@@ -216,6 +221,7 @@ func Test_getRandomNumber(t *testing.T) {
 	}{
 		// TODO: Add test cases.
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := getRandomNumber(tt.args.numbers); got != tt.want {
@@ -231,5 +237,6 @@ func Contains(s []int, e int) bool {
 			return true
 		}
 	}
+
 	return false
 }
