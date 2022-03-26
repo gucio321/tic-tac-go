@@ -44,12 +44,15 @@ func (b *Board) ChainLength() int {
 }
 
 // SetIndexState set index's state.
-func (b *Board) SetIndexState(i int, state letter.Letter) {
+// returns base to simplify creating large board in tests.
+func (b *Board) SetIndexState(i int, state letter.Letter) *Board {
 	if i > len(b.board) || i < 0 {
 		panic(fmt.Sprintf("Tic-Tac-Go: board.(*Board).SetIndexState: index %d out of range", i))
 	}
 
 	b.board[i] = state
+
+	return b
 }
 
 // GetIndexState returns index's state.
