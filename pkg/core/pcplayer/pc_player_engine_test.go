@@ -460,6 +460,14 @@ func Test_canWinTwoMoves(t *testing.T) {
 			},
 			wantResult: []int{11, 13, 7, 17, 6, 18, 8, 16},
 		},
+		{
+			name: "too small chain length",
+			args: args{
+				gameBoard: board.Create(3, 3, 2),
+				player:    letter.LetterX,
+			},
+			wantResult: nil,
+		},
 	}
 
 	for _, tt := range tests {
