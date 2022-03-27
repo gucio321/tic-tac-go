@@ -10,6 +10,7 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 
+//nolint:funlen // this is test func, and it's ok
 func TestGetPCMove(t *testing.T) {
 	type args struct {
 		gameBoard *board.Board
@@ -21,6 +22,61 @@ func TestGetPCMove(t *testing.T) {
 		args args
 		want []int
 	}{
+		// mechanic (on standard board)
+		{
+			name: "get corners",
+			args: args{
+				gameBoard: board.Create(3, 3, 3).
+					SetIndexState(2, letter.LetterX),
+				pcLetter: letter.LetterX,
+			},
+			want: []int{0, 2, 6, 8},
+		},
+		{
+			name: "get center",
+			args: args{
+				gameBoard: board.Create(3, 3, 3).
+					SetIndexState(0, letter.LetterX).
+					SetIndexState(1, letter.LetterO).
+					SetIndexState(2, letter.LetterX).
+					SetIndexState(6, letter.LetterO).
+					SetIndexState(7, letter.LetterX).
+					SetIndexState(8, letter.LetterO),
+			},
+			want: []int{4},
+		},
+		{
+			name: "get sides",
+			args: args{
+				gameBoard: board.Create(3, 3, 3).
+					SetIndexState(0, letter.LetterO).
+					SetIndexState(2, letter.LetterX).
+					SetIndexState(4, letter.LetterX).
+					SetIndexState(6, letter.LetterX).
+					SetIndexState(8, letter.LetterO),
+			},
+			want: []int{1, 3, 5, 7},
+		},
+		{
+			name: "get opposite corner (PCs)",
+			args: args{
+				gameBoard: board.Create(3, 3, 3).
+					SetIndexState(2, letter.LetterX),
+				pcLetter: letter.LetterX,
+			},
+			want: []int{6},
+		},
+		{
+			name: "get opposite corner (opponent)",
+			args: args{
+				gameBoard: board.Create(3, 3, 3).
+					SetIndexState(8, letter.LetterO),
+				pcLetter: letter.LetterX,
+			},
+			want: []int{0},
+		},
+
+		// behaviors
 		{
 			name: "Empty Board 3x3, first move",
 			args: args{
