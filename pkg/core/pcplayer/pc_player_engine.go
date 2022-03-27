@@ -49,7 +49,7 @@ chain length = 4
 +---+---+---+---+---+
 |   |   |   | o |   |
 +---+---+---+---+---+
-let's look at bove board: when we'll make our move at left side of X-chain (14)
+let's look at the board above: when we'll make our move at right side of X-chain (14)
 the O-player will not be able to keep X from winning.
 +---+---+---+---+---+
 |   |   | o |   |   |

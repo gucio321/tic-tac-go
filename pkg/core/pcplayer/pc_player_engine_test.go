@@ -75,6 +75,36 @@ func TestGetPCMove(t *testing.T) {
 			},
 			want: []int{0},
 		},
+		{
+			name: "can win two moves (PC) (5x5 board; chain len 4)",
+			args: args{
+				gameBoard: board.Create(5, 5, 4).
+					SetIndexState(11, letter.LetterX).
+					SetIndexState(12, letter.LetterX),
+				pcLetter: letter.LetterX,
+			},
+			want: []int{13},
+		},
+		{
+			name: "can win two moves (opponent) (5x5 board; chain len 4)",
+			args: args{
+				gameBoard: board.Create(5, 5, 4).
+					SetIndexState(5, letter.LetterO).
+					SetIndexState(10, letter.LetterO),
+				pcLetter: letter.LetterX,
+			},
+			want: []int{15},
+		},
+		// TODO: Broken test
+		//{
+		//	name: "can win two moves (PC) (5x5 board; chain len 3)",
+		//	args: args{
+		//		gameBoard: board.Create(5, 5, 3).
+		//			SetIndexState(12, letter.LetterX),
+		//		pcLetter: letter.LetterX,
+		//	},
+		//	want: []int{11, 13},
+		// },
 
 		// behaviors
 		{
