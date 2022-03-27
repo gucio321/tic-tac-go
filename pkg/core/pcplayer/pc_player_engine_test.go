@@ -1,7 +1,6 @@
 package pcplayer
 
 import (
-	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -95,16 +94,6 @@ func TestGetPCMove(t *testing.T) {
 			},
 			want: []int{15},
 		},
-		// TODO: Broken test
-		//{
-		//	name: "can win two moves (PC) (5x5 board; chain len 3)",
-		//	args: args{
-		//		gameBoard: board.Create(5, 5, 3).
-		//			SetIndexState(12, letter.LetterX),
-		//		pcLetter: letter.LetterX,
-		//	},
-		//	want: []int{11, 13},
-		// },
 
 		// behaviors
 		{
@@ -244,6 +233,7 @@ func TestGetPCMove(t *testing.T) {
 	}
 }
 
+//nolint:funlen // tests function; it is ok
 func Test_canWin(t *testing.T) {
 	type args struct {
 		baseBoard *board.Board
@@ -418,14 +408,43 @@ func Test_canWinTwoMoves(t *testing.T) {
 		args       args
 		wantResult []int
 	}{
-		// TODO: Add test cases.
+		{
+			name: "5x5 board, chain len 4",
+			args: args{
+				gameBoard: board.Create(5, 5, 4).
+					SetIndexState(6, letter.LetterX).
+					SetIndexState(7, letter.LetterX),
+				player: letter.LetterX,
+			},
+			wantResult: []int{8},
+		},
+		{
+			name: "5x5 board; chain len 4 (v2)",
+			args: args{
+				gameBoard: board.Create(5, 5, 4).
+					SetIndexState(6, letter.LetterX).
+					SetIndexState(12, letter.LetterX),
+				player: letter.LetterX,
+			},
+			wantResult: []int{18},
+		},
+
+		// TODO: Broken test
+		{
+			name: "5x5 board; chain len 3",
+			args: args{
+				gameBoard: board.Create(5, 5, 3).
+					SetIndexState(12, letter.LetterX),
+				player: letter.LetterX,
+			},
+			wantResult: []int{11, 13},
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotResult := canWinTwoMoves(tt.args.gameBoard, tt.args.player); !reflect.DeepEqual(gotResult, tt.wantResult) {
-				t.Errorf("canWinTwoMoves() = %v, want %v", gotResult, tt.wantResult)
-			}
+			gotResult := canWinTwoMoves(tt.args.gameBoard, tt.args.player)
+			assert.Equal(t, tt.wantResult, gotResult, "canWinTwoMoves() = %v, want %v", gotResult, tt.wantResult)
 		})
 	}
 }
