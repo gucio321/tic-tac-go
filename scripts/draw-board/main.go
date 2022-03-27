@@ -1,10 +1,12 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
-	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"strconv"
+
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
 )
@@ -13,6 +15,8 @@ const (
 	defaultBoardSize = 3
 	defaultChainLen  = 3
 )
+
+var errIncorrectLetter = errors.New("incorrect number")
 
 var _ flag.Value = &lettersValue{}
 
@@ -25,13 +29,13 @@ func (l *lettersValue) String() string {
 func (l *lettersValue) Set(value string) (err error) {
 	for _, letter := range value {
 		if letter < '0' || letter > '9' {
-			return fmt.Errorf("invalid letter: %v", letter)
+			return fmt.Errorf("%w %v", errIncorrectLetter, letter)
 		}
 	}
 
 	x, err := strconv.Atoi(value)
 	if err != nil {
-		return err
+		return fmt.Errorf("converting string to int: %w", err)
 	}
 
 	*l = append(*l, x)
