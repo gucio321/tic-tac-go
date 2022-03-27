@@ -228,7 +228,7 @@ func TestGetPCMove(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := GetPCMove(tt.args.gameBoard, tt.args.pcLetter)
-			assert.Truef(t, Contains(tt.want, got), "GetPCMove() returned unexpected result: expected %v, got %v", tt.want, got)
+			assert.Truef(t, contains(tt.want, got), "GetPCMove() returned unexpected result: expected %v, got %v", tt.want, got)
 		})
 	}
 }
@@ -447,29 +447,7 @@ func Test_canWinTwoMoves(t *testing.T) {
 	}
 }
 
-func Test_getRandomNumber(t *testing.T) {
-	type args struct {
-		numbers []int
-	}
-
-	tests := []struct {
-		name string
-		args args
-		want int
-	}{
-		// TODO: Add test cases.
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := getRandomNumber(tt.args.numbers); got != tt.want {
-				t.Errorf("getRandomNumber() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Contains(s []int, e int) bool {
+func contains(s []int, e int) bool {
 	for _, a := range s {
 		if a == e {
 			return true
