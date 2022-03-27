@@ -4,6 +4,7 @@ package pcplayer
 
 import (
 	"math/rand"
+	"reflect"
 	"time"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
@@ -91,10 +92,14 @@ validatingChains:
 	potentiallyAvailableChains := gameBoard.GetWinBoard(gameBoard.ChainLength() + 1)
 	for _, potentialPlace := range potentiallyAvailableChains {
 		for _, chain := range availableWinningChains {
-			if potentialPlace[1] == chain[0] && potentialPlace[2] == chain[1] {
+			//if potentialPlace[1] == chain[0] && potentialPlace[2] == chain[1] {
+			if reflect.DeepEqual(potentialPlace[1:len(chain)+1], chain) {
 				result = append(result, potentialPlace[len(potentialPlace)-2])
-			} else if potentialPlace[2] == chain[0] && potentialPlace[3] == chain[1] {
+				break
+				//} else if potentialPlace[2] == chain[0] && potentialPlace[3] == chain[1] {
+			} else if reflect.DeepEqual(potentialPlace[2:len(chain)+2], chain) {
 				result = append(result, potentialPlace[1])
+				break
 			}
 		}
 	}

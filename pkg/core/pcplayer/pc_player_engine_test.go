@@ -428,8 +428,6 @@ func Test_canWinTwoMoves(t *testing.T) {
 			},
 			wantResult: []int{18},
 		},
-
-		// TODO: Broken test
 		{
 			name: "5x5 board; chain len 3",
 			args: args{
@@ -437,7 +435,7 @@ func Test_canWinTwoMoves(t *testing.T) {
 					SetIndexState(12, letter.LetterX),
 				player: letter.LetterX,
 			},
-			wantResult: []int{11, 13},
+			wantResult: []int{11, 13, 7, 17, 6, 18, 8, 16},
 		},
 	}
 
