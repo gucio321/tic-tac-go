@@ -67,34 +67,34 @@ O-player lost.
 func canWinTwoMoves(gameBoard *board.Board, player letter.Letter) (result []int) {
 	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
 	minimalChainLen := gameBoard.ChainLength() - 2
-	if minimalChainLen < 2 { // nolint:gomnd // processing this values doesn't make sense with chain smaller than 3
+	if minimalChainLen <= 0 { // nolint:gomnd // processing this values doesn't make sense with chain smaller than 3
 		return nil
 	}
 
-	b := gameBoard.GetWinBoard(minimalChainLen)
-	options := make([][]int, 0)
+	winningChains := gameBoard.GetWinBoard(minimalChainLen)
 
-	for _, i := range b {
-		line := 0
+	availableWinningChains := make([][]int, 0)
 
-		for _, c := range i {
-			if gameBoard.GetIndexState(c) == player {
-				line++
+	// check for available chains
+validatingChains:
+	for _, chain := range winningChains {
+		for _, idx := range chain {
+			if gameBoard.GetIndexState(idx) != player {
+				continue validatingChains
 			}
 		}
 
-		if line == minimalChainLen {
-			options = append(options, i)
-		}
+		availableWinningChains = append(availableWinningChains, chain)
 	}
 
-	b = gameBoard.GetWinBoard(gameBoard.ChainLength() + 1)
-	for _, i := range b {
-		for _, o := range options {
-			if i[1] == o[0] && i[2] == o[1] {
-				result = append(result, i[len(i)-2])
-			} else if i[2] == o[0] && i[3] == o[1] {
-				result = append(result, i[1])
+	// now we have lost of potentially available places
+	potentiallyAvailableChains := gameBoard.GetWinBoard(gameBoard.ChainLength() + 1)
+	for _, potentialPlace := range potentiallyAvailableChains {
+		for _, chain := range availableWinningChains {
+			if potentialPlace[1] == chain[0] && potentialPlace[2] == chain[1] {
+				result = append(result, potentialPlace[len(potentialPlace)-2])
+			} else if potentialPlace[2] == chain[0] && potentialPlace[3] == chain[1] {
+				result = append(result, potentialPlace[1])
 			}
 		}
 	}
