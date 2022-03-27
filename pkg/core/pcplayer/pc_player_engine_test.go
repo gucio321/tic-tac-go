@@ -233,6 +233,29 @@ func TestGetPCMove(t *testing.T) {
 	}
 }
 
+func TestGetPCMove_FullBoard(t *testing.T) {
+	gameBoard := board.Create(4, 4, 4).
+		SetIndexState(0, letter.LetterX).
+		SetIndexState(1, letter.LetterO).
+		SetIndexState(2, letter.LetterX).
+		SetIndexState(3, letter.LetterO).
+		SetIndexState(4, letter.LetterX).
+		SetIndexState(5, letter.LetterO).
+		SetIndexState(6, letter.LetterX).
+		SetIndexState(7, letter.LetterO).
+		SetIndexState(8, letter.LetterX).
+		SetIndexState(9, letter.LetterO).
+		SetIndexState(10, letter.LetterX).
+		SetIndexState(11, letter.LetterO).
+		SetIndexState(12, letter.LetterX).
+		SetIndexState(13, letter.LetterO).
+		SetIndexState(14, letter.LetterX).
+		SetIndexState(15, letter.LetterO)
+
+	assert.Panics(t, func() { GetPCMove(gameBoard, letter.LetterX) }, "GetPCMove on full board didn't panicked")
+	assert.Panics(t, func() { GetPCMove(gameBoard, letter.LetterO) }, "GetPCMove on full board didn't panicked")
+}
+
 //nolint:funlen // tests function; it is ok
 func Test_canWin(t *testing.T) {
 	type args struct {
