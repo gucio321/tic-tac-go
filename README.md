@@ -4,8 +4,12 @@
 [![codecov](https://codecov.io/gh/gucio321/tic-tac-go/branch/master/graph/badge.svg)](https://codecov.io/gh/gucio321/tic-tac-go)
 
 <image align="left" src="./logo.png">
-Tic-Tac-Go is an implementation
+<h1>Tic-Tac-Go</h1>
+is an implementation
 of the tic-tac-toe game written in [Golang](https://golang.org)
+In addition it implements a _relatively simple_
+AI logic for PC players. For more details see
+<a href="./pkg/core/pcplayer">here</a>
 <br clear="all" />
 
 
