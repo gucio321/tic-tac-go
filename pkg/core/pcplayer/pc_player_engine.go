@@ -4,7 +4,6 @@ package pcplayer
 
 import (
 	"math/rand"
-	"reflect"
 	"time"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
@@ -74,39 +73,27 @@ func canWinTwoMoves(gameBoard *board.Board, player letter.Letter) (result []int)
 		return
 	}
 
-	winningChains := gameBoard.GetWinBoard(minimalChainLen)
+	potentiallyAvailableChains := gameBoard.GetWinBoard(gameBoard.ChainLength() + 1)
 
-	availableWinningChains := make([][]int, 0)
+searching:
+	for _, potentialPlace := range potentiallyAvailableChains {
+		if !gameBoard.IsIndexFree(potentialPlace[0]) || !gameBoard.IsIndexFree(potentialPlace[len(potentialPlace)-1]) {
+			continue
+		}
 
-	// check for available chains
-validatingChains:
-	for _, chain := range winningChains {
-		for _, idx := range chain {
-			if gameBoard.GetIndexState(idx) != player {
-				continue validatingChains
+		var gaps []int
+
+		for i := 1; i < len(potentialPlace)-1; i++ {
+			switch gameBoard.GetIndexState(potentialPlace[i]) {
+			case letter.LetterNone:
+				gaps = append(gaps, potentialPlace[i])
+			case player.Opposite(): // operation already blocked
+				continue searching
 			}
 		}
 
-		availableWinningChains = append(availableWinningChains, chain)
-	}
-
-	// now we have lost of potentially available places
-	potentiallyAvailableChains := gameBoard.GetWinBoard(gameBoard.ChainLength() + 1)
-	for _, potentialPlace := range potentiallyAvailableChains {
-		for _, chain := range availableWinningChains {
-			if !gameBoard.IsIndexFree(potentialPlace[0]) || !gameBoard.IsIndexFree(potentialPlace[len(potentialPlace)-1]) {
-				continue
-			}
-
-			if reflect.DeepEqual(potentialPlace[1:len(chain)+1], chain) {
-				result = append(result, potentialPlace[len(potentialPlace)-2])
-
-				break
-			} else if reflect.DeepEqual(potentialPlace[2:len(chain)+2], chain) {
-				result = append(result, potentialPlace[1])
-
-				break
-			}
+		if len(gaps) == 1 {
+			result = append(result, gaps...)
 		}
 	}
 
