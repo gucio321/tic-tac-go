@@ -115,51 +115,33 @@ searching:
 func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 	playerLetter := pcLetter.Opposite()
 
-	var options []int
+	var options []int = make([]int, 0)
 
 	// attack: try to win now
 	if ok, indexes := canWin(gameBoard, pcLetter); ok {
-		for _, i := range indexes {
-			if gameBoard.IsIndexFree(i) {
-				options = append(options, i)
-			}
-		}
+		options = getAvailableOptions(gameBoard, indexes)
 
-		if options != nil {
+		if len(options) > 0 {
 			return getRandomNumber(options)
 		}
 	}
 
 	// defense: check, if user can win
 	if ok, indexes := canWin(gameBoard, playerLetter); ok {
-		for _, i := range indexes {
-			if gameBoard.IsIndexFree(i) {
-				options = append(options, i)
-			}
-		}
+		options = getAvailableOptions(gameBoard, indexes)
 
-		if options != nil {
+		if len(options) > 0 {
 			return getRandomNumber(options)
 		}
 	}
 
-	for _, i := range canWinTwoMoves(gameBoard, pcLetter) {
-		if gameBoard.IsIndexFree(i) {
-			options = append(options, i)
-		}
-	}
-
-	if options != nil {
+	options = getAvailableOptions(gameBoard, canWinTwoMoves(gameBoard, pcLetter))
+	if len(options) > 0 {
 		return getRandomNumber(options)
 	}
 
-	for _, i := range canWinTwoMoves(gameBoard, playerLetter) {
-		if gameBoard.IsIndexFree(i) {
-			options = append(options, i)
-		}
-	}
-
-	if options != nil {
+	options = getAvailableOptions(gameBoard, canWinTwoMoves(gameBoard, playerLetter))
+	if len(options) > 0 {
 		return getRandomNumber(options)
 	}
 
@@ -196,7 +178,7 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 		return getRandomNumber(playerOppositeCorners)
 	}
 
-	if options != nil {
+	if len(options) > 0 {
 		return getRandomNumber(options)
 	}
 
@@ -207,7 +189,7 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 		}
 	}
 
-	if options != nil {
+	if len(options) > 0 {
 		return getRandomNumber(options)
 	}
 
@@ -234,4 +216,15 @@ func getRandomNumber(numbers []int) int {
 	result := numbers[rand.Intn(len(numbers))]
 
 	return result
+}
+
+func getAvailableOptions(gameBoard *board.Board, candidates []int) (available []int) {
+	available = make([]int, 0)
+	for _, i := range candidates {
+		if gameBoard.IsIndexFree(i) {
+			available = append(available, i)
+		}
+	}
+
+	return available
 }
