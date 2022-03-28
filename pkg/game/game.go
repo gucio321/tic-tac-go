@@ -179,6 +179,24 @@ func (g *Game) Reset() {
 	}
 
 	*g.board = *board.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
+
+	var p1Cb, p2Cb func(letter.Letter) int
+
+	switch g.players.Player1().Type() {
+	case player.PlayerPC:
+		p1Cb = func(l letter.Letter) int { return pcplayer.GetPCMove(g.board, l) }
+	case player.PlayerPerson:
+		p1Cb = func(_ letter.Letter) int { return g.getUserAction() }
+	}
+
+	switch g.players.Player2().Type() {
+	case player.PlayerPC:
+		p2Cb = func(l letter.Letter) int { return pcplayer.GetPCMove(g.board, l) }
+	case player.PlayerPerson:
+		p2Cb = func(_ letter.Letter) int { return g.getUserAction() }
+	}
+
+	g.players = players.Create(g.players.Player1().Type(), p1Cb, g.players.Player2().Type(), p2Cb)
 }
 
 // Stop safely stops the game loop invoked by (*Game).Run.
