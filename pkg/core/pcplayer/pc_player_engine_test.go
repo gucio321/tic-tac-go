@@ -466,7 +466,19 @@ func Test_canWinTwoMoves(t *testing.T) {
 				gameBoard: board.Create(3, 3, 2),
 				player:    letter.LetterX,
 			},
-			wantResult: nil,
+			wantResult: []int{},
+		},
+
+		{
+			name: "unable to win in two moves (nil expected)",
+			args: args{
+				gameBoard: board.Create(5, 5, 4).
+					SetIndexState(20, letter.LetterO).
+					SetIndexState(21, letter.LetterX).
+					SetIndexState(22, letter.LetterX),
+				player: letter.LetterX,
+			},
+			wantResult: []int{},
 		},
 	}
 

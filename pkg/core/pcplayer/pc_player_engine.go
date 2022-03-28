@@ -66,10 +66,12 @@ the O-player will not be able to keep X from winning.
 O-player lost.
 */
 func canWinTwoMoves(gameBoard *board.Board, player letter.Letter) (result []int) {
+	result = make([]int, 0)
+
 	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
 	minimalChainLen := gameBoard.ChainLength() - 2
 	if minimalChainLen <= 0 {
-		return nil
+		return
 	}
 
 	winningChains := gameBoard.GetWinBoard(minimalChainLen)
@@ -92,6 +94,10 @@ validatingChains:
 	potentiallyAvailableChains := gameBoard.GetWinBoard(gameBoard.ChainLength() + 1)
 	for _, potentialPlace := range potentiallyAvailableChains {
 		for _, chain := range availableWinningChains {
+			if !gameBoard.IsIndexFree(potentialPlace[0]) || !gameBoard.IsIndexFree(potentialPlace[len(potentialPlace)-1]) {
+				continue
+			}
+
 			if reflect.DeepEqual(potentialPlace[1:len(chain)+1], chain) {
 				result = append(result, potentialPlace[len(potentialPlace)-2])
 
