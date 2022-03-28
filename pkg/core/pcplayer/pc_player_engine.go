@@ -111,15 +111,13 @@ searching:
 //   - take opponent's opposite corner
 //   - take center
 //   - take random side
-// nolint:funlen,gocognit,gocyclo // https://github.com/gucio321/tic-tac-go/issues/154
+// nolint:gocognit,gocyclo // https://github.com/gucio321/tic-tac-go/issues/154
 func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 	playerLetter := pcLetter.Opposite()
 
-	var options []int = make([]int, 0)
-
 	// attack: try to win now
 	if ok, indexes := canWin(gameBoard, pcLetter); ok {
-		options = getAvailableOptions(gameBoard, indexes)
+		options := getAvailableOptions(gameBoard, indexes)
 
 		if len(options) > 0 {
 			return getRandomNumber(options)
@@ -128,14 +126,14 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 
 	// defense: check, if user can win
 	if ok, indexes := canWin(gameBoard, playerLetter); ok {
-		options = getAvailableOptions(gameBoard, indexes)
+		options := getAvailableOptions(gameBoard, indexes)
 
 		if len(options) > 0 {
 			return getRandomNumber(options)
 		}
 	}
 
-	options = getAvailableOptions(gameBoard, canWinTwoMoves(gameBoard, pcLetter))
+	options := getAvailableOptions(gameBoard, canWinTwoMoves(gameBoard, pcLetter))
 	if len(options) > 0 {
 		return getRandomNumber(options)
 	}
@@ -220,6 +218,7 @@ func getRandomNumber(numbers []int) int {
 
 func getAvailableOptions(gameBoard *board.Board, candidates []int) (available []int) {
 	available = make([]int, 0)
+
 	for _, i := range candidates {
 		if gameBoard.IsIndexFree(i) {
 			available = append(available, i)
