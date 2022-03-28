@@ -3,10 +3,11 @@
 [![GoDoc](https://pkg.go.dev/badge/github.com/gucio321/tic-tac-go?utm_source=godoc)](https://pkg.go.dev/mod/github.com/gucio321/tic-tac-go)
 [![codecov](https://codecov.io/gh/gucio321/tic-tac-go/branch/master/graph/badge.svg)](https://codecov.io/gh/gucio321/tic-tac-go)
 
-# About
-
+<image align="left" src="./logo.png">
 Tic-Tac-Go is an implementation
 of the tic-tac-toe game written in [Golang](https://golang.org)
+<br clear="all" />
+
 
 # Installation
 
