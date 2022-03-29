@@ -17,6 +17,8 @@ import (
 
 	osinfo "gist.github.com/2335e953b45f46591839a21c502588ea.git"
 
+	terminalmenu "github.com/gucio321/terminalmenu/pkg"
+
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/utils"
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
@@ -46,11 +48,8 @@ func init() {
 // Menu represents a game menu.
 type Menu struct {
 	*settings
-	pages  []*menuPage
-	done   bool
-	pos    menuPosition
-	reader *bufio.Reader
 	readme *[]byte
+	reader *bufio.Reader
 }
 
 // New creates a new menu
@@ -62,67 +61,31 @@ func New(readme []byte) *Menu {
 			board.BaseBoardW,
 			board.BaseBoardH,
 		},
-		done:   false,
-		pos:    mainMenu,
 		reader: bufio.NewReader(os.Stdin),
 		readme: &readme,
 	}
-
-	result.loadMenu()
 
 	return result
 }
 
 // Run runs the menu.
 func (m *Menu) Run() {
-	for !m.done {
-		utils.Clear()
-		fmt.Println(m.currentPage())
-
-		num, err := m.getUserAction("What'd you like to do?")
-		if err != nil {
-			continue
-		}
-
-		if num < 0 || int16(num) > m.currentPage().Max() {
-			fmt.Printf("You must enter number from 0 to %d", m.currentPage().Max())
-
-			continue
-		}
-
-		m.currentPage().Exec(int16(num))
-	}
-}
-
-func (m *Menu) currentPage() *menuPage {
-	return m.pages[m.pos]
-}
-
-func (m *Menu) loadMenu() {
-	m.pages = []*menuPage{
-		{
-			"main menu",
-			[]*menuIndex{
-				{1, "PvC game", m.runPVC},
-				{2, "PvP game", m.runPVP},
-				{3, "Demo", m.runDemo},
-				{4, "Settings", func() { m.pos = settingsMenu }},
-				{5, "Help", m.printHelp},
-				{6, "README", m.printReadme},
-				{7, "website", m.openWebsite},
-				{8, "Report Bug on GitHub", m.reportBug},
-				{0, "Exit", func() { m.done = true }},
-			},
-		},
-		{
-			"Settings",
-			[]*menuIndex{
-				{1, "Change board size", m.changeBoardSize},
-				{2, "Reset board size", m.resetBoardSize},
-				{0, "Back", func() { m.pos = mainMenu }},
-			},
-		},
-	}
+	terminalmenu.Create("Tic-Tac-Go", true).
+		MainPage("Main Menu").
+		Item("PvC game", m.runPVC).
+		Item("PvP game", m.runPVP).
+		Item("Demo", m.runDemo).
+		// [Settings]
+		Subpage("Settings").
+		Item("Change board size", m.changeBoardSize).
+		Item("Reset board size", m.resetBoardSize).
+		Back().
+		//[/Settings]
+		Item("Help", m.printHelp).
+		Item("README", m.printReadme).
+		Item("website", m.openWebsite).
+		Item("Report Bug on GitHub", m.reportBug).
+		Exit().Run()
 }
 
 func (m *Menu) runPVP() {
