@@ -5,7 +5,7 @@ go 1.18
 require (
 	gist.github.com/2335e953b45f46591839a21c502588ea.git v0.0.0-20210418124924-7487e35e5bec
 	github.com/AllenDang/giu v0.6.2
-	github.com/gucio321/terminalmenu v0.0.0-20220329181121-0ccf0c99c159
+	github.com/gucio321/terminalmenu v0.0.0-20220329185535-a1dc1cf621ad
 	github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/russross/blackfriday v1.6.0

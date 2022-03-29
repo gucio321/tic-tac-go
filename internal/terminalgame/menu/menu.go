@@ -27,13 +27,6 @@ import (
 
 const githubURL = "https://github.com/gucio321/tic-tac-go"
 
-type menuPosition byte
-
-const (
-	mainMenu menuPosition = iota
-	settingsMenu
-)
-
 type settings struct {
 	chainLen,
 	width,
@@ -70,7 +63,7 @@ func New(readme []byte) *Menu {
 
 // Run runs the menu.
 func (m *Menu) Run() {
-	terminalmenu.Create("Tic-Tac-Go", true).
+	err := <-terminalmenu.Create("Tic-Tac-Go", true).
 		MainPage("Main Menu").
 		Item("PvC game", m.runPVC).
 		Item("PvP game", m.runPVP).
@@ -80,12 +73,15 @@ func (m *Menu) Run() {
 		Item("Change board size", m.changeBoardSize).
 		Item("Reset board size", m.resetBoardSize).
 		Back().
-		//[/Settings]
+		// [/Settings]
 		Item("Help", m.printHelp).
 		Item("README", m.printReadme).
 		Item("website", m.openWebsite).
 		Item("Report Bug on GitHub", m.reportBug).
 		Exit().Run()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (m *Menu) runPVP() {
