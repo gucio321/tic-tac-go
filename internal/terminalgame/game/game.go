@@ -3,9 +3,11 @@ package game
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/gucio321/go-clear"
+
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 	"github.com/gucio321/tic-tac-go/pkg/game"
@@ -25,7 +27,10 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type player.Type) *TTG {
 	}
 
 	result.SetBoardSize(int(w), int(h), int(chainLen)).OnContinue(func() {
-		clear.Clear()
+		if err := clear.Clear(); err != nil {
+			log.Fatal(err)
+		}
+
 		fmt.Println(result.Board())
 	})
 

@@ -6,11 +6,6 @@ import (
 	"unicode"
 )
 
-const (
-	strWindows = "windows"
-	strLinux   = "linux"
-)
-
 // SplitIntoLinesWithMaxWidth splits the given string into lines considering the given maxChars.
 func SplitIntoLinesWithMaxWidth(fullSentence string, maxChars int) []string {
 	lines := make([]string, 0)

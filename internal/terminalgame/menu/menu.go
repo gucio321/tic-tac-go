@@ -137,7 +137,10 @@ func (m *Menu) resetBoardSize() {
 }
 
 func (m *Menu) printHelp() {
-	clear.Clear()
+	if err := clear.Clear(); err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Println(strings.Join([]string{
 		"TicTacToe Version 1",
 		"Copyright (C) 2021 by gucio321 (https://github.com/gucio321)",
