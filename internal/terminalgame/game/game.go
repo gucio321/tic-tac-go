@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gucio321/go-clear"
+	"github.com/gucio321/terminalmenu/pkg/menuutils"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
@@ -50,7 +51,10 @@ func (t *TTG) Run() {
 			fmt.Println(t.CurrentPlayer().Name() + " won")
 		}
 
-		t.pressAnyKeyPrompt()
+		if err := menuutils.PromptEnter("Press ENTER to continue "); err != nil {
+			log.Fatal(err)
+		}
+
 		endGame <- true
 	})
 

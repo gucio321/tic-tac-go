@@ -1,39 +1,35 @@
 package game
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"strconv"
-	"strings"
+
+	"github.com/gucio321/terminalmenu/pkg/menuutils"
 )
 
 func (t *TTG) getPlayerMove() (i int) {
 	for {
-		fmt.Printf("Enter your move (1-%d): ", t.Board().Width()*t.Board().Height())
+		num, err := menuutils.GetNumber(fmt.Sprintf("Enter your move (1-%d): ", t.Board().Width()*t.Board().Height()))
 
-		text, err := t.reader.ReadString('\n')
-		if err != nil {
+		switch {
+		case err == nil:
+			// noop
+		case errors.Is(err, strconv.ErrSyntax):
+			if readErr := menuutils.PromptEnter("Please enter correct number"); readErr != nil {
+				log.Fatal(readErr)
+			}
+
+			continue
+		default:
 			log.Fatal(err)
 		}
 
-		if text == "" {
-			println("please enter number from 1 to 9")
-
-			continue
-		}
-
-		text = strings.ReplaceAll(text, string('\n'), "")
-		text = strings.ReplaceAll(text, "\r", "")
-
-		num, err := strconv.Atoi(text)
-		if err != nil {
-			println("invalid index number")
-
-			continue
-		}
-
 		if w, h := t.Board().Width(), t.Board().Height(); num <= 0 || num > w*h {
-			println(fmt.Sprintf("You must enter number from 1 to %d", w*h))
+			if err := menuutils.PromptEnter(fmt.Sprintf("You must enter number from 1 to %d", w*h)); err != nil {
+				log.Fatal(err)
+			}
 
 			continue
 		}
@@ -44,12 +40,8 @@ func (t *TTG) getPlayerMove() (i int) {
 			return num
 		}
 
-		println("This index is busy")
+		if err := menuutils.PromptEnter("This index is busy"); err != nil {
+			log.Fatal(err)
+		}
 	}
-}
-
-func (t *TTG) pressAnyKeyPrompt() {
-	print("\nPress any key to continue...")
-
-	_, _ = t.reader.ReadString('\n')
 }
