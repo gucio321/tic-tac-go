@@ -9,7 +9,6 @@ import (
 	"github.com/gucio321/go-clear"
 	"github.com/gucio321/terminalmenu/pkg/menuutils"
 
-	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 	"github.com/gucio321/tic-tac-go/pkg/game"
 )
@@ -42,13 +41,13 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type player.Type) *TTG {
 func (t *TTG) Run() {
 	endGame := make(chan bool, 1)
 
-	t.Game.Result(func(l letter.Letter) {
+	t.Game.Result(func(p *player.Player) {
 		// handle game end
-		switch l {
-		case letter.LetterNone:
+		switch p {
+		case nil:
 			fmt.Println("DRAW")
 		default:
-			fmt.Println(t.CurrentPlayer().Name() + " won")
+			fmt.Println(p.Name() + " won")
 		}
 
 		if err := menuutils.PromptEnter("Press ENTER to continue "); err != nil {

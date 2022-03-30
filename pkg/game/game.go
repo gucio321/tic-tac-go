@@ -32,7 +32,7 @@ type Game struct {
 	isRunning bool
 
 	onContinue   func()
-	resultCB     func(letter.Letter)
+	resultCB     func(*player.Player)
 	userActionCB func() int
 }
 
@@ -42,7 +42,7 @@ func Create(p1type, p2type player.Type) *Game {
 		isRunning:  false,
 		board:      board.Create(defaultBoardW, defaultBoardH, defaultChainLen),
 		onContinue: func() {},
-		resultCB:   func(letter.Letter) {},
+		resultCB:   func(*player.Player) {},
 		userActionCB: func() int {
 			panic("Tic-Tac-Go: game.(*Game): user action callback is not set!")
 		},
@@ -101,7 +101,7 @@ func (g *Game) UserAction(cb func() int) {
 
 // Result returns true if game is ended. in addition, it returns its result.
 // if LetterNone returned - it means that DRAW reached.
-func (g *Game) Result(resultCB func(letter.Letter)) *Game {
+func (g *Game) Result(resultCB func(*player.Player)) *Game {
 	g.resultCB = resultCB
 
 	return g
@@ -150,13 +150,13 @@ func (g *Game) Run() {
 			if ok, _ := g.Board().IsWinner(g.players.Current().Letter()); ok {
 				g.onContinue()
 				g.isRunning = false
-				g.resultCB(g.players.Current().Letter())
+				g.resultCB(g.players.Current())
 
 				return
 			} else if g.Board().IsBoardFull() {
 				g.onContinue()
 				g.isRunning = false
-				g.resultCB(letter.LetterNone)
+				g.resultCB(nil)
 
 				return
 			}
