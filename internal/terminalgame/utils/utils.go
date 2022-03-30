@@ -2,10 +2,6 @@
 package utils
 
 import (
-	"log"
-	"os"
-	"os/exec"
-	"runtime"
 	"strings"
 	"unicode"
 )
@@ -14,26 +10,6 @@ const (
 	strWindows = "windows"
 	strLinux   = "linux"
 )
-
-// Clear clears console.
-func Clear() {
-	var err error
-
-	switch runtime.GOOS {
-	case strLinux, "darwin":
-		cmd := exec.Command("clear")
-		cmd.Stdout = os.Stdout
-		err = cmd.Run()
-	case strWindows:
-		cmd := exec.Command("cmd", "/c", "cls")
-		cmd.Stdout = os.Stdout
-		err = cmd.Run()
-	}
-
-	if err != nil {
-		log.Print(err)
-	}
-}
 
 // SplitIntoLinesWithMaxWidth splits the given string into lines considering the given maxChars.
 func SplitIntoLinesWithMaxWidth(fullSentence string, maxChars int) []string {

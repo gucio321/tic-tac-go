@@ -17,10 +17,14 @@ github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220320163800-277f93cfa958 h1:TL70PMkdPC
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220320163800-277f93cfa958/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/gucio321/go-clear v0.0.0-20220329181001-72b168602c98 h1:/7VWIsKMVnxKtQLH0VihXwKRSt7Ok7waOTiwLDhkrPY=
 github.com/gucio321/go-clear v0.0.0-20220329181001-72b168602c98/go.mod h1:Xm/wQZRCx4k+rLPM9IxvqPnueWFDldsp6T1S6dz/lFs=
+github.com/gucio321/go-clear v0.0.0-20220330151556-7267606c5116 h1:iSQuLDuuHTewgToZ0D2FcsVdlmaN+tqidDkTZ+eUlfU=
+github.com/gucio321/go-clear v0.0.0-20220330151556-7267606c5116/go.mod h1:Xm/wQZRCx4k+rLPM9IxvqPnueWFDldsp6T1S6dz/lFs=
 github.com/gucio321/terminalmenu v0.0.0-20220329181121-0ccf0c99c159 h1:0ZpIN0cdCAu6UucGpabhogwdEfeSvsDzE1oHwDMaIoM=
 github.com/gucio321/terminalmenu v0.0.0-20220329181121-0ccf0c99c159/go.mod h1:+T3s2Eq/xCHk7ZgPeObvgVLu16wjd1g879HxPNn2wjA=
 github.com/gucio321/terminalmenu v0.0.0-20220329185535-a1dc1cf621ad h1:KRLC6lipPCRWJBCG7oo92dQJJDUcCj49nkyVqG4xdfY=
 github.com/gucio321/terminalmenu v0.0.0-20220329185535-a1dc1cf621ad/go.mod h1:+T3s2Eq/xCHk7ZgPeObvgVLu16wjd1g879HxPNn2wjA=
+github.com/gucio321/terminalmenu v0.0.0-20220330162044-bd8fcf2de73d h1:D0o52FtuqPRTgrMS5zaK+OWmr2LQhEpWs0gdA5/+t0E=
+github.com/gucio321/terminalmenu v0.0.0-20220330162044-bd8fcf2de73d/go.mod h1:2kGHoG/ssCAEQTZwMFUMmyDu+WF1ne2i6r0FcfD2wps=
 github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba h1:QFQpJdgbON7I0jr2hYW7Bs+XV0qjc3d5tZoDnRFnqTg=
 github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba/go.mod h1:CVKlgaMiht+LXvHG173ujK6JUhZXKb2u/BQtjPDIvyk=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=

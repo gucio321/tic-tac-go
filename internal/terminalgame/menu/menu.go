@@ -17,10 +17,10 @@ import (
 
 	osinfo "gist.github.com/2335e953b45f46591839a21c502588ea.git"
 
+	"github.com/gucio321/go-clear"
 	terminalmenu "github.com/gucio321/terminalmenu/pkg"
 
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
-	"github.com/gucio321/tic-tac-go/internal/terminalgame/utils"
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 )
@@ -137,7 +137,7 @@ func (m *Menu) resetBoardSize() {
 }
 
 func (m *Menu) printHelp() {
-	utils.Clear()
+	clear.Clear()
 	fmt.Println(strings.Join([]string{
 		"TicTacToe Version 1",
 		"Copyright (C) 2021 by gucio321 (https://github.com/gucio321)",
