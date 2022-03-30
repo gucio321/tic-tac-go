@@ -3,8 +3,9 @@ module github.com/gucio321/tic-tac-go
 go 1.18
 
 require (
-	gist.github.com/2335e953b45f46591839a21c502588ea.git v0.0.0-20210418124924-7487e35e5bec
 	github.com/AllenDang/giu v0.6.2
+	github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7
+	github.com/gucio321/go-clear v0.0.0-20220330151556-7267606c5116
 	github.com/gucio321/terminalmenu v0.0.0-20220330182819-9d00852342ab
 	github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
@@ -16,12 +17,11 @@ require (
 require (
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8 // indirect
 	github.com/AllenDang/imgui-go v1.12.1-0.20220322114136-499bbf6a42ad // indirect
+	github.com/buger/goterm v1.0.4 // indirect
 	github.com/davecgh/go-spew v1.1.0 // indirect
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 // indirect
 	github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6 // indirect
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220320163800-277f93cfa958 // indirect
-	github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7 // indirect
-	github.com/gucio321/go-clear v0.0.0-20220330151556-7267606c5116 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
