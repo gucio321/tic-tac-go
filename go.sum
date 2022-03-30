@@ -25,6 +25,8 @@ github.com/gucio321/terminalmenu v0.0.0-20220329185535-a1dc1cf621ad h1:KRLC6lipP
 github.com/gucio321/terminalmenu v0.0.0-20220329185535-a1dc1cf621ad/go.mod h1:+T3s2Eq/xCHk7ZgPeObvgVLu16wjd1g879HxPNn2wjA=
 github.com/gucio321/terminalmenu v0.0.0-20220330162044-bd8fcf2de73d h1:D0o52FtuqPRTgrMS5zaK+OWmr2LQhEpWs0gdA5/+t0E=
 github.com/gucio321/terminalmenu v0.0.0-20220330162044-bd8fcf2de73d/go.mod h1:2kGHoG/ssCAEQTZwMFUMmyDu+WF1ne2i6r0FcfD2wps=
+github.com/gucio321/terminalmenu v0.0.0-20220330163742-569b99ac039d h1:LpFJhBohs0/vMugjFXd+/Vr76R2MRx2Ri18uYzWaups=
+github.com/gucio321/terminalmenu v0.0.0-20220330163742-569b99ac039d/go.mod h1:2kGHoG/ssCAEQTZwMFUMmyDu+WF1ne2i6r0FcfD2wps=
 github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba h1:QFQpJdgbON7I0jr2hYW7Bs+XV0qjc3d5tZoDnRFnqTg=
 github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba/go.mod h1:CVKlgaMiht+LXvHG173ujK6JUhZXKb2u/BQtjPDIvyk=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=

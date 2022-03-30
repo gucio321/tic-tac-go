@@ -2,6 +2,7 @@ package menu
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
@@ -19,6 +20,7 @@ import (
 
 	"github.com/gucio321/go-clear"
 	terminalmenu "github.com/gucio321/terminalmenu/pkg"
+	"github.com/gucio321/terminalmenu/pkg/menuutils"
 
 	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
@@ -111,18 +113,48 @@ func (m *Menu) runDemo() {
 }
 
 func (m *Menu) changeBoardSize() {
-	w, err := m.getUserAction("Enter new board width")
-	if err != nil {
+	w, err := menuutils.GetNumber("Enter new board width: ")
+
+	switch {
+	case err == nil:
+		// noop
+	case errors.Is(err, strconv.ErrSyntax):
+		if readErr := menuutils.PromptEnter("Please enter correct number!"); readErr != nil {
+			log.Fatal(readErr)
+		}
+
+		m.changeBoardSize()
+	default:
 		log.Fatal(err)
 	}
 
-	h, err := m.getUserAction("Enter new board height")
-	if err != nil {
+	h, err := menuutils.GetNumber("Enter new board height: ")
+
+	switch {
+	case err == nil:
+		// noop
+	case errors.Is(err, strconv.ErrSyntax):
+		if readErr := menuutils.PromptEnter("Please enter correct number!"); readErr != nil {
+			log.Fatal(readErr)
+		}
+
+		m.changeBoardSize()
+	default:
 		log.Fatal(err)
 	}
 
-	l, err := m.getUserAction("Enter new chain len")
-	if err != nil {
+	l, err := menuutils.GetNumber("Enter new chain len: ")
+
+	switch {
+	case err == nil:
+		// noop
+	case errors.Is(err, strconv.ErrSyntax):
+		if readErr := menuutils.PromptEnter("Please enter correct number!"); readErr != nil {
+			log.Fatal(readErr)
+		}
+
+		m.changeBoardSize()
+	default:
 		log.Fatal(err)
 	}
 
@@ -133,7 +165,10 @@ func (m *Menu) changeBoardSize() {
 func (m *Menu) resetBoardSize() {
 	m.width, m.height = board.BaseBoardW, board.BaseBoardH
 	m.chainLen = board.BaseChainLen
-	_, _ = m.getUserAction("Board width and height was set to default\nPress ENTER to continue")
+
+	if err := menuutils.PromptEnter("Board width and height was set to default\nPress ENTER to continue"); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (m *Menu) printHelp() {
@@ -159,7 +194,9 @@ func (m *Menu) printHelp() {
 	}, "\n"),
 	)
 
-	_, _ = m.getUserAction("Press ENTER to continue")
+	if err := menuutils.PromptEnter("Press ENTER to continue"); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (m *Menu) printReadme() {
@@ -177,7 +214,9 @@ func (m *Menu) printReadme() {
 
 	fmt.Println(text)
 
-	_, _ = m.getUserAction("Press ENTER to continue")
+	if err := menuutils.PromptEnter("Press ENTER to continue"); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (m *Menu) openWebsite() {
@@ -223,23 +262,4 @@ func (m *Menu) reportBug() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func (m *Menu) getUserAction(question string) (int, error) {
-	fmt.Print("\n" + question + ": ")
-
-	text, err := m.reader.ReadString('\n')
-	if err != nil {
-		return 0, fmt.Errorf("error reading user action: %w", err)
-	}
-
-	text = strings.ReplaceAll(text, "\n", "")
-	text = strings.ReplaceAll(text, "\r", "")
-
-	num, err := strconv.Atoi(text)
-	if err != nil {
-		return num, fmt.Errorf("error converting user answer: %w", err)
-	}
-
-	return num, nil
 }
