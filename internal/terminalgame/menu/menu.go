@@ -16,7 +16,7 @@ import (
 	"github.com/pkg/browser"
 	"github.com/russross/blackfriday"
 
-	osinfo "gist.github.com/2335e953b45f46591839a21c502588ea.git"
+	"github.com/gravestench/osinfo"
 
 	"github.com/gucio321/go-clear"
 	terminalmenu "github.com/gucio321/terminalmenu/pkg"

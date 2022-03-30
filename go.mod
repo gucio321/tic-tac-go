@@ -20,6 +20,7 @@ require (
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 // indirect
 	github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6 // indirect
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220320163800-277f93cfa958 // indirect
+	github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7 // indirect
 	github.com/gucio321/go-clear v0.0.0-20220330151556-7267606c5116 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect

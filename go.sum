@@ -15,6 +15,8 @@ github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6/go.mod h1:9YTyiznxEY1fVin
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20211213063430-748e38ca8aec/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220320163800-277f93cfa958 h1:TL70PMkdPCt9cRhKTqsm+giRpgrd0IGEj763nNr2VFY=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220320163800-277f93cfa958/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
+github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7 h1:r0b+3cK7b5I2LLf7/uhed+VRjcWzOI7BwrCy54l8UlM=
+github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7/go.mod h1:VaYXitHStkgczFCNysozZgiiK0aVITajAvR+jONEtzo=
 github.com/gucio321/go-clear v0.0.0-20220329181001-72b168602c98 h1:/7VWIsKMVnxKtQLH0VihXwKRSt7Ok7waOTiwLDhkrPY=
 github.com/gucio321/go-clear v0.0.0-20220329181001-72b168602c98/go.mod h1:Xm/wQZRCx4k+rLPM9IxvqPnueWFDldsp6T1S6dz/lFs=
 github.com/gucio321/go-clear v0.0.0-20220330151556-7267606c5116 h1:iSQuLDuuHTewgToZ0D2FcsVdlmaN+tqidDkTZ+eUlfU=
