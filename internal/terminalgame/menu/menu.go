@@ -1,12 +1,10 @@
 package menu
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"log"
 	"math/rand"
-	"os"
 	"runtime"
 	"strconv"
 	"strings"
@@ -29,22 +27,21 @@ import (
 
 const githubURL = "https://github.com/gucio321/tic-tac-go"
 
+// nolint:gochecknoinits // need to set up random and it is the easiest way to do it
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
 type settings struct {
 	chainLen,
 	width,
 	height byte
 }
 
-// nolint:gochecknoinits // need to set up random and it is the easiest way to do it
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
-
 // Menu represents a game menu.
 type Menu struct {
 	*settings
 	readme *[]byte
-	reader *bufio.Reader
 }
 
 // New creates a new menu
@@ -56,7 +53,6 @@ func New(readme []byte) *Menu {
 			board.BaseBoardW,
 			board.BaseBoardH,
 		},
-		reader: bufio.NewReader(os.Stdin),
 		readme: &readme,
 	}
 
