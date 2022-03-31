@@ -70,14 +70,14 @@ func (p *Players) Next() {
 
 // RollFirstPlayer sets random player as current.
 func (p *Players) RollFirstPlayer() {
-	randomNumber, err := rand.Int(rand.Reader, big.NewInt(2))
-	if err != nil {
-		panic(fmt.Sprintf("Reading random number: %v", err))
-	}
-
 	dict := map[int64]letter.Letter{
 		0: letter.LetterX,
 		1: letter.LetterO,
+	}
+
+	randomNumber, err := rand.Int(rand.Reader, big.NewInt(int64(len(dict))))
+	if err != nil {
+		panic(fmt.Sprintf("Reading random number: %v", err))
 	}
 
 	p.current = dict[randomNumber.Int64()]

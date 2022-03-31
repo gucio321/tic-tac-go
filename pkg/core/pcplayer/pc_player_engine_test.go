@@ -525,6 +525,7 @@ func TestPCPlayer_String(t *testing.T) {
 		b        *board.Board
 		pcLetter letter.Letter
 	}
+
 	tests := []struct {
 		name   string
 		fields fields
