@@ -3,8 +3,9 @@
 package pcplayer
 
 import (
-	"math/rand"
-	"time"
+	"crypto/rand"
+	"fmt"
+	"math/big"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
@@ -21,8 +22,6 @@ type PCPlayer struct {
 
 // NewPCPlayer creates new PCPlayer instance.
 func NewPCPlayer(b *board.Board, pcLetter letter.Letter) *PCPlayer {
-	rand.Seed(time.Now().UnixNano())
-
 	return &PCPlayer{
 		b:        b,
 		pcLetter: pcLetter,
@@ -232,10 +231,12 @@ searching:
 }
 
 func (p *PCPlayer) getRandomNumber(numbers []int) int {
-	// nolint:gosec // it's ok
-	result := numbers[rand.Intn(len(numbers))]
+	randomNumber, err := rand.Int(rand.Reader, big.NewInt(int64(len(numbers))))
+	if err != nil {
+		panic(fmt.Sprintf("Reading random number: %v", err))
+	}
 
-	return result
+	return numbers[randomNumber.Int64()]
 }
 
 func (p *PCPlayer) getAvailableOptions(gameBoard *board.Board, candidates []int) (available []int) {
