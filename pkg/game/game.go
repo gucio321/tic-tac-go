@@ -54,14 +54,14 @@ func Create(playerXType, playerOType PlayerType) *Game {
 	case PlayerTypePC:
 		playerX = pcplayer.NewPCPlayer(result.board, letter.LetterX)
 	case PlayerTypeHuman:
-		playerX = newHumanPlayer()
+		playerO = newHumanPlayer(result.getUserAction, letter.LetterX)
 	}
 
 	switch playerOType {
 	case PlayerTypePC:
 		playerO = pcplayer.NewPCPlayer(result.board, letter.LetterO)
 	case PlayerTypeHuman:
-		playerO = newHumanPlayer()
+		playerO = newHumanPlayer(result.getUserAction, letter.LetterO)
 	}
 
 	result.players = players.Create(playerX, playerO)
