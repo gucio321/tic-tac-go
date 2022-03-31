@@ -3,13 +3,14 @@ package menu
 import (
 	"errors"
 	"fmt"
-	"github.com/gucio321/go-clear"
 	"log"
 	"math/rand"
 	"runtime"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gucio321/go-clear"
 
 	"github.com/jaytaylor/html2text"
 	"github.com/pkg/browser"

@@ -13,13 +13,16 @@ import (
 
 var _ player.Player = &PCPlayer{}
 
+// PCPlayer is a simple-AI logic used in Tic-Tac-Go for calculating PC-player's move.
 type PCPlayer struct {
 	b        *board.Board
 	pcLetter letter.Letter
 }
 
+// NewPCPlayer creates new PCPlayer instance.
 func NewPCPlayer(b *board.Board, pcLetter letter.Letter) *PCPlayer {
 	rand.Seed(time.Now().UnixNano())
+
 	return &PCPlayer{
 		b:        b,
 		pcLetter: pcLetter,
@@ -41,11 +44,11 @@ func (p *PCPlayer) String() string {
 //   - take opponent's opposite corner
 //   - take center
 //   - take random side
-// nolint:gocognit,gocyclo // https://github.com/gucio321/tic-tac-go/issues/154
 func (p PCPlayer) GetMove() (i int) {
 	return p.getPCMove(p.b)
 }
 
+// nolint:gocyclo // https://github.com/gucio321/tic-tac-go/issues/154
 func (p *PCPlayer) getPCMove(gameBoard *board.Board) (i int) {
 	playerLetter := p.pcLetter.Opposite()
 
@@ -143,7 +146,7 @@ func (p *PCPlayer) getPCMove(gameBoard *board.Board) (i int) {
 	panic("Tic-Tac-Go: pcplayer.GetPCMove(...): cannot determinate pc move - board is full")
 }
 
-func (p *PCPlayer) canWin(baseBoard *board.Board, player letter.Letter) (canWin bool, results []int) {
+func (p *PCPlayer) canWin(baseBoard *board.Board, playerLetter letter.Letter) (canWin bool, results []int) {
 	results = make([]int, 0)
 
 	for i := 0; i < baseBoard.Width()*baseBoard.Height(); i++ {
@@ -153,9 +156,9 @@ func (p *PCPlayer) canWin(baseBoard *board.Board, player letter.Letter) (canWin 
 
 		fictionBoard := baseBoard.Copy()
 
-		fictionBoard.SetIndexState(i, player)
+		fictionBoard.SetIndexState(i, playerLetter)
 
-		if ok, _ := fictionBoard.IsWinner(player); ok {
+		if ok, _ := fictionBoard.IsWinner(playerLetter); ok {
 			results = append(results, i)
 		}
 	}
@@ -192,7 +195,7 @@ the O-player will not be able to keep X from winning.
 +---+---+---+---+---+
 O-player lost.
 */
-func (p *PCPlayer) canWinTwoMoves(gameBoard *board.Board, player letter.Letter) (result []int) {
+func (p *PCPlayer) canWinTwoMoves(gameBoard *board.Board, playerLetter letter.Letter) (result []int) {
 	result = make([]int, 0)
 
 	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
@@ -215,7 +218,7 @@ searching:
 			switch gameBoard.GetIndexState(potentialPlace[i]) {
 			case letter.LetterNone:
 				gaps = append(gaps, potentialPlace[i])
-			case player.Opposite(): // operation already blocked
+			case playerLetter.Opposite(): // operation already blocked
 				continue searching
 			}
 		}

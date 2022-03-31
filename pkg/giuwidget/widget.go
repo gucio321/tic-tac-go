@@ -2,7 +2,6 @@
 package giuwidget
 
 import (
-	"github.com/gucio321/tic-tac-go/pkg/game"
 	"image/color"
 	"math"
 	"strconv"
@@ -11,6 +10,7 @@ import (
 	"golang.org/x/image/colornames"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+	"github.com/gucio321/tic-tac-go/pkg/game"
 )
 
 const id = "Tic-Tac-Go-game"

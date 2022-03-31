@@ -3,10 +3,11 @@ package main
 import (
 	"bytes"
 	_ "embed"
-	"github.com/gucio321/tic-tac-go/pkg/game"
 	"image"
 	"image/png"
 	"log"
+
+	"github.com/gucio321/tic-tac-go/pkg/game"
 
 	"github.com/AllenDang/giu"
 

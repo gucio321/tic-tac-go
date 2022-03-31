@@ -26,17 +26,17 @@ func Create(playerX, playerO player.Player) *Players {
 	return result
 }
 
-// PlayerX returns player1.
+// PlayerX returns X player.
 func (p *Players) PlayerX() player.Player {
 	return p.playerX
 }
 
-// Player2 returns player2.
+// PlayerO returns O player.
 func (p *Players) PlayerO() player.Player {
 	return p.playerO
 }
 
-// Current returns current player's letter
+// Current returns current player's letter.
 func (p *Players) Current() letter.Letter {
 	return p.current
 }
@@ -53,7 +53,7 @@ func (p *Players) CurrentPlayer() player.Player {
 	return nil
 }
 
-// Move returns a current player's move.
+// GetMove returns a current player's move.
 func (p *Players) GetMove() int {
 	return p.CurrentPlayer().GetMove()
 }
