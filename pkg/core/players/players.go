@@ -36,8 +36,13 @@ func (p *Players) PlayerO() player.Player {
 	return p.playerO
 }
 
-// Current returns current player.
-func (p *Players) Current() player.Player {
+// Current returns current player's letter
+func (p *Players) Current() letter.Letter {
+	return p.current
+}
+
+// CurrentPlayer returns current player.
+func (p *Players) CurrentPlayer() player.Player {
 	switch p.current {
 	case letter.LetterX:
 		return p.playerX
@@ -50,7 +55,7 @@ func (p *Players) Current() player.Player {
 
 // Move returns a current player's move.
 func (p *Players) GetMove() int {
-	return p.Current().GetMove()
+	return p.CurrentPlayer().GetMove()
 }
 
 // Next switch to the next player.
