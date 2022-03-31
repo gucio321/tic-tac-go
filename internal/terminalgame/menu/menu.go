@@ -4,11 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"math/rand"
 	"runtime"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/gucio321/go-clear"
 
@@ -27,11 +25,6 @@ import (
 )
 
 const githubURL = "https://github.com/gucio321/tic-tac-go"
-
-// nolint:gochecknoinits // need to set up random and it is the easiest way to do it
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
 
 type settings struct {
 	chainLen,
