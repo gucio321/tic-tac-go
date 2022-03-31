@@ -3,6 +3,10 @@
 package players
 
 import (
+	"crypto/rand"
+	"fmt"
+	"math/big"
+
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 )
@@ -20,8 +24,9 @@ func Create(playerX, playerO player.Player) *Players {
 	result := &Players{
 		playerO: playerX,
 		playerX: playerO,
-		current: letter.LetterX,
 	}
+
+	result.RollFirstPlayer()
 
 	return result
 }
@@ -61,4 +66,19 @@ func (p *Players) GetMove() int {
 // Next switch to the next player.
 func (p *Players) Next() {
 	p.current = p.current.Opposite()
+}
+
+// RollFirstPlayer sets random player as current.
+func (p *Players) RollFirstPlayer() {
+	randomNumber, err := rand.Int(rand.Reader, big.NewInt(2))
+	if err != nil {
+		panic(fmt.Sprintf("Reading random number: %v", err))
+	}
+
+	dict := map[int64]letter.Letter{
+		0: letter.LetterX,
+		1: letter.LetterO,
+	}
+
+	p.current = dict[randomNumber.Int64()]
 }

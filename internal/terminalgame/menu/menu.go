@@ -89,17 +89,7 @@ func (m *Menu) runPVP() {
 }
 
 func (m *Menu) runPVC() {
-	var g *gameimpl.TTG
-
-	// nolint:gomnd // two players in game
-	r := rand.Intn(2) // nolint:gosec // it is ok
-
-	switch r {
-	case 0:
-		g = gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypeHuman, game.PlayerTypePC)
-	case 1:
-		g = gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypePC, game.PlayerTypeHuman)
-	}
+	g := gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypeHuman, game.PlayerTypePC)
 
 	g.Run()
 }

@@ -179,6 +179,7 @@ func (g *Game) Reset() {
 	}
 
 	*g.board = *board.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
+	g.players.RollFirstPlayer()
 }
 
 // Stop safely stops the game loop invoked by (*Game).Run.
