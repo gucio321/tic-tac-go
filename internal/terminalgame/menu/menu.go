@@ -20,9 +20,10 @@ import (
 	terminalmenu "github.com/gucio321/terminalmenu/pkg"
 	"github.com/gucio321/terminalmenu/pkg/menuutils"
 
-	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
+	gameimpl "github.com/gucio321/tic-tac-go/internal/terminalgame/game"
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
+	"github.com/gucio321/tic-tac-go/pkg/game"
 )
 
 const githubURL = "https://github.com/gucio321/tic-tac-go"
@@ -83,12 +84,12 @@ func (m *Menu) Run() {
 }
 
 func (m *Menu) runPVP() {
-	pvp := game.NewTTG(m.width, m.height, m.chainLen, player.PlayerPerson, player.PlayerPerson)
+	pvp := game.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypeHuman, player.PlayerPerson)
 	pvp.Run()
 }
 
 func (m *Menu) runPVC() {
-	var g *game.TTG
+	var g *gameimpl.TTG
 
 	// nolint:gomnd // two players in game
 	r := rand.Intn(2) // nolint:gosec // it is ok

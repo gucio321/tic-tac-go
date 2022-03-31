@@ -3,13 +3,13 @@ package game
 import (
 	"bufio"
 	"fmt"
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 	"log"
 	"os"
 
 	"github.com/gucio321/go-clear"
 	"github.com/gucio321/terminalmenu/pkg/menuutils"
 
-	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 	"github.com/gucio321/tic-tac-go/pkg/game"
 )
 
@@ -20,10 +20,10 @@ type TTG struct {
 }
 
 // NewTTG creates a new TTG.
-func NewTTG(w, h, chainLen byte, player1Type, player2Type player.Type) *TTG {
+func NewTTG(w, h, chainLen byte, playerXType, playerOType game.PlayerType) *TTG {
 	result := &TTG{
 		reader: bufio.NewReader(os.Stdin),
-		Game:   game.Create(player1Type, player2Type),
+		Game:   game.Create(playerXType, playerOType),
 	}
 
 	result.SetBoardSize(int(w), int(h), int(chainLen)).OnContinue(func() {
@@ -41,13 +41,13 @@ func NewTTG(w, h, chainLen byte, player1Type, player2Type player.Type) *TTG {
 func (t *TTG) Run() {
 	endGame := make(chan bool, 1)
 
-	t.Game.Result(func(p *player.Player) {
+	t.Game.Result(func(l letter.Letter, name string) {
 		// handle game end
-		switch p {
-		case nil:
+		switch l {
+		case letter.LetterNone:
 			fmt.Println("DRAW")
 		default:
-			fmt.Println(p.Name() + " won")
+			fmt.Println(name + " won")
 		}
 
 		if err := menuutils.PromptEnter("Press ENTER to continue "); err != nil {
