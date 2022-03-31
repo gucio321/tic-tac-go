@@ -197,7 +197,7 @@ func GetPCMove(gameBoard *board.Board, pcLetter letter.Letter) (i int) {
 		}
 	}
 
-	if options != nil {
+	if len(options) > 0 {
 		return getRandomNumber(options)
 	}
 
