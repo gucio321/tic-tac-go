@@ -2,6 +2,7 @@
 package giuwidget
 
 import (
+	"github.com/gucio321/tic-tac-go/pkg/game"
 	"image/color"
 	"math"
 	"strconv"
@@ -10,7 +11,6 @@ import (
 	"golang.org/x/image/colornames"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
-	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 )
 
 const id = "Tic-Tac-Go-game"
@@ -25,14 +25,14 @@ const (
 
 // GameWidget represents a giu implementation of tic-tac-go.
 type GameWidget struct {
-	p1type, p2type player.Type
+	playerXType, playerOType game.PlayerType
 }
 
 // Game creates GameWidget.
-func Game(p1type, p2type player.Type) *GameWidget {
+func Game(playerXType, playerOType game.PlayerType) *GameWidget {
 	return &GameWidget{
-		p1type: p1type,
-		p2type: p2type,
+		playerXType: playerXType,
+		playerOType: playerOType,
 	}
 }
 
