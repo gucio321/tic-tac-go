@@ -223,6 +223,26 @@ func TestGetPCMove(t *testing.T) {
 			},
 			want: []int{6},
 		},
+		{
+			name: "inside board",
+			args: args{
+				gameBoard: board.Create(4, 4, 4).
+					SetIndexState(0, letter.LetterX).
+					SetIndexState(1, letter.LetterO).
+					SetIndexState(2, letter.LetterO).
+					SetIndexState(3, letter.LetterX).
+					SetIndexState(4, letter.LetterX).
+					SetIndexState(7, letter.LetterO).
+					SetIndexState(8, letter.LetterX).
+					SetIndexState(11, letter.LetterO).
+					SetIndexState(12, letter.LetterO).
+					SetIndexState(13, letter.LetterX).
+					SetIndexState(14, letter.LetterX).
+					SetIndexState(15, letter.LetterO),
+				pcLetter: letter.LetterX,
+			},
+			want: []int{5, 6, 9, 10},
+		},
 	}
 
 	for _, tt := range tests {
