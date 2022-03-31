@@ -247,7 +247,7 @@ func TestGetPCMove(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := NewPCPlayer(tt.args.gameBoard, tt.args.pcLetter).GetPCMove()
+			got := NewPCPlayer(tt.args.gameBoard, tt.args.pcLetter).GetMove()
 			assert.Truef(t, contains(tt.want, got), "GetPCMove() returned unexpected result: expected %v, got %v", tt.want, got)
 		})
 	}
@@ -272,8 +272,8 @@ func TestGetPCMove_FullBoard(t *testing.T) {
 		SetIndexState(14, letter.LetterX).
 		SetIndexState(15, letter.LetterO)
 
-	assert.Panics(t, func() { NewPCPlayer(gameBoard, letter.LetterX).GetPCMove() }, "GetPCMove on full board didn't panicked")
-	assert.Panics(t, func() { NewPCPlayer(gameBoard, letter.LetterO).GetPCMove() }, "GetPCMove on full board didn't panicked")
+	assert.Panics(t, func() { NewPCPlayer(gameBoard, letter.LetterX).GetMove() }, "GetPCMove on full board didn't panicked")
+	assert.Panics(t, func() { NewPCPlayer(gameBoard, letter.LetterO).GetMove() }, "GetPCMove on full board didn't panicked")
 }
 
 //nolint:funlen // tests function; it is ok
