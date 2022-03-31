@@ -519,3 +519,43 @@ func contains(s []int, e int) bool {
 
 	return false
 }
+
+func TestPCPlayer_String(t *testing.T) {
+	type fields struct {
+		b        *board.Board
+		pcLetter letter.Letter
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   string
+	}{
+		{
+			name: "for player X",
+			fields: fields{
+				b:        nil,
+				pcLetter: letter.LetterX,
+			},
+			want: "PC X",
+		},
+		{
+			name: "for player O",
+			fields: fields{
+				b:        nil,
+				pcLetter: letter.LetterO,
+			},
+			want: "PC O",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := &PCPlayer{
+				b:        tt.fields.b,
+				pcLetter: tt.fields.pcLetter,
+			}
+
+			assert.Equalf(t, tt.want, p.String(), "String()")
+		})
+	}
+}
