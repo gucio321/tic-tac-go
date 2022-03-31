@@ -173,12 +173,12 @@ func (g *Game) Dispose() {
 }
 
 // Reset resets the game.
-// TODO
 func (g *Game) Reset() {
 	if g.isRunning {
 		panic("Tic-Tac-Go: game.(*Game).Reset() call when game is running. Did you forgot to invoke (*Game).Stop()?")
 	}
 
+	*g.board = *board.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
 }
 
 // Stop safely stops the game loop invoked by (*Game).Run.
