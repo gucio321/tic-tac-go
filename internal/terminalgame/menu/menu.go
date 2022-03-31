@@ -10,19 +10,20 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gucio321/go-clear"
+
 	"github.com/jaytaylor/html2text"
 	"github.com/pkg/browser"
 	"github.com/russross/blackfriday"
 
 	"github.com/gravestench/osinfo"
 
-	"github.com/gucio321/go-clear"
 	terminalmenu "github.com/gucio321/terminalmenu/pkg"
 	"github.com/gucio321/terminalmenu/pkg/menuutils"
 
-	"github.com/gucio321/tic-tac-go/internal/terminalgame/game"
+	"github.com/gucio321/tic-tac-go/internal/terminalgame/gameimpl"
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
-	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
+	"github.com/gucio321/tic-tac-go/pkg/game"
 )
 
 const githubURL = "https://github.com/gucio321/tic-tac-go"
@@ -83,28 +84,28 @@ func (m *Menu) Run() {
 }
 
 func (m *Menu) runPVP() {
-	pvp := game.NewTTG(m.width, m.height, m.chainLen, player.PlayerPerson, player.PlayerPerson)
+	pvp := gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypeHuman, game.PlayerTypeHuman)
 	pvp.Run()
 }
 
 func (m *Menu) runPVC() {
-	var g *game.TTG
+	var g *gameimpl.TTG
 
 	// nolint:gomnd // two players in game
 	r := rand.Intn(2) // nolint:gosec // it is ok
 
 	switch r {
 	case 0:
-		g = game.NewTTG(m.width, m.height, m.chainLen, player.PlayerPerson, player.PlayerPC)
+		g = gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypeHuman, game.PlayerTypePC)
 	case 1:
-		g = game.NewTTG(m.width, m.height, m.chainLen, player.PlayerPC, player.PlayerPerson)
+		g = gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypePC, game.PlayerTypeHuman)
 	}
 
 	g.Run()
 }
 
 func (m *Menu) runDemo() {
-	demo := game.NewTTG(m.width, m.height, m.chainLen, player.PlayerPC, player.PlayerPC)
+	demo := gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypePC, game.PlayerTypePC)
 	demo.Run()
 }
 

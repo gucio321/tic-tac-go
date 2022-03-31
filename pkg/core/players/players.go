@@ -9,48 +9,53 @@ import (
 
 // Players represents a pair of players.
 type Players struct {
-	player1,
-	player2 *player.Player
+	playerX,
+	playerO player.Player
 
 	current letter.Letter
 }
 
 // Create creates a new players set.
-func Create(player1Type player.Type, cb1 player.Callback, player2Type player.Type, cb2 player.Callback) *Players {
+func Create(playerX, playerO player.Player) *Players {
 	result := &Players{
-		player1: player.Create(player1Type, letter.LetterX, cb1),
-		player2: player.Create(player2Type, letter.LetterO, cb2),
+		playerO: playerX,
+		playerX: playerO,
 		current: letter.LetterX,
 	}
 
 	return result
 }
 
-// Player1 returns player1.
-func (p *Players) Player1() *player.Player {
-	return p.player1
+// PlayerX returns X player.
+func (p *Players) PlayerX() player.Player {
+	return p.playerX
 }
 
-// Player2 returns player2.
-func (p *Players) Player2() *player.Player {
-	return p.player2
+// PlayerO returns O player.
+func (p *Players) PlayerO() player.Player {
+	return p.playerO
 }
 
-// Current returns current player.
-func (p *Players) Current() *player.Player {
+// Current returns current player's letter.
+func (p *Players) Current() letter.Letter {
+	return p.current
+}
+
+// CurrentPlayer returns current player.
+func (p *Players) CurrentPlayer() player.Player {
 	switch p.current {
-	case p.player1.Letter():
-		return p.player1
-	case p.player2.Letter():
-		return p.player2
+	case letter.LetterX:
+		return p.playerX
+	case letter.LetterO:
+		return p.playerO
 	}
 
 	return nil
 }
 
-// Move returns a current player's move.
-func (p *Players) Move() int {
-	return p.Current().Move()
+// GetMove returns a current player's move.
+func (p *Players) GetMove() int {
+	return p.CurrentPlayer().GetMove()
 }
 
 // Next switch to the next player.

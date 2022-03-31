@@ -3,8 +3,9 @@ package giuwidget
 import (
 	"github.com/AllenDang/giu"
 
+	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
-	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 	"github.com/gucio321/tic-tac-go/pkg/game"
 )
 
@@ -52,11 +53,11 @@ func (g *GameWidget) newState() *gameState {
 		h:           defaultBoardSize,
 		chainLen:    defaultBoardSize,
 		gameEnded:   false,
-		game:        game.Create(g.p1type, g.p2type),
+		game:        game.Create(g.playerXType, g.playerOType),
 		buttonClick: make(chan int),
 	}
 
-	state.game.Result(func(p *player.Player) {
+	state.game.Result(func(letter.Letter, string) {
 		_, state.winningCombo = state.currentBoard.GetWinner()
 		state.gameEnded = true
 	})

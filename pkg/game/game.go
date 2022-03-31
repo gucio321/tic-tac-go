@@ -32,39 +32,39 @@ type Game struct {
 	isRunning bool
 
 	onContinue   func()
-	resultCB     func(*player.Player)
+	resultCB     func(winnerLetter letter.Letter, winnerName string)
 	userActionCB func() int
 }
 
 // Create creates a game instance.
-func Create(p1type, p2type player.Type) *Game {
+func Create(playerXType, playerOType PlayerType) *Game {
 	result := &Game{
 		isRunning:  false,
 		board:      board.Create(defaultBoardW, defaultBoardH, defaultChainLen),
 		onContinue: func() {},
-		resultCB:   func(*player.Player) {},
+		resultCB:   func(letter.Letter, string) {},
 		userActionCB: func() int {
 			panic("Tic-Tac-Go: game.(*Game): user action callback is not set!")
 		},
 	}
 
-	var p1Cb, p2Cb func(letter.Letter) int
+	var playerX, playerO player.Player
 
-	switch p1type {
-	case player.PlayerPC:
-		p1Cb = func(l letter.Letter) int { return pcplayer.GetPCMove(result.board, l) }
-	case player.PlayerPerson:
-		p1Cb = func(_ letter.Letter) int { return result.getUserAction() }
+	switch playerXType {
+	case PlayerTypePC:
+		playerX = pcplayer.NewPCPlayer(result.board, letter.LetterX)
+	case PlayerTypeHuman:
+		playerX = newHumanPlayer(result.getUserAction, letter.LetterX)
 	}
 
-	switch p2type {
-	case player.PlayerPC:
-		p2Cb = func(l letter.Letter) int { return pcplayer.GetPCMove(result.board, l) }
-	case player.PlayerPerson:
-		p2Cb = func(_ letter.Letter) int { return result.getUserAction() }
+	switch playerOType {
+	case PlayerTypePC:
+		playerO = pcplayer.NewPCPlayer(result.board, letter.LetterO)
+	case PlayerTypeHuman:
+		playerO = newHumanPlayer(result.getUserAction, letter.LetterO)
 	}
 
-	result.players = players.Create(p1type, p1Cb, p2type, p2Cb)
+	result.players = players.Create(playerX, playerO)
 
 	return result
 }
@@ -75,7 +75,7 @@ func Create(p1type, p2type player.Type) *Game {
 func (g *Game) SetBoardSize(w, h, c int) *Game {
 	g.isRunningPanic("SetBoardSize")
 
-	g.board = board.Create(w, h, c)
+	*g.board = *board.Create(w, h, c)
 
 	return g
 }
@@ -101,7 +101,7 @@ func (g *Game) UserAction(cb func() int) {
 
 // Result returns true if game is ended. in addition, it returns its result.
 // if LetterNone returned - it means that DRAW reached.
-func (g *Game) Result(resultCB func(*player.Player)) *Game {
+func (g *Game) Result(resultCB func(winnerLetter letter.Letter, winnerName string)) *Game {
 	g.resultCB = resultCB
 
 	return g
@@ -118,10 +118,10 @@ func (g *Game) Board() *board.Board {
 }
 
 // CurrentPlayer returns a current player.
-func (g *Game) CurrentPlayer() *player.Player {
+func (g *Game) CurrentPlayer() player.Player {
 	g.notRunningPanic("CurrentPlayer")
 
-	return g.players.Current()
+	return g.players.CurrentPlayer()
 }
 
 // Run runs the game.
@@ -138,25 +138,25 @@ func (g *Game) Run() {
 		// main loop
 		for {
 			g.onContinue()
-			idx := g.players.Current().Move()
+			idx := g.players.CurrentPlayer().GetMove()
 
 			// if loop was stopped by Dispose() or Stop(), exit the loop
 			if !g.isRunning {
 				return
 			}
 
-			g.Board().SetIndexState(idx, g.players.Current().Letter())
+			g.Board().SetIndexState(idx, g.players.Current())
 
-			if ok, _ := g.Board().IsWinner(g.players.Current().Letter()); ok {
+			if ok, _ := g.Board().IsWinner(g.players.Current()); ok {
 				g.onContinue()
 				g.isRunning = false
-				g.resultCB(g.players.Current())
+				g.resultCB(g.players.Current(), g.players.CurrentPlayer().String())
 
 				return
 			} else if g.Board().IsBoardFull() {
 				g.onContinue()
 				g.isRunning = false
-				g.resultCB(nil)
+				g.resultCB(letter.LetterNone, "")
 
 				return
 			}
@@ -179,24 +179,6 @@ func (g *Game) Reset() {
 	}
 
 	*g.board = *board.Create(g.board.Width(), g.board.Height(), g.board.ChainLength())
-
-	var p1Cb, p2Cb func(letter.Letter) int
-
-	switch g.players.Player1().Type() {
-	case player.PlayerPC:
-		p1Cb = func(l letter.Letter) int { return pcplayer.GetPCMove(g.board, l) }
-	case player.PlayerPerson:
-		p1Cb = func(_ letter.Letter) int { return g.getUserAction() }
-	}
-
-	switch g.players.Player2().Type() {
-	case player.PlayerPC:
-		p2Cb = func(l letter.Letter) int { return pcplayer.GetPCMove(g.board, l) }
-	case player.PlayerPerson:
-		p2Cb = func(_ letter.Letter) int { return g.getUserAction() }
-	}
-
-	g.players = players.Create(g.players.Player1().Type(), p1Cb, g.players.Player2().Type(), p2Cb)
 }
 
 // Stop safely stops the game loop invoked by (*Game).Run.
