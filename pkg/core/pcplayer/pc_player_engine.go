@@ -8,7 +8,10 @@ import (
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
+	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 )
+
+var _ player.Player = &PCPlayer{}
 
 type PCPlayer struct {
 	b        *board.Board
@@ -23,92 +26,11 @@ func NewPCPlayer(b *board.Board, pcLetter letter.Letter) *PCPlayer {
 	}
 }
 
-func (p *PCPlayer) canWin(baseBoard *board.Board, player letter.Letter) (canWin bool, results []int) {
-	results = make([]int, 0)
-
-	for i := 0; i < baseBoard.Width()*baseBoard.Height(); i++ {
-		if !baseBoard.IsIndexFree(i) {
-			continue
-		}
-
-		fictionBoard := baseBoard.Copy()
-
-		fictionBoard.SetIndexState(i, player)
-
-		if ok, _ := fictionBoard.IsWinner(player); ok {
-			results = append(results, i)
-		}
-	}
-
-	return len(results) > 0, results
+func (p *PCPlayer) String() string {
+	return "PC " + p.pcLetter.String()
 }
 
-/*
-This method should find situations like that:
-chain length = 4
-+---+---+---+---+---+
-|   |   | o |   |   |
-+---+---+---+---+---+
-|   |   |   |   | o |
-+---+---+---+---+---+
-|   | x | x |   |   |
-+---+---+---+---+---+
-|   |   |   |   |   |
-+---+---+---+---+---+
-|   |   |   | o |   |
-+---+---+---+---+---+
-let's look at the board above: when we'll make our move at right side of X-chain (14)
-the O-player will not be able to keep X from winning.
-+---+---+---+---+---+
-|   |   | o |   |   |
-+---+---+---+---+---+
-|   |   |   |   | o |
-+---+---+---+---+---+
-|   | x | x | X |   |
-+---+---+---+---+---+
-|   |   |   |   |   |
-+---+---+---+---+---+
-|   |   |   | o |   |
-+---+---+---+---+---+
-O-player lost.
-*/
-func (p *PCPlayer) canWinTwoMoves(gameBoard *board.Board, player letter.Letter) (result []int) {
-	result = make([]int, 0)
-
-	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
-	minimalChainLen := gameBoard.ChainLength() - 2
-	if minimalChainLen <= 0 {
-		return
-	}
-
-	potentiallyAvailableChains := gameBoard.GetWinBoard(gameBoard.ChainLength() + 1)
-
-searching:
-	for _, potentialPlace := range potentiallyAvailableChains {
-		if !gameBoard.IsIndexFree(potentialPlace[0]) || !gameBoard.IsIndexFree(potentialPlace[len(potentialPlace)-1]) {
-			continue
-		}
-
-		var gaps []int
-
-		for i := 1; i < len(potentialPlace)-1; i++ {
-			switch gameBoard.GetIndexState(potentialPlace[i]) {
-			case letter.LetterNone:
-				gaps = append(gaps, potentialPlace[i])
-			case player.Opposite(): // operation already blocked
-				continue searching
-			}
-		}
-
-		if len(gaps) == 1 {
-			result = append(result, gaps...)
-		}
-	}
-
-	return result
-}
-
-// GetPCMove calculates move for PC player on given board.
+// GetMove calculates move for PC player on given board.
 // Steps:
 // - try to win
 // - stop opponent from winning
@@ -120,7 +42,7 @@ searching:
 //   - take center
 //   - take random side
 // nolint:gocognit,gocyclo // https://github.com/gucio321/tic-tac-go/issues/154
-func (p PCPlayer) GetPCMove() (i int) {
+func (p PCPlayer) GetMove() (i int) {
 	return p.getPCMove(p.b)
 }
 
@@ -219,6 +141,91 @@ func (p *PCPlayer) getPCMove(gameBoard *board.Board) (i int) {
 	}
 
 	panic("Tic-Tac-Go: pcplayer.GetPCMove(...): cannot determinate pc move - board is full")
+}
+
+func (p *PCPlayer) canWin(baseBoard *board.Board, player letter.Letter) (canWin bool, results []int) {
+	results = make([]int, 0)
+
+	for i := 0; i < baseBoard.Width()*baseBoard.Height(); i++ {
+		if !baseBoard.IsIndexFree(i) {
+			continue
+		}
+
+		fictionBoard := baseBoard.Copy()
+
+		fictionBoard.SetIndexState(i, player)
+
+		if ok, _ := fictionBoard.IsWinner(player); ok {
+			results = append(results, i)
+		}
+	}
+
+	return len(results) > 0, results
+}
+
+/*
+This method should find situations like that:
+chain length = 4
++---+---+---+---+---+
+|   |   | o |   |   |
++---+---+---+---+---+
+|   |   |   |   | o |
++---+---+---+---+---+
+|   | x | x |   |   |
++---+---+---+---+---+
+|   |   |   |   |   |
++---+---+---+---+---+
+|   |   |   | o |   |
++---+---+---+---+---+
+let's look at the board above: when we'll make our move at right side of X-chain (14)
+the O-player will not be able to keep X from winning.
++---+---+---+---+---+
+|   |   | o |   |   |
++---+---+---+---+---+
+|   |   |   |   | o |
++---+---+---+---+---+
+|   | x | x | X |   |
++---+---+---+---+---+
+|   |   |   |   |   |
++---+---+---+---+---+
+|   |   |   | o |   |
++---+---+---+---+---+
+O-player lost.
+*/
+func (p *PCPlayer) canWinTwoMoves(gameBoard *board.Board, player letter.Letter) (result []int) {
+	result = make([]int, 0)
+
+	// nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
+	minimalChainLen := gameBoard.ChainLength() - 2
+	if minimalChainLen <= 0 {
+		return
+	}
+
+	potentiallyAvailableChains := gameBoard.GetWinBoard(gameBoard.ChainLength() + 1)
+
+searching:
+	for _, potentialPlace := range potentiallyAvailableChains {
+		if !gameBoard.IsIndexFree(potentialPlace[0]) || !gameBoard.IsIndexFree(potentialPlace[len(potentialPlace)-1]) {
+			continue
+		}
+
+		var gaps []int
+
+		for i := 1; i < len(potentialPlace)-1; i++ {
+			switch gameBoard.GetIndexState(potentialPlace[i]) {
+			case letter.LetterNone:
+				gaps = append(gaps, potentialPlace[i])
+			case player.Opposite(): // operation already blocked
+				continue searching
+			}
+		}
+
+		if len(gaps) == 1 {
+			result = append(result, gaps...)
+		}
+	}
+
+	return result
 }
 
 func (p *PCPlayer) getRandomNumber(numbers []int) int {
