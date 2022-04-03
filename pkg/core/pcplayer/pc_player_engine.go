@@ -145,6 +145,57 @@ func (p *PCPlayer) getPCMove(gameBoard *board.Board) (i int) {
 	panic("Tic-Tac-Go: pcplayer.GetPCMove(...): cannot determinate pc move - board is full")
 }
 
+func (p *PCPlayer) MinMax(b *board.Board, l letter.Letter, depth int, isMax bool) int {
+	if cw, r := p.canWin(b, l); cw {
+		return r[0]
+	}
+
+	if cw, r := p.canWin(b, l.Opposite()); cw {
+		return r[0]
+	}
+
+	if b.IsBoardFull() {
+		return -1
+	}
+
+	if isMax {
+		best := -1
+
+		for i := 0; i < b.Width()*b.Height(); i++ {
+			if !b.IsIndexFree(i) {
+				continue
+			}
+
+			f := b.Copy().SetIndexState(i, l)
+
+			val := p.MinMax(f, l.Opposite(), depth+1, !isMax)
+
+			if val > best {
+				best = val
+			}
+		}
+
+		return best
+	}
+
+	best := b.Width()*b.Height() + 1
+	for i := 0; i < b.Width()*b.Height(); i++ {
+		if !b.IsIndexFree(i) {
+			continue
+		}
+
+		f := b.Copy().SetIndexState(i, l)
+
+		val := p.MinMax(f, l.Opposite(), depth+1, !isMax)
+
+		if val < best {
+			best = val
+		}
+	}
+
+	return best
+}
+
 func (p *PCPlayer) canWin(baseBoard *board.Board, playerLetter letter.Letter) (canWin bool, results []int) {
 	results = make([]int, 0)
 
