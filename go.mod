@@ -10,7 +10,7 @@ require (
 	github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/russross/blackfriday v1.6.0
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.7.2
 	golang.org/x/image v0.0.0-20220321031419-a8550c1d254a
 )
 
@@ -31,5 +31,5 @@ require (
 	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
 	golang.org/x/sys v0.0.0-20220319134239-a9b59b0215f8 // indirect
 	gopkg.in/eapache/queue.v1 v1.1.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
