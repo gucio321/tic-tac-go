@@ -7,7 +7,7 @@
 <h1>Tic-Tac-Go</h1>
 is an implementation
 of the tic-tac-toe game written in [Golang](https://golang.org)
-In addition it implements a _relatively simple_
+In addition it implements a <i>relatively simple</i>
 AI logic for PC players. For more details see
 <a href="./pkg/core/pcplayer">here</a>
 <br clear="all" />
