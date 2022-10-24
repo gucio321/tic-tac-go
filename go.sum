@@ -1,5 +1,7 @@
 github.com/AllenDang/giu v0.6.2 h1:CFIHSQxDqEFNsNnTO9LXBVZ8zlInV71H3M6V3BNagmI=
 github.com/AllenDang/giu v0.6.2/go.mod h1:9hCQh0l0wbBzOqe9cr02EB9EsNOy9AwFIjG4xVsR6TI=
+github.com/AllenDang/giu v0.6.3-0.20221015101012-797b7e91bf85 h1:o4fmhskSkQnM/6zHtGffI0w8Y2MnB9Z7GqZNY/gyB9A=
+github.com/AllenDang/giu v0.6.3-0.20221015101012-797b7e91bf85/go.mod h1:4EOmSwh9xwqL11C1Q2qEbsZMgaVPt0C//OTLor1pnTI=
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8 h1:dKZMqib/yUDoCFigmz2agG8geZ/e3iRq304/KJXqKyw=
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8/go.mod h1:b4uuDd0s6KRIPa84cEEchdQ9ICh7K0OryZHbSzMca9k=
 github.com/AllenDang/imgui-go v1.12.1-0.20220322114136-499bbf6a42ad h1:Kr961C2uEEAklK+jBRiZVnQH0AgS7o6pXrIgUTUUGiM=

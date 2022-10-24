@@ -3,7 +3,7 @@ module github.com/gucio321/tic-tac-go
 go 1.18
 
 require (
-	github.com/AllenDang/giu v0.6.2
+	github.com/AllenDang/giu v0.6.3-0.20221015101012-797b7e91bf85
 	github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7
 	github.com/gucio321/go-clear v0.0.0-20220330152544-d99c158fac45
 	github.com/gucio321/terminalmenu v0.0.0-20220330182819-9d00852342ab
