@@ -10,7 +10,7 @@ require (
 	github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/russross/blackfriday v1.6.0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 	golang.org/x/image v0.0.0-20220321031419-a8550c1d254a
 )
 
