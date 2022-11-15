@@ -268,7 +268,7 @@ func TestGetPCMove(t *testing.T) {
 					SetIndexState(0, letter.LetterO),
 				pcLetter: letter.LetterX,
 			},
-			want: []int{3},
+			want: []int{5},
 		},
 	}
 
