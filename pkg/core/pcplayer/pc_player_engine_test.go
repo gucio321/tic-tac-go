@@ -249,11 +249,23 @@ func TestGetPCMove(t *testing.T) {
 		{
 			name: "Block player (Issue #190)",
 			args: args{
-				gameBoard: board.Create(3, 3, 4).
+				gameBoard: board.Create(3, 3, 3).
 					SetIndexState(0, letter.LetterX).
 					SetIndexState(8, letter.LetterO).
 					SetIndexState(6, letter.LetterX).
 					SetIndexState(2, letter.LetterO),
+				pcLetter: letter.LetterX,
+			},
+			want: []int{3},
+		},
+		{
+			name: "Block player (Issue #190) (#2)",
+			args: args{
+				gameBoard: board.Create(3, 3, 3).
+					SetIndexState(2, letter.LetterX).
+					SetIndexState(6, letter.LetterO).
+					SetIndexState(8, letter.LetterX).
+					SetIndexState(0, letter.LetterO),
 				pcLetter: letter.LetterX,
 			},
 			want: []int{3},
@@ -263,7 +275,8 @@ func TestGetPCMove(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := NewPCPlayer(tt.args.gameBoard, tt.args.pcLetter).GetMove()
-			assert.Truef(t, contains(tt.want, got), "GetPCMove() returned unexpected result: expected %v, got %v", tt.want, got)
+			//tt.args.gameBoard.SetIndexState(got, tt.args.pcLetter)
+			assert.Truef(t, contains(tt.want, got), "GetPCMove() returned unexpected result: expected %v, got %v\n%s", tt.want, got, tt.args.gameBoard)
 		})
 	}
 }

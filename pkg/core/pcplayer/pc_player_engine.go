@@ -5,6 +5,7 @@ package pcplayer
 import (
 	"crypto/rand"
 	"fmt"
+	"github.com/gucio321/tic-tac-go/internal/logger"
 	"math/big"
 
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
@@ -44,15 +45,22 @@ func (p *PCPlayer) String() string {
 //   - take center
 //   - take random side
 func (p PCPlayer) GetMove() (i int) {
+	logger.Infof("Calculating Move for PC Player")
 	return p.getPCMove(p.b)
 }
 
 // nolint:gocyclo // https://github.com/gucio321/tic-tac-go/issues/154
 func (p *PCPlayer) getPCMove(gameBoard *board.Board) (i int) {
+	logger.Debugf("Game board is\n %s", gameBoard)
+	logger.Debugf("PC letter is %s", p.pcLetter)
+
 	playerLetter := p.pcLetter.Opposite()
+	logger.Debugf("opponent's letter is %s", playerLetter)
 
 	// attack: try to win now
+	logger.Debug("Performing attack")
 	if ok, indexes := p.canWin(gameBoard, p.pcLetter); ok {
+		logger.Debugf("Can win now, indexes: %v", indexes)
 		options := p.getAvailableOptions(gameBoard, indexes)
 
 		if len(options) > 0 {
@@ -61,7 +69,9 @@ func (p *PCPlayer) getPCMove(gameBoard *board.Board) (i int) {
 	}
 
 	// defense: check, if user can win
+	logger.Debug("Performing defense")
 	if ok, indexes := p.canWin(gameBoard, playerLetter); ok {
+		logger.Debugf("Player can win now, indexes: %v", indexes)
 		options := p.getAvailableOptions(gameBoard, indexes)
 
 		if len(options) > 0 {
@@ -69,13 +79,17 @@ func (p *PCPlayer) getPCMove(gameBoard *board.Board) (i int) {
 		}
 	}
 
+	logger.Debug("Performing attack (2 moves)")
 	options := p.getAvailableOptions(gameBoard, p.canWinTwoMoves(gameBoard, p.pcLetter))
 	if len(options) > 0 {
+		logger.Debugf("Player can win in two moves, indexes: %v", options)
 		return p.getRandomNumber(options)
 	}
 
+	logger.Debug("Performing defense (2 moves)")
 	options = p.getAvailableOptions(gameBoard, p.canWinTwoMoves(gameBoard, playerLetter))
 	if len(options) > 0 {
+		logger.Debugf("Player can win in two moves, indexes: %v", options)
 		return p.getRandomNumber(options)
 	}
 
