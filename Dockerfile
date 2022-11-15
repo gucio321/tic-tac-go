@@ -1,4 +1,4 @@
-FROM docker.io/library/golang:1.19.3-bullseye
+FROM docker.io/library/golang:1.19.3-buster
 
 RUN apt-get update
 
