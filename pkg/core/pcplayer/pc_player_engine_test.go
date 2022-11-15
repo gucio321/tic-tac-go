@@ -243,6 +243,21 @@ func TestGetPCMove(t *testing.T) {
 			},
 			want: []int{5, 6, 9, 10},
 		},
+
+		// simple variants:
+		// needs to block player
+		{
+			name: "Block player (Issue #190)",
+			args: args{
+				gameBoard: board.Create(3, 3, 4).
+					SetIndexState(0, letter.LetterX).
+					SetIndexState(8, letter.LetterO).
+					SetIndexState(6, letter.LetterX).
+					SetIndexState(2, letter.LetterO),
+				pcLetter: letter.LetterX,
+			},
+			want: []int{3},
+		},
 	}
 
 	for _, tt := range tests {
