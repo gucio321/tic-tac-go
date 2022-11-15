@@ -1,0 +1,24 @@
+name: Docker Package
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker-practice/actions-setup-docker@master
+      - run: docker build --tag ghcr.io/gucio321/tic-tac-go:latest -e DISPLAY=${DISPLAY} --volume /tmp/.X11-unix:/tmp/.X11-unix --security-opt label=type:container_runtime_t --network bridge .
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker-practice/actions-setup-docker@master
+      - run: docker push 
