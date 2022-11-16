@@ -22,8 +22,8 @@ type Players struct {
 // Create creates a new players set.
 func Create(playerX, playerO player.Player) *Players {
 	result := &Players{
-		playerO: playerX,
-		playerX: playerO,
+		playerX: playerX,
+		playerO: playerO,
 	}
 
 	result.RollFirstPlayer()
