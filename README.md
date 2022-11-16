@@ -15,7 +15,9 @@ AI logic for PC players. For more details see
 
 # Installation
 
-## Requirements
+## standard installation
+
+### Requirements
 
 to run the game you just need to have
 [GO programming language](https://golang.org) installed.
@@ -24,14 +26,14 @@ You may also want to use graphical version of the game,
 so I suggest following
 [GIU installation instruction](https://github.com/AllenDang/giu#install)
 
-## Installing binaries
+### Installing binaries
 
 To install the game with golang api,
 first download it: `go get github.com/gucio321/tic-tac-go`
 and let's GO!
 Since now, an executable will be present in `$GOPATH/bin/` directory.
 
-### So how to run now?
+#### So how to run now?
 
 After installation, just run
 `go run github.com/gucio321/tic-tac-go/cmd/terminal-game` for
@@ -39,7 +41,7 @@ simple console game implementation or
 `go run github.com/gucio321/tic-tac-go/cmd/giu-game` for
 advanced graphical one.
 
-## Well, but I'd like to know more about source code!
+### Well, but I'd like to know more about source code!
 
 You can also download the source by running
 `git clone https://github.com/gucio321/tic-tac-go`
@@ -50,7 +52,36 @@ cd tic-tac-go
 go get -d ./...
 ```
 
-## Screenshots
+## Docker installation
+
+Since v3, I support Docker
+to build and run the game.
+
+### plain docker
+
+images are available on [quay.io](https://quay.io/repository/gucio321/tic-tac-go)
+
+Note, that you need to add the following options to
+correctly run the container:
+
+```shell
+docker run \
+    -d
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
+    --security-opt label=type:container_runtime_t \
+    quay.io/gucio321/tic-tac-go:latest
+```
+
+### docker compose
+
+you can use docker-compose to skip the above commands:
+
+```shell
+docker-compose up -d
+```
+
+# Screenshots
 
 ![tic tac go in terminal](docs/in_terminal.png)
 
