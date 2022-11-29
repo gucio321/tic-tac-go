@@ -1,3 +1,4 @@
+// Package main contains main application script
 package main
 
 import (

@@ -1,3 +1,5 @@
+// Package main - this package could be used to draw a game board
+// specified with command-line arguments
 package main
 
 import (

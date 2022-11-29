@@ -2,6 +2,7 @@ package board
 
 import (
 	"fmt"
+
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 )
 

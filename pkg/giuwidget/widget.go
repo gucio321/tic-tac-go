@@ -46,7 +46,7 @@ func (g *GameWidget) runGame() {
 
 // Build builds the game.
 func (g *GameWidget) Build() {
-	// nolint:ifshort // https://github.com/golangci/golangci-lint/issues/2662
+	//nolint:ifshort // https://github.com/golangci/golangci-lint/issues/2662
 	state := g.getState()
 
 	if state.displayBoard {

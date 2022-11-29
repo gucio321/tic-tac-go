@@ -1,3 +1,4 @@
+// Package main contains a main application code for GUI game
 package main
 
 import (

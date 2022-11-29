@@ -275,8 +275,12 @@ func TestGetPCMove(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := NewPCPlayer(tt.args.gameBoard, tt.args.pcLetter).GetMove()
-			//tt.args.gameBoard.SetIndexState(got, tt.args.pcLetter)
-			assert.Truef(t, contains(tt.want, got), "GetPCMove() returned unexpected result: expected %v, got %v\n%s", tt.want, got, tt.args.gameBoard)
+
+			assert.Truef(
+				t, contains(tt.want, got),
+				"GetPCMove() returned unexpected result: expected %v, got %v\n%s",
+				tt.want, got, tt.args.gameBoard,
+			)
 		})
 	}
 }
