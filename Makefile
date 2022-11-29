@@ -42,6 +42,8 @@ setup:
 	@echo "Tic-Tac-Go INFO: For more details check https://github.com/AllenDang/giu"
 	@echo "Downloading tools and dependencies..."
 	@git submodule update --init --recursive
+	@$(GOCMD) get golang.org/x/tools/cmd/stringer
+	@$(GOCMD) install golang.org/x/tools/cmd/stringer
 	@$(GOCMD) get -d ./...
 	@$(GOCMD) mod download -x
 	@$(GOCMD) generate -v ./...
