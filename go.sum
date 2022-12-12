@@ -26,10 +26,10 @@ github.com/gucio321/terminalmenu v0.0.0-20220330182819-9d00852342ab h1:gzpARGhQx
 github.com/gucio321/terminalmenu v0.0.0-20220330182819-9d00852342ab/go.mod h1:JnjFS1peefJA+sV/2a/UXK9yFuoQDiYuiV91CEh4p0s=
 github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba h1:QFQpJdgbON7I0jr2hYW7Bs+XV0qjc3d5tZoDnRFnqTg=
 github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba/go.mod h1:CVKlgaMiht+LXvHG173ujK6JUhZXKb2u/BQtjPDIvyk=
-github.com/kpango/fastime v1.1.4 h1:pus9JgJBg/8Jie3ozayA4yNIV67BUPhbq0wMZY3CtYo=
-github.com/kpango/fastime v1.1.4/go.mod h1:tTNDbIo5qL6D7g5vh2YbkyUbOVP2kD/we3rSjN22PMY=
-github.com/kpango/glg v1.6.13 h1:QMhxOm/Oo1k8qraMtH4SQOYIgB/SI2RW2Hvrn1kgAZw=
-github.com/kpango/glg v1.6.13/go.mod h1:fwP/c6NJTXe0vd9L3He6myDnO33lFVfgQGtGmlMnyws=
+github.com/kpango/fastime v1.1.6 h1:lAw1Tiwnlbsx1xZs6W9eM7/8niwabknewbmLkh/yTVo=
+github.com/kpango/fastime v1.1.6/go.mod h1:tTNDbIo5qL6D7g5vh2YbkyUbOVP2kD/we3rSjN22PMY=
+github.com/kpango/glg v1.6.14 h1:Ss3ZvTQ23blUCDYizSAijiFTZsgGeYr/lanUGgQ10rY=
+github.com/kpango/glg v1.6.14/go.mod h1:2djk7Zr4zKIYPHlORH8tJVlhCEh+XXW8W4K3qJyNXMI=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
 github.com/mattn/go-runewidth v0.0.9/go.mod h1:H031xJmbD/WCDINGzjvQ9THkh0rPKHF+m2gUSrubnMI=
 github.com/mattn/go-runewidth v0.0.14 h1:+xnbZSEeDbOIg5/mE6JF0w6n9duR1l3/WmbinWVwUuU=
