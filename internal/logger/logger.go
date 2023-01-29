@@ -3,6 +3,12 @@ package logger
 
 import "github.com/kpango/glg"
 
+func init() {
+	// for glg, need to change caller's lenght in order to report real caller path
+	// instead of path to this file.
+	glg.Get().SetCallerDepth(3)
+}
+
 // Info logs a message at level Info on the standard logger.
 func Info(args ...interface{}) {
 	if err := glg.Info(args...); err != nil {
