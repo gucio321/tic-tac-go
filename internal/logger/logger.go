@@ -3,10 +3,17 @@ package logger
 
 import "github.com/kpango/glg"
 
+// call depth.
+//
+//nolint:gochecknoinits // it is the easiest way to set
 func init() {
-	// for glg, need to change caller's lenght in order to report real caller path
+	// for glg, need to change caller's length in order to report real caller path
 	// instead of path to this file.
-	glg.Get().SetCallerDepth(3)
+	// default depth is 2, need to increase by 1, since here we wrap its
+	// methods.
+	const logDepth = 2 + 1
+
+	glg.Get().SetCallerDepth(logDepth)
 }
 
 // Info logs a message at level Info on the standard logger.
