@@ -31,8 +31,8 @@ require (
 	github.com/rivo/uniseg v0.4.2 // indirect
 	github.com/sahilm/fuzzy v0.1.0 // indirect
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
-	golang.org/x/net v0.1.0 // indirect
-	golang.org/x/sys v0.1.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	gopkg.in/eapache/queue.v1 v1.1.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
