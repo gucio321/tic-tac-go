@@ -11,7 +11,7 @@ require (
 	github.com/kpango/glg v1.6.14
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/russross/blackfriday v1.6.0
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 	golang.org/x/image v0.5.0
 )
 
