@@ -16,8 +16,8 @@ github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6/go.mod h1:9YTyiznxEY1fVin
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20211213063430-748e38ca8aec/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20221017161538-93cebf72946b h1:GgabKamyOYguHqHjSkDACcgoPIz3w0Dis/zJ1wyHHHU=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20221017161538-93cebf72946b/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
-github.com/goccy/go-json v0.9.11 h1:/pAaQDLHEoCq/5FFmSKBswWmK6H0e8g4159Kc/X/nqk=
-github.com/goccy/go-json v0.9.11/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MGFi0w8I=
+github.com/goccy/go-json v0.10.2 h1:CrxCmQqYDkv1z7lO7Wbh2HN93uovUHgrECaO5ZrCXAU=
+github.com/goccy/go-json v0.10.2/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MGFi0w8I=
 github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7 h1:r0b+3cK7b5I2LLf7/uhed+VRjcWzOI7BwrCy54l8UlM=
 github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7/go.mod h1:VaYXitHStkgczFCNysozZgiiK0aVITajAvR+jONEtzo=
 github.com/gucio321/go-clear v0.0.0-20220330152544-d99c158fac45 h1:BI/vzexB1HjpNVoymrPsxcn78gysFJ4OOhIwwkA7i8I=
@@ -26,10 +26,10 @@ github.com/gucio321/terminalmenu v0.0.0-20220330182819-9d00852342ab h1:gzpARGhQx
 github.com/gucio321/terminalmenu v0.0.0-20220330182819-9d00852342ab/go.mod h1:JnjFS1peefJA+sV/2a/UXK9yFuoQDiYuiV91CEh4p0s=
 github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba h1:QFQpJdgbON7I0jr2hYW7Bs+XV0qjc3d5tZoDnRFnqTg=
 github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba/go.mod h1:CVKlgaMiht+LXvHG173ujK6JUhZXKb2u/BQtjPDIvyk=
-github.com/kpango/fastime v1.1.6 h1:lAw1Tiwnlbsx1xZs6W9eM7/8niwabknewbmLkh/yTVo=
-github.com/kpango/fastime v1.1.6/go.mod h1:tTNDbIo5qL6D7g5vh2YbkyUbOVP2kD/we3rSjN22PMY=
-github.com/kpango/glg v1.6.14 h1:Ss3ZvTQ23blUCDYizSAijiFTZsgGeYr/lanUGgQ10rY=
-github.com/kpango/glg v1.6.14/go.mod h1:2djk7Zr4zKIYPHlORH8tJVlhCEh+XXW8W4K3qJyNXMI=
+github.com/kpango/fastime v1.1.9 h1:xVQHcqyPt5M69DyFH7g1EPRns1YQNap9d5eLhl/Jy84=
+github.com/kpango/fastime v1.1.9/go.mod h1:vyD7FnUn08zxY4b/QFBZVG+9EWMYsNl+QF0uE46urD4=
+github.com/kpango/glg v1.6.15 h1:nw0xSxpSyrDIWHeb3dvnE08PW+SCbK+aYFETT75IeLA=
+github.com/kpango/glg v1.6.15/go.mod h1:cmsc7Yeu8AS3wHLmN7bhwENXOpxfq+QoqxCIk2FneRk=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
 github.com/mattn/go-runewidth v0.0.9/go.mod h1:H031xJmbD/WCDINGzjvQ9THkh0rPKHF+m2gUSrubnMI=
 github.com/mattn/go-runewidth v0.0.14 h1:+xnbZSEeDbOIg5/mE6JF0w6n9duR1l3/WmbinWVwUuU=
@@ -61,7 +61,7 @@ github.com/stretchr/testify v1.8.2/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 go.uber.org/atomic v1.7.0 h1:ADUqmZGgLDDfbSL9ZmPxKTybcoEYHgpYfELNoN+7hsw=
 go.uber.org/multierr v1.6.0 h1:y6IPFStTAIT5Ytl7/XYmHvzXQ7S3g/IeZW9hyZ5thw4=
-go.uber.org/zap v1.23.0 h1:OjGQ5KQDEUawVHxNwQgPpiypGHOxo2mNZsOqTak4fFY=
+go.uber.org/zap v1.24.0 h1:FiJd5l1UOLj0wCgbSE0rwwXHzEdAZS6hiiSnxJN/D60=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20210921155107-089bfa567519/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
 golang.org/x/image v0.6.0 h1:bR8b5okrPI3g/gyZakLZHeWxAR8Dn5CyxXv1hLH5g/4=
