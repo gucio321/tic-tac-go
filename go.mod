@@ -8,7 +8,7 @@ require (
 	github.com/gucio321/go-clear v0.0.0-20220330152544-d99c158fac45
 	github.com/gucio321/terminalmenu v0.0.0-20220330182819-9d00852342ab
 	github.com/jaytaylor/html2text v0.0.0-20211105163654-bc68cce691ba
-	github.com/kpango/glg v1.6.14
+	github.com/kpango/glg v1.6.15
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/russross/blackfriday v1.6.0
 	github.com/stretchr/testify v1.8.2
@@ -23,8 +23,8 @@ require (
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 // indirect
 	github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6 // indirect
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20221017161538-93cebf72946b // indirect
-	github.com/goccy/go-json v0.9.11 // indirect
-	github.com/kpango/fastime v1.1.6 // indirect
+	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/kpango/fastime v1.1.9 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
