@@ -28,7 +28,7 @@ jobs:
         with:
           platform: x64
       - name: Set up Go environment
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: '1.19.x'
         id: go
