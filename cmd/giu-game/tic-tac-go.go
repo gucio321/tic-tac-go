@@ -31,6 +31,6 @@ func main() {
 	wnd := giu.NewMasterWindow("Tic-Tac-Go", screenX, screenY, 0)
 	wnd.SetIcon([]image.Image{logo})
 	wnd.Run(func() {
-		giu.SingleWindow().Layout(giuwidget.Game(game.PlayerTypeHuman, game.PlayerTypePC))
+		giu.SingleWindow().Layout(giuwidget.Game(game.PlayerTypeHuman, game.PlayerTypePCMinMax))
 	})
 }

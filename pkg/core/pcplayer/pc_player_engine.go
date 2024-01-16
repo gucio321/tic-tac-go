@@ -62,7 +62,7 @@ func (p PCPlayer) GetMove() (i int) {
 	case AlgOriginal:
 		return p.getPCMove(p.b)
 	case AlgMinMax:
-		return p.minMax(p.b)
+		return p.minMax(p.b, 10)
 	default:
 		panic(fmt.Sprintf("Unknown algorithm type: %v", p.algType))
 	}
@@ -78,8 +78,12 @@ func (p PCPlayer) GetMove() (i int) {
 // should be taking the center. However after looking at algorithnm's behaviour it turns out
 // that taking the center will not lead to the fastest winning opportunity. Conclusion: the algorithm should be
 // improved to consider "unblockable wins" and "draws"
-func (p *PCPlayer) minMax(gameBoard *board.Board) (i int) {
-	cw, move, _ := p.mm(gameBoard, p.pcLetter, 0)
+//
+// UPDATE 1: I've added maxDepth parameter. Now user can specify how many moves ahead the algorithm should predict.
+// UPDATE 2: Number of calls to mm is boardArea^maxDepth. So DONT EVEN TRY IT FOR 4x4 board with maxDepth ~10 (1099511627776 callss)!!!
+func (p *PCPlayer) minMax(gameBoard *board.Board, maxDepth int) (i int) {
+	//progress := int(math.Pow(float64(gameBoard.Width()*gameBoard.Height()), float64(maxDepth)))
+	cw, move, _ := p.mm(gameBoard, p.pcLetter, 0, maxDepth)
 	// now if can't get best move get random from possible
 	if !cw {
 		for i := 0; i < gameBoard.Width()*gameBoard.Height(); i++ {
@@ -93,7 +97,7 @@ func (p *PCPlayer) minMax(gameBoard *board.Board) (i int) {
 	return move
 }
 
-func (a *PCPlayer) mm(gameBoard *board.Board, l letter.Letter, currentDepth int) (couldWin bool, move int, depth int) {
+func (a *PCPlayer) mm(gameBoard *board.Board, l letter.Letter, currentDepth int, maxDepth int) (couldWin bool, move int, depth int) {
 	//logger.Debugf("mm: call for %s (depth: %d)\n%s", l, currentDepth, gameBoard)
 	depth = currentDepth
 	wg := sync.WaitGroup{}
@@ -115,10 +119,15 @@ func (a *PCPlayer) mm(gameBoard *board.Board, l letter.Letter, currentDepth int)
 			return false, 0, currentDepth + 1
 		}
 
+		if currentDepth == maxDepth {
+			couldWin = false
+			break
+		}
+
 		//logger.Debugf("re-running for opposite letter")
 		wg.Add(1)
 		go func() {
-			cpCouldWin, cpMove, cpDepth := a.mm(cp, l.Opposite(), currentDepth+1)
+			cpCouldWin, cpMove, cpDepth := a.mm(cp, l.Opposite(), currentDepth+1, maxDepth)
 			m.Lock()
 			if cpCouldWin && (cpDepth < depth || depth == currentDepth || !couldWin) {
 				//logger.Debugf("mm depth %d: updated best move to %d (on depth %d)", currentDepth, cpMove, cpDepth)
