@@ -8,14 +8,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gucio321/go-clear"
-
 	"github.com/jaytaylor/html2text"
 	"github.com/pkg/browser"
 	"github.com/russross/blackfriday"
 
 	"github.com/gravestench/osinfo"
 
+	"github.com/gucio321/go-clear"
 	terminalmenu "github.com/gucio321/terminalmenu/pkg"
 	"github.com/gucio321/terminalmenu/pkg/menuutils"
 
@@ -57,7 +56,8 @@ func New(readme []byte) *Menu {
 func (m *Menu) Run() {
 	err := <-terminalmenu.Create("Tic-Tac-Go", true).
 		MainPage("Main Menu").
-		Item("PvC game", m.runPVC).
+		Item("PvC game (Standard Algorithm)", m.runPVCOriginal).
+		Item("PvC game (Min-Max Algorithm - slower)", m.runPVCMinMax).
 		Item("PvP game", m.runPVP).
 		Item("Demo", m.runDemo).
 		// [Settings]
@@ -81,14 +81,20 @@ func (m *Menu) runPVP() {
 	pvp.Run()
 }
 
-func (m *Menu) runPVC() {
-	g := gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypeHuman, game.PlayerTypePC)
+func (m *Menu) runPVCOriginal() {
+	g := gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypeHuman, game.PlayerTypePCOriginal)
+
+	g.Run()
+}
+
+func (m *Menu) runPVCMinMax() {
+	g := gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypeHuman, game.PlayerTypePCMinMax)
 
 	g.Run()
 }
 
 func (m *Menu) runDemo() {
-	demo := gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypePC, game.PlayerTypePC)
+	demo := gameimpl.NewTTG(m.width, m.height, m.chainLen, game.PlayerTypePCOriginal, game.PlayerTypePCOriginal)
 	demo.Run()
 }
 

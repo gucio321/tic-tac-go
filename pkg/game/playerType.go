@@ -6,5 +6,6 @@ type PlayerType byte
 // player types.
 const (
 	PlayerTypeHuman PlayerType = iota
-	PlayerTypePC
+	PlayerTypePCOriginal
+	PlayerTypePCMinMax
 )

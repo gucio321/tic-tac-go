@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"math/big"
+	"sync"
 
 	"github.com/gucio321/tic-tac-go/internal/logger"
 
@@ -14,19 +15,28 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 )
 
+type AlgType byte
+
+const (
+	AlgOriginal AlgType = iota
+	AlgMinMax
+)
+
 var _ player.Player = &PCPlayer{}
 
 // PCPlayer is a simple-AI logic used in Tic-Tac-Go for calculating PC-player's move.
 type PCPlayer struct {
 	b        *board.Board
 	pcLetter letter.Letter
+	algType  AlgType
 }
 
 // NewPCPlayer creates new PCPlayer instance.
-func NewPCPlayer(b *board.Board, pcLetter letter.Letter) *PCPlayer {
+func NewPCPlayer(b *board.Board, pcLetter letter.Letter, algType AlgType) *PCPlayer {
 	return &PCPlayer{
 		b:        b,
 		pcLetter: pcLetter,
+		algType:  algType,
 	}
 }
 
@@ -48,7 +58,82 @@ func (p *PCPlayer) String() string {
 func (p PCPlayer) GetMove() (i int) {
 	logger.Infof("Calculating Move for PC Player")
 
-	return p.getPCMove(p.b)
+	switch p.algType {
+	case AlgOriginal:
+		return p.getPCMove(p.b)
+	case AlgMinMax:
+		return p.minMax(p.b)
+	default:
+		panic(fmt.Sprintf("Unknown algorithm type: %v", p.algType))
+	}
+}
+
+// THis is a min-max algorithm implementation.
+// This algorithm predicts all possible solutions and chooses the best one.
+// After writting this I found out the followint:
+// 1. This is really ineffective: It is playable on 3x3 board, but on 4x4 it
+// freezes my 12-core, 16GB RAM machine. (I will try to add MaxDepth (after reaching this it will just randomize the move)
+// and maybe I'll try to optimize it so that it doesn't call recursively if not needed (solution worse than current worst))
+// 2. This is a bit theoritical conclusion but: In theory of 3x3 tic-tac-toe game, the best 2nd move (if 1st player took corner)
+// should be taking the center. However after looking at algorithnm's behaviour it turns out
+// that taking the center will not lead to the fastest winning opportunity. Conclusion: the algorithm should be
+// improved to consider "unblockable wins" and "draws"
+func (p *PCPlayer) minMax(gameBoard *board.Board) (i int) {
+	cw, move, _ := p.mm(gameBoard, p.pcLetter, 0)
+	// now if can't get best move get random from possible
+	if !cw {
+		for i := 0; i < gameBoard.Width()*gameBoard.Height(); i++ {
+			if !gameBoard.IsIndexFree(i) {
+				continue
+			}
+			move = i
+			break
+		}
+	}
+	return move
+}
+
+func (a *PCPlayer) mm(gameBoard *board.Board, l letter.Letter, currentDepth int) (couldWin bool, move int, depth int) {
+	//logger.Debugf("mm: call for %s (depth: %d)\n%s", l, currentDepth, gameBoard)
+	depth = currentDepth
+	wg := sync.WaitGroup{}
+	m := sync.Mutex{}
+	for i := 0; i < gameBoard.Width()*gameBoard.Height(); i++ {
+		if !gameBoard.IsIndexFree(i) {
+			continue
+		}
+
+		cp := gameBoard.Copy()
+		cp.SetIndexState(i, l)
+		if winner, _ := cp.IsWinner(l); winner {
+			//logger.Debugf("Can win at %d (combo %v)", i, u)
+			return true, i, currentDepth + 1
+		}
+
+		if cp.IsBoardFull() {
+			//logger.Debugf("Cant win and board full")
+			return false, 0, currentDepth + 1
+		}
+
+		//logger.Debugf("re-running for opposite letter")
+		wg.Add(1)
+		go func() {
+			cpCouldWin, cpMove, cpDepth := a.mm(cp, l.Opposite(), currentDepth+1)
+			m.Lock()
+			if cpCouldWin && (cpDepth < depth || depth == currentDepth || !couldWin) {
+				//logger.Debugf("mm depth %d: updated best move to %d (on depth %d)", currentDepth, cpMove, cpDepth)
+				depth = cpDepth
+				move = cpMove
+				couldWin = true
+			}
+			m.Unlock()
+			wg.Done()
+		}()
+	}
+
+	wg.Wait()
+
+	return
 }
 
 //nolint:gocyclo,funlen // https://github.com/gucio321/tic-tac-go/issues/154

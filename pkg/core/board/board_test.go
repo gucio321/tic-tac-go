@@ -265,6 +265,34 @@ func Test_Board_IsWinner(t *testing.T) {
 	}
 }
 
+func Test_Board_IsWinner_TrueFalse(t *testing.T) {
+	tests := []struct {
+		name           string
+		board          *Board
+		letter         letter.Letter
+		expectedResult bool
+	}{
+		{"Noone win", &Board{
+			width:    3,
+			height:   3,
+			chainLen: 3,
+			board: []letter.Letter{
+				0, 1, 0,
+				1, 0, 1,
+				0, 0, 1,
+			},
+		}, letter.LetterX, false},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			a := assert.New(tt)
+			result, _ := test.board.IsWinner(test.letter)
+			a.Equal(test.expectedResult, result, "unexpected result")
+		})
+	}
+}
+
 func Test_Board_GetWinner(t *testing.T) {
 	tests := []struct {
 		name           string
