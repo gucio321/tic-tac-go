@@ -106,7 +106,7 @@ func (p *PCPlayer) minMax(gameBoard *board.Board, maxDepth int) (i int) {
 func (a *PCPlayer) mm(
 	gameBoard *board.Board, l letter.Letter, currentDepth int,
 	maxDepth int, mutex *sync.Mutex, best *int, move *int, couldWin *bool,
-) (resultCanWin bool, resultMove int) {
+) {
 	//logger.Debugf("mm: call for %s (depth: %d)\n%s", l, currentDepth, gameBoard)
 	mutex.Lock()
 	if *best <= currentDepth && *couldWin {
@@ -128,30 +128,26 @@ func (a *PCPlayer) mm(
 		cp.SetIndexState(i, l)
 		if winner, u := cp.IsWinner(l); winner {
 			logger.Debugf("Can win at %d (combo %v) Depth %d", i, u, currentDepth)
-
-			return true, i
+			mutex.Lock()
+			if !*couldWin || (*couldWin && *best > currentDepth) {
+				//logger.Warnf("Found move %d at depth %d (Potential winner is %s)", m, currentDepth, l)
+				//logger.Debugf("mm depth %d: updated best move to %d (on depth %d)", currentDepth, cpMove, cpDepth)
+				*best = currentDepth
+				*move = i
+				*couldWin = true
+			}
+			mutex.Unlock()
 		}
 
 		//logger.Debugf("re-running for opposite letter")
 		wg.Add(1)
 		go func() {
-			cw, m := a.mm(cp, l.Opposite(), currentDepth+1, maxDepth, mutex, best, move, couldWin)
-			mutex.Lock()
-			if cw && (!*couldWin || (*couldWin && *best > currentDepth)) {
-				//logger.Warnf("Found move %d at depth %d (Potential winner is %s)", m, currentDepth, l)
-				//logger.Debugf("mm depth %d: updated best move to %d (on depth %d)", currentDepth, cpMove, cpDepth)
-				*best = currentDepth
-				*move = m
-				*couldWin = true
-			}
-			mutex.Unlock()
+			a.mm(cp, l.Opposite(), currentDepth+1, maxDepth, mutex, best, move, couldWin)
 			wg.Done()
 		}()
 	}
 
 	wg.Wait()
-
-	return false, 0
 }
 
 //nolint:gocyclo,funlen // https://github.com/gucio321/tic-tac-go/issues/154
