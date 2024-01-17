@@ -83,25 +83,42 @@ func (p PCPlayer) GetMove() (i int) {
 // UPDATE 2: Number of calls to mm is boardArea^maxDepth. So DONT EVEN TRY IT FOR 4x4 board with maxDepth ~10 (1099511627776 callss)!!!
 func (p *PCPlayer) minMax(gameBoard *board.Board, maxDepth int) (i int) {
 	//progress := int(math.Pow(float64(gameBoard.Width()*gameBoard.Height()), float64(maxDepth)))
-	cw, move, _ := p.mm(gameBoard, p.pcLetter, 0, maxDepth)
+	m := &sync.Mutex{}
+	cw := new(bool)
+	move := new(int)
+	bestDepth := new(int) // this one is for internal state of mm - will hold lowest depth for which canWin was true
+	p.mm(gameBoard, p.pcLetter, 0, maxDepth, m, bestDepth, move, cw)
+	fmt.Println("Best Depth", *bestDepth)
 	// now if can't get best move get random from possible
-	if !cw {
+	if !*cw {
+		logger.Infof("Randomize move")
 		for i := 0; i < gameBoard.Width()*gameBoard.Height(); i++ {
 			if !gameBoard.IsIndexFree(i) {
 				continue
 			}
-			move = i
+			*move = i
 			break
 		}
 	}
-	return move
+	return *move
 }
 
-func (a *PCPlayer) mm(gameBoard *board.Board, l letter.Letter, currentDepth int, maxDepth int) (couldWin bool, move int, depth int) {
+func (a *PCPlayer) mm(
+	gameBoard *board.Board, l letter.Letter, currentDepth int,
+	maxDepth int, mutex *sync.Mutex, best *int, move *int, couldWin *bool,
+) (resultCanWin bool, resultMove int) {
 	//logger.Debugf("mm: call for %s (depth: %d)\n%s", l, currentDepth, gameBoard)
-	depth = currentDepth
+	mutex.Lock()
+	if *best <= currentDepth && *couldWin {
+		//logger.Debugf("mm: depth %d: best better than current (%d > %d)", currentDepth, *best, currentDepth)
+		mutex.Unlock()
+
+		return
+	}
+
+	mutex.Unlock()
+
 	wg := sync.WaitGroup{}
-	m := sync.Mutex{}
 	for i := 0; i < gameBoard.Width()*gameBoard.Height(); i++ {
 		if !gameBoard.IsIndexFree(i) {
 			continue
@@ -109,40 +126,32 @@ func (a *PCPlayer) mm(gameBoard *board.Board, l letter.Letter, currentDepth int,
 
 		cp := gameBoard.Copy()
 		cp.SetIndexState(i, l)
-		if winner, _ := cp.IsWinner(l); winner {
-			//logger.Debugf("Can win at %d (combo %v)", i, u)
-			return true, i, currentDepth + 1
-		}
+		if winner, u := cp.IsWinner(l); winner {
+			logger.Debugf("Can win at %d (combo %v) Depth %d", i, u, currentDepth)
 
-		if cp.IsBoardFull() {
-			//logger.Debugf("Cant win and board full")
-			return false, 0, currentDepth + 1
-		}
-
-		if currentDepth == maxDepth {
-			couldWin = false
-			break
+			return true, i
 		}
 
 		//logger.Debugf("re-running for opposite letter")
 		wg.Add(1)
 		go func() {
-			cpCouldWin, cpMove, cpDepth := a.mm(cp, l.Opposite(), currentDepth+1, maxDepth)
-			m.Lock()
-			if cpCouldWin && (cpDepth < depth || depth == currentDepth || !couldWin) {
+			cw, m := a.mm(cp, l.Opposite(), currentDepth+1, maxDepth, mutex, best, move, couldWin)
+			mutex.Lock()
+			if cw && (!*couldWin || (*couldWin && *best > currentDepth)) {
+				//logger.Warnf("Found move %d at depth %d (Potential winner is %s)", m, currentDepth, l)
 				//logger.Debugf("mm depth %d: updated best move to %d (on depth %d)", currentDepth, cpMove, cpDepth)
-				depth = cpDepth
-				move = cpMove
-				couldWin = true
+				*best = currentDepth
+				*move = m
+				*couldWin = true
 			}
-			m.Unlock()
+			mutex.Unlock()
 			wg.Done()
 		}()
 	}
 
 	wg.Wait()
 
-	return
+	return false, 0
 }
 
 //nolint:gocyclo,funlen // https://github.com/gucio321/tic-tac-go/issues/154
