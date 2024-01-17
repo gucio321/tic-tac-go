@@ -86,8 +86,10 @@ func (p *PCPlayer) minMax(gameBoard *board.Board, maxDepth int) (i int) {
 	m := &sync.Mutex{}
 	cw := new(bool)
 	move := new(int)
+	waitGroup := &sync.WaitGroup{}
+	waitGroup.Add(1)      // TODO: this could be wrapped in mm i think
 	bestDepth := new(int) // this one is for internal state of mm - will hold lowest depth for which canWin was true
-	p.mm(gameBoard, p.pcLetter, 0, maxDepth, m, bestDepth, move, cw)
+	p.mm(gameBoard, p.pcLetter, 0, maxDepth, m, waitGroup, bestDepth, move, cw)()
 	fmt.Println("Best Depth", *bestDepth)
 	// now if can't get best move get random from possible
 	if !*cw {
@@ -100,13 +102,15 @@ func (p *PCPlayer) minMax(gameBoard *board.Board, maxDepth int) (i int) {
 			break
 		}
 	}
+
 	return *move
 }
 
 func (a *PCPlayer) mm(
 	gameBoard *board.Board, l letter.Letter, currentDepth int,
-	maxDepth int, mutex *sync.Mutex, best *int, move *int, couldWin *bool,
-) {
+	maxDepth int, mutex *sync.Mutex, waitGroup *sync.WaitGroup, best *int, move *int, couldWin *bool,
+) (waiter func()) {
+	defer waitGroup.Done()
 	//logger.Debugf("mm: call for %s (depth: %d)\n%s", l, currentDepth, gameBoard)
 	mutex.Lock()
 	if *best <= currentDepth && *couldWin {
@@ -118,7 +122,6 @@ func (a *PCPlayer) mm(
 
 	mutex.Unlock()
 
-	wg := sync.WaitGroup{}
 	for i := 0; i < gameBoard.Width()*gameBoard.Height(); i++ {
 		if !gameBoard.IsIndexFree(i) {
 			continue
@@ -130,24 +133,25 @@ func (a *PCPlayer) mm(
 			logger.Debugf("Can win at %d (combo %v) Depth %d", i, u, currentDepth)
 			mutex.Lock()
 			if !*couldWin || (*couldWin && *best > currentDepth) {
-				//logger.Warnf("Found move %d at depth %d (Potential winner is %s)", m, currentDepth, l)
+				logger.Warnf("Found move %d at depth %d (Potential winner is %s)", i, currentDepth, l)
 				//logger.Debugf("mm depth %d: updated best move to %d (on depth %d)", currentDepth, cpMove, cpDepth)
 				*best = currentDepth
 				*move = i
 				*couldWin = true
 			}
 			mutex.Unlock()
+
+			return waitGroup.Wait
 		}
 
 		//logger.Debugf("re-running for opposite letter")
-		wg.Add(1)
+		waitGroup.Add(1)
 		go func() {
-			a.mm(cp, l.Opposite(), currentDepth+1, maxDepth, mutex, best, move, couldWin)
-			wg.Done()
+			a.mm(cp, l.Opposite(), currentDepth+1, maxDepth, mutex, waitGroup, best, move, couldWin)
 		}()
 	}
 
-	wg.Wait()
+	return waitGroup.Wait
 }
 
 //nolint:gocyclo,funlen // https://github.com/gucio321/tic-tac-go/issues/154
