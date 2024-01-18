@@ -86,10 +86,11 @@ func (p *PCPlayer) minMax(gameBoard *board.Board, maxDepth int) (i int) {
 	m := &sync.Mutex{}
 	cw := new(bool)
 	move := new(int)
+	winStrike := new(int)
 	waitGroup := &sync.WaitGroup{}
 	waitGroup.Add(1)      // TODO: this could be wrapped in mm i think
 	bestDepth := new(int) // this one is for internal state of mm - will hold lowest depth for which canWin was true
-	p.mm(gameBoard, p.pcLetter, 0, maxDepth, m, waitGroup, bestDepth, move, cw)()
+	p.mm(gameBoard, p.pcLetter, 0, maxDepth, m, waitGroup, bestDepth, move, cw, winStrike)()
 	fmt.Println("Best Depth", *bestDepth)
 	// now if can't get best move get random from possible
 	if !*cw {
@@ -108,7 +109,8 @@ func (p *PCPlayer) minMax(gameBoard *board.Board, maxDepth int) (i int) {
 
 func (a *PCPlayer) mm(
 	gameBoard *board.Board, l letter.Letter, currentDepth int,
-	maxDepth int, mutex *sync.Mutex, waitGroup *sync.WaitGroup, best *int, move *int, couldWin *bool,
+	maxDepth int, mutex *sync.Mutex, waitGroup *sync.WaitGroup,
+	best *int, move *int, couldWin *bool, winStrike *int,
 ) (waiter func()) {
 	defer waitGroup.Done()
 	//logger.Debugf("mm: call for %s (depth: %d)\n%s", l, currentDepth, gameBoard)
@@ -122,6 +124,21 @@ func (a *PCPlayer) mm(
 
 	mutex.Unlock()
 
+	if winner, u := a.canWin(gameBoard, l); winner {
+		logger.Debugf("Can win at %v Depth %d", u, currentDepth)
+		mutex.Lock()
+		if !*couldWin || (*couldWin && *best > currentDepth) {
+			logger.Warnf("Found moves at depth %d (Potential winner is %s)", currentDepth, l)
+			//logger.Debugf("mm depth %d: updated best move to %d (on depth %d)", currentDepth, cpMove, cpDepth)
+			*best = currentDepth
+			*move = a.getRandomNumber(u)
+			*couldWin = true
+		}
+		mutex.Unlock()
+
+		return waitGroup.Wait
+	}
+
 	for i := 0; i < gameBoard.Width()*gameBoard.Height(); i++ {
 		if !gameBoard.IsIndexFree(i) {
 			continue
@@ -129,25 +146,11 @@ func (a *PCPlayer) mm(
 
 		cp := gameBoard.Copy()
 		cp.SetIndexState(i, l)
-		if winner, u := cp.IsWinner(l); winner {
-			logger.Debugf("Can win at %d (combo %v) Depth %d", i, u, currentDepth)
-			mutex.Lock()
-			if !*couldWin || (*couldWin && *best > currentDepth) {
-				logger.Warnf("Found move %d at depth %d (Potential winner is %s)", i, currentDepth, l)
-				//logger.Debugf("mm depth %d: updated best move to %d (on depth %d)", currentDepth, cpMove, cpDepth)
-				*best = currentDepth
-				*move = i
-				*couldWin = true
-			}
-			mutex.Unlock()
-
-			return waitGroup.Wait
-		}
 
 		//logger.Debugf("re-running for opposite letter")
 		waitGroup.Add(1)
 		go func() {
-			a.mm(cp, l.Opposite(), currentDepth+1, maxDepth, mutex, waitGroup, best, move, couldWin)
+			a.mm(cp, l.Opposite(), currentDepth+1, maxDepth, mutex, waitGroup, best, move, couldWin, winStrike)
 		}()
 	}
 
