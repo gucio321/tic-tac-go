@@ -110,33 +110,37 @@ func (p *PCPlayer) minMax(gameBoard *board.Board, maxDepth int) (i int) {
 
 func (a *PCPlayer) mm(
 	gameBoard *board.Board, l letter.Letter, currentDepth int,
-	maxDepth int, maxStrike int, mutex *sync.Mutex, waitGroup *sync.WaitGroup,
+	maxDepth int, destStrike int, mutex *sync.Mutex, waitGroup *sync.WaitGroup,
 	best *int, move *int, couldWin *bool, winStrike *int,
 ) (waiter func()) {
 	defer waitGroup.Done()
 	//logger.Debugf("mm: call for %s (depth: %d)\n%s", l, currentDepth, gameBoard)
-	mutex.Lock()
-	if *best+maxStrike <= currentDepth+1 && *couldWin {
-		//logger.Debugf("mm: depth %d: best better than current (%d > %d)", currentDepth, *best, currentDepth)
-		mutex.Unlock()
+	//mutex.Lock()
+	//if *best < currentDepth && *couldWin {
+	//logger.Debugf("mm: depth %d: best better than current (%d > %d)", currentDepth, *best, currentDepth)
+	//mutex.Unlock()
+	//
+	//return
+	//}
 
-		return
-	}
-
-	mutex.Unlock()
+	//mutex.Unlock()
 
 	waitGroup.Add(1)
 	go func() {
 		if winner, u := a.canWin(gameBoard, l); winner {
-			logger.Debugf("Can win at %v Depth %d", u, currentDepth)
+			//logger.Debugf("Can win at %v Depth %d", u, currentDepth)
 			mutex.Lock()
-			if !*couldWin || (*couldWin && *best-*winStrike > currentDepth-len(u)) {
+			if !*couldWin || // If no move already found need to assign this one
+				(*couldWin && // the alternative is when we already could win we need to consider a bit more
+					(*best > currentDepth && // If we found better move than it was before
+						(len(u) >= destStrike || len(u) >= (currentDepth+1)/2)) || // We search for destStrike winning possibilities. In worst/best case we need to contrattack (or 100% win chance)
+					(*best == currentDepth && *winStrike < len(u))) {
 				logger.Warnf("Found moves at depth %d (Potential winner is %s) (strike is %d)", currentDepth, l, len(u))
 				//logger.Debugf("mm depth %d: updated best move to %d (on depth %d)", currentDepth, cpMove, cpDepth)
 				*best = currentDepth
-				*move = a.getRandomNumber(u)
 				*couldWin = true
 				*winStrike = len(u)
+				*move = a.getRandomNumber(u)
 			}
 			mutex.Unlock()
 
@@ -156,7 +160,7 @@ func (a *PCPlayer) mm(
 		//logger.Debugf("re-running for opposite letter")
 		waitGroup.Add(1)
 		go func() {
-			a.mm(cp, l.Opposite(), currentDepth+1, maxDepth, maxStrike, mutex, waitGroup, best, move, couldWin, winStrike)
+			a.mm(cp, l.Opposite(), currentDepth+1, maxDepth, destStrike, mutex, waitGroup, best, move, couldWin, winStrike)
 		}()
 	}
 

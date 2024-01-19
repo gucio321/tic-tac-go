@@ -24,20 +24,25 @@ const (
 )
 
 // GameWidget represents a giu implementation of tic-tac-go.
-type GameWidget struct {
-	playerXType, playerOType game.PlayerType
-}
+type GameWidget struct{}
 
 // Game creates GameWidget.
-func Game(playerXType, playerOType game.PlayerType) *GameWidget {
-	return &GameWidget{
-		playerXType: playerXType,
-		playerOType: playerOType,
-	}
+func Game() *GameWidget {
+	return &GameWidget{}
 }
 
 func (g *GameWidget) runGame() {
 	state := g.getState()
+
+	state.game = game.Create(game.PlayerType(state.playerXType), game.PlayerType(state.playerOType))
+	state.game.Result(func(letter.Letter, string) {
+		_, state.winningCombo = state.currentBoard.GetWinner()
+		state.gameEnded = true
+	})
+
+	state.game.UserAction(func() int {
+		return <-state.buttonClick
+	})
 
 	state.game.SetBoardSize(int(state.w), int(state.h), int(state.chainLen))
 	state.displayBoard = true
@@ -46,6 +51,7 @@ func (g *GameWidget) runGame() {
 
 // Build builds the game.
 func (g *GameWidget) Build() {
+	playerTypes := []string{"Human", "AI", "AI (min-max alg)"}
 	//nolint:ifshort // https://github.com/golangci/golangci-lint/issues/2662
 	state := g.getState()
 
@@ -95,6 +101,23 @@ func (g *GameWidget) Build() {
 				giu.Style().SetFontSize(menuFontSize).To(
 					giu.InputInt(&state.chainLen).Size(inputIntW),
 				),
+			),
+			giu.Style().SetFontSize(menuFontSize).To(
+				giu.Table().Columns(
+					giu.TableColumn("Player X"),
+					giu.TableColumn("Player O"),
+				).Rows(
+					giu.TableRow(
+						giu.Row(
+							giu.Label("Type:"),
+							giu.Combo("##t1", playerTypes[state.playerXType], playerTypes, &state.playerXType),
+						),
+						giu.Row(
+							giu.Label("Type:"),
+							giu.Combo("##t2", playerTypes[state.playerOType], playerTypes, &state.playerOType),
+						),
+					),
+				).Size(600, 100),
 			),
 			giu.Style().SetFontSize(menuFontSize).To(
 				giu.Button("START GAME").OnClick(func() {
