@@ -3,8 +3,6 @@ package giuwidget
 import (
 	"github.com/AllenDang/giu"
 
-	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
-
 	"github.com/gucio321/tic-tac-go/pkg/core/board"
 	"github.com/gucio321/tic-tac-go/pkg/game"
 )
@@ -12,13 +10,14 @@ import (
 var _ giu.Disposable = &gameState{}
 
 type gameState struct {
-	w, h, chainLen int32
-	game           *game.Game
-	buttonClick    chan int
-	gameEnded      bool
-	winningCombo   []int
-	currentBoard   *board.Board
-	displayBoard   bool
+	w, h, chainLen           int32
+	game                     *game.Game
+	buttonClick              chan int
+	gameEnded                bool
+	winningCombo             []int
+	currentBoard             *board.Board
+	displayBoard             bool
+	playerXType, playerOType int32
 }
 
 // Dispose implements giu.Disposable.
@@ -53,18 +52,8 @@ func (g *GameWidget) newState() *gameState {
 		h:           defaultBoardSize,
 		chainLen:    defaultBoardSize,
 		gameEnded:   false,
-		game:        game.Create(g.playerXType, g.playerOType),
 		buttonClick: make(chan int),
 	}
-
-	state.game.Result(func(letter.Letter, string) {
-		_, state.winningCombo = state.currentBoard.GetWinner()
-		state.gameEnded = true
-	})
-
-	state.game.UserAction(func() int {
-		return <-state.buttonClick
-	})
 
 	return state
 }

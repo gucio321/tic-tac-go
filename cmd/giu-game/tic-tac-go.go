@@ -8,8 +8,6 @@ import (
 	"image/png"
 	"log"
 
-	"github.com/gucio321/tic-tac-go/pkg/game"
-
 	"github.com/AllenDang/giu"
 
 	"github.com/gucio321/tic-tac-go/pkg/giuwidget"
@@ -31,6 +29,6 @@ func main() {
 	wnd := giu.NewMasterWindow("Tic-Tac-Go", screenX, screenY, 0)
 	wnd.SetIcon([]image.Image{logo})
 	wnd.Run(func() {
-		giu.SingleWindow().Layout(giuwidget.Game(game.PlayerTypeHuman, game.PlayerTypePC))
+		giu.SingleWindow().Layout(giuwidget.Game())
 	})
 }
