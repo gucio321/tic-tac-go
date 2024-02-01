@@ -274,7 +274,7 @@ func TestGetPCMove(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := NewPCPlayer(tt.args.gameBoard, tt.args.pcLetter).GetMove()
+			got := NewPCPlayer(tt.args.gameBoard, tt.args.pcLetter, AlgOriginal).GetMove()
 
 			assert.Truef(
 				t, contains(tt.want, got),
@@ -304,8 +304,8 @@ func TestGetPCMove_FullBoard(t *testing.T) {
 		SetIndexState(14, letter.LetterX).
 		SetIndexState(15, letter.LetterO)
 
-	assert.Panics(t, func() { NewPCPlayer(gameBoard, letter.LetterX).GetMove() }, "GetPCMove on full board didn't panicked")
-	assert.Panics(t, func() { NewPCPlayer(gameBoard, letter.LetterO).GetMove() }, "GetPCMove on full board didn't panicked")
+	assert.Panics(t, func() { NewPCPlayer(gameBoard, letter.LetterX, AlgOriginal).GetMove() }, "GetPCMove on full board didn't panicked")
+	assert.Panics(t, func() { NewPCPlayer(gameBoard, letter.LetterO, AlgOriginal).GetMove() }, "GetPCMove on full board didn't panicked")
 }
 
 //nolint:funlen // tests function; it is ok
@@ -462,8 +462,8 @@ func Test_canWin(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotCanWinX, gotResultsX := NewPCPlayer(tt.args.baseBoard, letter.LetterX).canWin(tt.args.baseBoard, letter.LetterX)
-			gotCanWinO, gotResultsO := NewPCPlayer(tt.args.baseBoard, letter.LetterO).canWin(tt.args.baseBoard, letter.LetterO)
+			gotCanWinX, gotResultsX := NewPCPlayer(tt.args.baseBoard, letter.LetterX, AlgOriginal).canWin(tt.args.baseBoard, letter.LetterX)
+			gotCanWinO, gotResultsO := NewPCPlayer(tt.args.baseBoard, letter.LetterO, AlgOriginal).canWin(tt.args.baseBoard, letter.LetterO)
 			assert.Equal(t, gotCanWinX, tt.wantCanWinX, "canWin returned unexpected value")
 			assert.Equal(t, gotResultsX, tt.wantResultsX, "canWin returned unexpected value (list of winning combos)")
 			assert.Equal(t, gotCanWinO, tt.wantCanWinO, "canWin returned unexpected value")
@@ -536,7 +536,7 @@ func Test_canWinTwoMoves(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotResult := NewPCPlayer(tt.args.gameBoard, tt.args.player).canWinTwoMoves(tt.args.gameBoard, tt.args.player)
+			gotResult := NewPCPlayer(tt.args.gameBoard, tt.args.player, AlgOriginal).canWinTwoMoves(tt.args.gameBoard, tt.args.player)
 			assert.Equal(t, tt.wantResult, gotResult, "canWinTwoMoves() = %v, want %v", gotResult, tt.wantResult)
 		})
 	}
