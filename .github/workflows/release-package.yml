@@ -90,7 +90,7 @@ jobs:
       - name: Echo
         run: echo ${{ env.RELEASE_VERSION }}
 
-      - uses: "softprops/action-gh-release@v1"
+      - uses: "softprops/action-gh-release@v2"
         with:
           files: |
             build/tic-tac-go-terminal.bin
