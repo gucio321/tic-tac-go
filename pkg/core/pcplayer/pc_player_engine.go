@@ -15,10 +15,13 @@ import (
 	"github.com/gucio321/tic-tac-go/pkg/core/players/player"
 )
 
+// AlgType allows to set pseudo-AI algorithm type.
 type AlgType byte
 
 const (
+	// AlgOriginal is a simple, procedural algorithm.
 	AlgOriginal AlgType = iota
+	// AlgMinMax is an min-max algorithm. Should work better but will affect performance significantly especially on larger boards.
 	AlgMinMax
 )
 
@@ -62,7 +65,7 @@ func (p PCPlayer) GetMove() (i int) {
 	case AlgOriginal:
 		return p.getPCMove(p.b)
 	case AlgMinMax:
-		return p.minMax(p.b, 10)
+		return p.minMax(p.b, 10) //nolint:mnd // TODO; this is a random depth
 	default:
 		panic(fmt.Sprintf("Unknown algorithm type: %v", p.algType))
 	}
@@ -70,37 +73,40 @@ func (p PCPlayer) GetMove() (i int) {
 
 // THis is a min-max algorithm implementation.
 // This algorithm predicts all possible solutions and chooses the best one.
-// After writting this I found out the followint:
+// After writing this I found out the followint:
 // 1. This is really ineffective: It is playable on 3x3 board, but on 4x4 it
 // freezes my 12-core, 16GB RAM machine. (I will try to add MaxDepth (after reaching this it will just randomize the move)
 // and maybe I'll try to optimize it so that it doesn't call recursively if not needed (solution worse than current worst))
-// 2. This is a bit theoritical conclusion but: In theory of 3x3 tic-tac-toe game, the best 2nd move (if 1st player took corner)
-// should be taking the center. However after looking at algorithnm's behaviour it turns out
+// 2. This is a bit theoretical conclusion but: In theory of 3x3 tic-tac-toe game, the best 2nd move (if 1st player took corner)
+// should be taking the center. However after looking at algorithnm's behavior it turns out
 // that taking the center will not lead to the fastest winning opportunity. Conclusion: the algorithm should be
 // improved to consider "unblockable wins" and "draws"
 //
 // UPDATE 1: I've added maxDepth parameter. Now user can specify how many moves ahead the algorithm should predict.
 // UPDATE 2: Number of calls to mm is boardArea^maxDepth. So DONT EVEN TRY IT FOR 4x4 board with maxDepth ~10 (1099511627776 callss)!!!
 func (p *PCPlayer) minMax(gameBoard *board.Board, maxDepth int) (i int) {
-	//progress := int(math.Pow(float64(gameBoard.Width()*gameBoard.Height()), float64(maxDepth)))
 	m := &sync.Mutex{}
 	cw := new(bool)
 	move := new(int)
 	winStrike := new(int)
 	maxStrike := 2
 	waitGroup := &sync.WaitGroup{}
-	waitGroup.Add(1)      // TODO: this could be wrapped in mm i think
+	waitGroup.Add(1) // TODO: this could be wrapped in mm i think
+
 	bestDepth := new(int) // this one is for internal state of mm - will hold lowest depth for which canWin was true
 	p.mm(gameBoard, p.pcLetter, 0, maxDepth, maxStrike, m, waitGroup, bestDepth, move, cw, winStrike)()
 	fmt.Println("Best Depth", *bestDepth)
 	// now if can't get best move get random from possible
 	if !*cw {
 		logger.Infof("Randomize move")
+
 		for i := 0; i < gameBoard.Width()*gameBoard.Height(); i++ {
 			if !gameBoard.IsIndexFree(i) {
 				continue
 			}
+
 			*move = i
+
 			break
 		}
 	}
@@ -108,42 +114,30 @@ func (p *PCPlayer) minMax(gameBoard *board.Board, maxDepth int) (i int) {
 	return *move
 }
 
-func (a *PCPlayer) mm(
+func (p *PCPlayer) mm(
 	gameBoard *board.Board, l letter.Letter, currentDepth int,
 	maxDepth int, destStrike int, mutex *sync.Mutex, waitGroup *sync.WaitGroup,
 	best *int, move *int, couldWin *bool, winStrike *int,
 ) (waiter func()) {
 	defer waitGroup.Done()
-	//logger.Debugf("mm: call for %s (depth: %d)\n%s", l, currentDepth, gameBoard)
-	//mutex.Lock()
-	//if *best < currentDepth && *couldWin {
-	//logger.Debugf("mm: depth %d: best better than current (%d > %d)", currentDepth, *best, currentDepth)
-	//mutex.Unlock()
-	//
-	//return
-	//}
-
-	//mutex.Unlock()
-
 	waitGroup.Add(1)
+
 	go func() {
-		if winner, u := a.canWin(gameBoard, l); winner {
-			//logger.Debugf("Can win at %v Depth %d", u, currentDepth)
+		if winner, u := p.canWin(gameBoard, l); winner {
 			mutex.Lock()
 			if !*couldWin || // If no move already found need to assign this one
 				(*couldWin && // the alternative is when we already could win we need to consider a bit more
 					(*best > currentDepth && // If we found better move than it was before
-						(len(u) >= destStrike || len(u) >= (currentDepth+1)/2)) || // We search for destStrike winning possibilities. In worst/best case we need to contrattack (or 100% win chance)
+						// We search for destStrike winning possibilities. In worst/best case we need to contrattack (100% win chanc)
+						(len(u) >= destStrike || len(u) >= (currentDepth+1)/2)) ||
 					(*best == currentDepth && *winStrike < len(u))) {
 				logger.Warnf("Found moves at depth %d (Potential winner is %s) (strike is %d)", currentDepth, l, len(u))
-				//logger.Debugf("mm depth %d: updated best move to %d (on depth %d)", currentDepth, cpMove, cpDepth)
 				*best = currentDepth
 				*couldWin = true
 				*winStrike = len(u)
-				*move = a.getRandomNumber(u)
+				*move = p.getRandomNumber(u)
 			}
 			mutex.Unlock()
-
 		}
 
 		waitGroup.Done()
@@ -157,10 +151,10 @@ func (a *PCPlayer) mm(
 		cp := gameBoard.Copy()
 		cp.SetIndexState(i, l)
 
-		//logger.Debugf("re-running for opposite letter")
 		waitGroup.Add(1)
+
 		go func() {
-			a.mm(cp, l.Opposite(), currentDepth+1, maxDepth, destStrike, mutex, waitGroup, best, move, couldWin, winStrike)
+			p.mm(cp, l.Opposite(), currentDepth+1, maxDepth, destStrike, mutex, waitGroup, best, move, couldWin, winStrike)
 		}()
 	}
 
@@ -337,9 +331,10 @@ func (p *PCPlayer) canWinTwoMoves(gameBoard *board.Board, playerLetter letter.Le
 	result = make([]int, 0)
 
 	//nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
-	minimalChainLen := gameBoard.ChainLength() - 2
+	minimalChainLen := gameBoard.ChainLength() - 2 //nolint:mnd // we check if chain reduced by 2 can win; this is ok
+
 	if minimalChainLen <= 0 {
-		return
+		return result
 	}
 
 	potentiallyAvailableChains := gameBoard.GetWinBoard(gameBoard.ChainLength() + 1)

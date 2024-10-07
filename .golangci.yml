@@ -34,12 +34,11 @@ linters:
   enable:
     - asciicheck
     - bodyclose
-    - depguard
+    - copyloopvar
     - dogsled
     - dupl
     - errcheck
     - errorlint
-    - exportloopref
     - forcetypeassert
     - funlen
     #- gci

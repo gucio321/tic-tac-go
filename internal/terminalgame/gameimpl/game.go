@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gucio321/go-clear"
+
 	"github.com/gucio321/tic-tac-go/pkg/core/board/letter"
 
 	"github.com/gucio321/terminalmenu/pkg/menuutils"

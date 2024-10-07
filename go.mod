@@ -1,6 +1,6 @@
 module github.com/gucio321/tic-tac-go
 
-go 1.18
+go 1.22
 
 require (
 	github.com/AllenDang/giu v0.7.0
