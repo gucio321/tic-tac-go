@@ -3,9 +3,7 @@ package logger
 
 import "github.com/kpango/glg"
 
-// call depth.
-//
-//nolint:gochecknoinits // it is the easiest way to set
+//nolint:gochecknoinits // this is needed here
 func init() {
 	// for glg, need to change caller's length in order to report real caller path
 	// instead of path to this file.

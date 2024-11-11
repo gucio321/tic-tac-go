@@ -16,11 +16,12 @@ import (
 const id = "Tic-Tac-Go-game"
 
 const (
-	buttonsSpacing   = 3
-	defaultBoardSize = 3
-	inputIntW        = 40
-	menuFontSize     = 30
-	headerFontSize   = 80
+	buttonsSpacing         = 3
+	defaultBoardSize       = 3
+	inputIntW              = 40
+	menuFontSize           = 30
+	headerFontSize         = 80
+	menuTableW, menuTableH = 600, 100
 )
 
 // GameWidget represents a giu implementation of tic-tac-go.
@@ -117,7 +118,7 @@ func (g *GameWidget) Build() {
 							giu.Combo("##t2", playerTypes[state.playerOType], playerTypes, &state.playerOType),
 						),
 					),
-				).Size(600, 100),
+				).Size(menuTableW, menuTableH),
 			),
 			giu.Style().SetFontSize(menuFontSize).To(
 				giu.Button("START GAME").OnClick(func() {

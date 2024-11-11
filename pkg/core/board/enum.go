@@ -145,7 +145,7 @@ func (b *Board) ConvertIndex(fw, fh, idx int) int {
 	| x | x | x | x | x |
 	+---+---+---+---+---+ the result of this operation is the last index of "x" rows on top
 	*/
-	result := rw * ((rh - fh) / 2) //nolint:gomnd // half of real and fiction size diffrence
+	result := rw * ((rh - fh) / 2) //nolint:mnd // half of real and fiction size diffrence
 
 	for idx > 0 {
 		// when idx - fiction board's width it means,
@@ -175,7 +175,8 @@ func (b *Board) ConvertIndex(fw, fh, idx int) int {
 			(rw - fw) / 2 = (5 - 3)/2 = 2 / 2 = 1
 			later, we just add current idx value and... tada!
 		*/
-		result += (rw - fw) / 2 //nolint:gomnd // half of real and fiction size diffrence
+
+		result += (rw - fw) / 2 //nolint:mnd // half of real and fiction size diffrence
 
 		result += idx
 

@@ -1,6 +1,6 @@
 module github.com/gucio321/tic-tac-go
 
-go 1.18
+go 1.22.0
 
 require (
 	github.com/AllenDang/giu v0.7.0
@@ -12,7 +12,7 @@ require (
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/russross/blackfriday v1.6.0
 	github.com/stretchr/testify v1.9.0
-	golang.org/x/image v0.15.0
+	golang.org/x/image v0.22.0
 )
 
 require (
