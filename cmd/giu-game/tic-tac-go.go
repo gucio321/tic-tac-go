@@ -4,7 +4,6 @@ package main
 import (
 	"bytes"
 	_ "embed"
-	"image"
 	"image/png"
 	"log"
 
@@ -27,7 +26,7 @@ func main() {
 	}
 
 	wnd := giu.NewMasterWindow("Tic-Tac-Go", screenX, screenY, 0)
-	wnd.SetIcon([]image.Image{logo})
+	wnd.SetIcon(logo)
 	wnd.Run(func() {
 		giu.SingleWindow().Layout(giuwidget.Game())
 	})
