@@ -1,11 +1,8 @@
 module github.com/gucio321/tic-tac-go
 
 go 1.23.2
-
-toolchain go1.23.3
-
 require (
-	github.com/AllenDang/giu v0.10.0
+	github.com/AllenDang/giu v0.12.0
 	github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7
 	github.com/gucio321/go-clear v0.0.0-20220330152544-d99c158fac45
 	github.com/gucio321/terminalmenu v0.0.0-20230225102223-b0ad28f4f88d
@@ -18,7 +15,7 @@ require (
 )
 
 require (
-	github.com/AllenDang/cimgui-go v1.1.0 // indirect
+	github.com/AllenDang/cimgui-go v1.3.0 // indirect
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8 // indirect
 	github.com/buger/goterm v1.0.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
