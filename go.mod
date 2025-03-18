@@ -14,7 +14,7 @@ require (
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/russross/blackfriday v1.6.0
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/image v0.24.0
+	golang.org/x/image v0.25.0
 )
 
 require (
