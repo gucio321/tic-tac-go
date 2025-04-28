@@ -1,0 +1,121 @@
+{
+  "formatters": {
+    "enable": [
+      "gofmt",
+      "gofumpt",
+      "goimports"
+    ],
+    "exclusions": {
+      "generated": "lax",
+      "paths": [
+        ".github",
+        "build",
+        "third_party$",
+        "builtin$",
+        "examples$"
+      ]
+    },
+    "settings": {
+      "goimports": {
+        "local-prefixes": [
+          "github.com/gucio321/tic-tac-go"
+        ]
+      }
+    }
+  },
+  "issues": {
+    "max-same-issues": 0
+  },
+  "linters": {
+    "default": "none",
+    "enable": [
+      "asciicheck",
+      "bodyclose",
+      "copyloopvar",
+      "dogsled",
+      "dupl",
+      "err113",
+      "errcheck",
+      "errorlint",
+      "forcetypeassert",
+      "funlen",
+      "gochecknoglobals",
+      "gochecknoinits",
+      "gocognit",
+      "goconst",
+      "gocritic",
+      "gocyclo",
+      "godot",
+      "goheader",
+      "goprintffuncname",
+      "gosec",
+      "govet",
+      "importas",
+      "ineffassign",
+      "lll",
+      "makezero",
+      "misspell",
+      "mnd",
+      "nakedret",
+      "nestif",
+      "nilerr",
+      "nlreturn",
+      "nolintlint",
+      "prealloc",
+      "predeclared",
+      "promlinter",
+      "revive",
+      "rowserrcheck",
+      "staticcheck",
+      "unconvert",
+      "unparam",
+      "unused",
+      "wastedassign",
+      "whitespace",
+      "wrapcheck",
+      "wsl"
+    ],
+    "exclusions": {
+      "generated": "lax",
+      "paths": [
+        ".github",
+        "build",
+        "third_party$",
+        "builtin$",
+        "examples$"
+      ]
+    },
+    "settings": {
+      "dupl": {
+        "threshold": 100
+      },
+      "funlen": {
+        "lines": 100,
+        "statements": 50
+      },
+      "goconst": {
+        "min-len": 2,
+        "min-occurrences": 2
+      },
+      "gocritic": {
+        "enabled-tags": [
+          "diagnostic",
+          "experimental",
+          "opinionated",
+          "performance",
+          "style"
+        ]
+      },
+      "gocyclo": {
+        "min-complexity": 15
+      },
+      "lll": {
+        "line-length": 140
+      },
+      "misspell": {
+        "locale": "US"
+      }
+    }
+  },
+  "version": "2"
+}
