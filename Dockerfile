@@ -1,4 +1,4 @@
-FROM docker.io/library/golang:1.19.3-buster
+FROM docker.io/library/golang:1.24.1-buster
 
 RUN apt-get update
 
