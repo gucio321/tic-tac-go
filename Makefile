@@ -20,18 +20,18 @@ all: build
 ## build: Builds the binary
 build:
 	@echo "files will be saved in build/"
-	@mkdir -p build
+	mkdir -p build
 	@echo "Building..."
 	@echo "Building - terminal game; linux..."
-	@GOOS="linux" $(GOCMD) build -o build/tic-tac-go-terminal.bin cmd/terminal-game/tic-tac-go.go
+	GOOS="linux" $(GOCMD) build -v -o build/tic-tac-go-terminal.bin cmd/terminal-game/tic-tac-go.go
 	@echo "Building - terminal game; windows..."
-	@GOOS="windows" $(GOCMD) build -o build/tic-tac-go-terminal.exe cmd/terminal-game/tic-tac-go.go
+	GOOS="windows" $(GOCMD) build -v -o build/tic-tac-go-terminal.exe cmd/terminal-game/tic-tac-go.go
 	@echo "Building - windowed game; linux..."
-	@CGO_ENABLED="1" GOOS="linux" $(GOCMD) build -o build/tic-tac-go-windowed.bin cmd/giu-game/tic-tac-go.go
+	CGO_ENABLED="1" GOOS="linux" $(GOCMD) build -v -o build/tic-tac-go-windowed.bin cmd/giu-game/tic-tac-go.go
 	@echo "Building - windowed game; windows..."
-	@CGO_ENABLED="1" GOOS="windows" CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ \
+	CGO_ENABLED="1" GOOS="windows" CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ \
 		HOST=x86_64-w64-mingw32 \
-		$(GOCMD) build -ldflags "-s -w -H=windowsgui -extldflags=-static" \
+		$(GOCMD) build -v -ldflags "-s -w -H=windowsgui -extldflags=-static" \
 		-o build/tic-tac-go-windowed.exe cmd/giu-game/tic-tac-go.go
 
 ## setup: Runs mod download and generate
