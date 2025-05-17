@@ -330,7 +330,7 @@ O-player lost.
 func (p *PCPlayer) canWinTwoMoves(gameBoard *board.Board, playerLetter letter.Letter) (result []int) {
 	result = make([]int, 0)
 
-	//nolint:gomnd // look a scheme above - in the second one, the chain is by 2 less than max
+	// look a scheme above - in the second one, the chain is by 2 less than max
 	minimalChainLen := gameBoard.ChainLength() - 2 //nolint:mnd // we check if chain reduced by 2 can win; this is ok
 
 	if minimalChainLen <= 0 {

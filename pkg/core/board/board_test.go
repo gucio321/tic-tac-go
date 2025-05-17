@@ -253,10 +253,9 @@ func Test_Board_IsWinner(t *testing.T) {
 
 			isWinner, combo := test.board.IsWinner(test.expectedLetter)
 
-			switch {
-			case test.expected == nil:
+			if test.expected == nil {
 				a.False(isWinner, "IsWinner called for winning player didn't returned true")
-			default:
+			} else {
 				a.True(isWinner, "IsWinner called for winning player didn't returned true")
 			}
 
