@@ -118,7 +118,7 @@ func (b *Board) GetOppositeCorner(c int) int {
 func (b *Board) ConvertIndex(fw, fh, idx int) int {
 	rw, rh := b.Width(), b.Height()
 	// static checks: check if fiction size isn't greater than real
-	if !(fh <= rh) || !(fw <= rw) {
+	if fh > rh || fw > rw {
 		panic("Tic-Tac-Go: board.(*Board).ConvertIndex: invalid parameters:" +
 			" fiction dimension should be smaller (or equal) than the real")
 	}

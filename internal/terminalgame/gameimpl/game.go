@@ -43,7 +43,7 @@ func NewTTG(w, h, chainLen byte, playerXType, playerOType game.PlayerType) *TTG 
 func (t *TTG) Run() {
 	endGame := make(chan bool, 1)
 
-	t.Game.Result(func(l letter.Letter, name string) {
+	t.Result(func(l letter.Letter, name string) {
 		// handle game end
 		switch l {
 		case letter.LetterNone:
@@ -59,7 +59,7 @@ func (t *TTG) Run() {
 		endGame <- true
 	})
 
-	t.Game.UserAction(t.getPlayerMove)
+	t.UserAction(t.getPlayerMove)
 
 	t.Game.Run()
 
