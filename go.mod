@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.2
 
 require (
-	github.com/AllenDang/giu v0.13.0
+	github.com/AllenDang/giu v0.14.0
 	github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7
 	github.com/gucio321/go-clear v0.0.0-20220330152544-d99c158fac45
 	github.com/gucio321/terminalmenu v0.0.0-20230225102223-b0ad28f4f88d
@@ -18,7 +18,7 @@ require (
 )
 
 require (
-	github.com/AllenDang/cimgui-go v1.3.1 // indirect
+	github.com/AllenDang/cimgui-go v1.3.2-0.20250409185506-6b2ff1aa26b5 // indirect
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8 // indirect
 	github.com/buger/goterm v1.0.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -27,8 +27,8 @@ require (
 	github.com/gucio321/glm-go v0.0.0-20241029220517-e1b5a3e011c8 // indirect
 	github.com/kpango/fastime v1.1.9 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
-	github.com/mazznoer/csscolorparser v0.1.5 // indirect
-	github.com/napsy/go-css v0.0.0-20230611142900-9dd118f3874c // indirect
+	github.com/mazznoer/csscolorparser v0.1.6 // indirect
+	github.com/napsy/go-css v1.0.0 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
