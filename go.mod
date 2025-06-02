@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.2
 
 require (
-	github.com/AllenDang/giu v0.14.0
+	github.com/AllenDang/giu v0.14.1
 	github.com/gravestench/osinfo v0.0.0-20210525170338-34eb1ac010f7
 	github.com/gucio321/go-clear v0.0.0-20220330152544-d99c158fac45
 	github.com/gucio321/terminalmenu v0.0.0-20230225102223-b0ad28f4f88d
