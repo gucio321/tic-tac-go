@@ -120,11 +120,13 @@ func (p *PCPlayer) mm(
 	best *int, move *int, couldWin *bool, winStrike *int,
 ) (waiter func()) {
 	defer waitGroup.Done()
+
 	waitGroup.Add(1)
 
 	go func() {
 		if winner, u := p.canWin(gameBoard, l); winner {
 			mutex.Lock()
+
 			if !*couldWin || // If no move already found need to assign this one
 				(*couldWin && // the alternative is when we already could win we need to consider a bit more
 					(*best > currentDepth && // If we found better move than it was before
@@ -137,6 +139,7 @@ func (p *PCPlayer) mm(
 				*winStrike = len(u)
 				*move = p.getRandomNumber(u)
 			}
+
 			mutex.Unlock()
 		}
 
