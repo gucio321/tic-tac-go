@@ -201,7 +201,7 @@ func (b *Board) IntToCords(i int) (x, y int) {
 		}
 	}
 
-	return
+	return x, y
 }
 
 // CordsToInt converts coordinates on board to board index.
