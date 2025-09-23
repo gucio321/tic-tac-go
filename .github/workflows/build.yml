@@ -28,7 +28,7 @@ jobs:
         with:
           platform: x64
       - name: Set up Go environment
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: 'go.mod'
         id: go
