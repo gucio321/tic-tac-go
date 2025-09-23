@@ -74,7 +74,7 @@ func (b *Board) GetCorners() (result []int) {
 		w*h - 1,     // botton right
 	}
 
-	return
+	return result
 }
 
 // GetOppositeCorner returns a corner in an opposite to given.
