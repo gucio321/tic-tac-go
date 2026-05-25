@@ -12,7 +12,7 @@ require (
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/russross/blackfriday v2.0.0+incompatible
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/image v0.39.0
+	golang.org/x/image v0.41.0
 )
 
 require (
