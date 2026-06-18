@@ -162,22 +162,23 @@ func (m *Menu) printHelp() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(strings.Join([]string{
-		"TicTacToe Version 1",
-		"Copyright (C) 2021 by gucio321 (https://github.com/gucio321)",
-		"",
-		"To go around main menu use number buttons",
-		"In game use 1-9 buttons to select index",
-		"+---+---+---+",
-		"| 1 | 2 | 3 |",
-		"+---+---+---+",
-		"| 4 | 5 | 6 |",
-		"+---+---+---+",
-		"| 7 | 8 | 9 |",
-		"+---+---+---+",
-		"",
-		"Press enter to back to main menu",
-	}, "\n"),
+	fmt.Println(
+		strings.Join([]string{
+			"TicTacToe Version 1",
+			"Copyright (C) 2021 by gucio321 (https://github.com/gucio321)",
+			"",
+			"To go around main menu use number buttons",
+			"In game use 1-9 buttons to select index",
+			"+---+---+---+",
+			"| 1 | 2 | 3 |",
+			"+---+---+---+",
+			"| 4 | 5 | 6 |",
+			"+---+---+---+",
+			"| 7 | 8 | 9 |",
+			"+---+---+---+",
+			"",
+			"Press enter to back to main menu",
+		}, "\n"),
 	)
 
 	if err := menuutils.PromptEnter("Press ENTER to continue"); err != nil {
@@ -188,7 +189,7 @@ func (m *Menu) printHelp() {
 func (m *Menu) printReadme() {
 	var err error
 
-	html := blackfriday.MarkdownBasic(*m.readme)
+	html := blackfriday.Run(*m.readme)
 
 	text, err := html2text.FromString(string(html), html2text.Options{PrettyTables: true})
 	if err != nil {
