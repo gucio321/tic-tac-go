@@ -1,6 +1,4 @@
 // Package utils contains utilities used in terminal interface
-//
-//nolint:revive // this is an internal package
 package utils
 
 import (

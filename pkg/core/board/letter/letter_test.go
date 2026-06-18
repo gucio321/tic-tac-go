@@ -1,3 +1,4 @@
+//nolint:goconst // this is a test file.
 package letter
 
 import (

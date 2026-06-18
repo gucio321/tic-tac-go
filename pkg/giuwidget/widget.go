@@ -35,6 +35,11 @@ func Game() *GameWidget {
 func (g *GameWidget) runGame() {
 	state := g.getState()
 
+	if state.playerXType > int32(game.PlayerTypePCMinMax) || state.playerOType > int32(game.PlayerTypePCMinMax) {
+		panic("Unknown player type")
+	}
+
+	//nolint:gosec // this is checked by the condition above so that the overflow will never occure
 	state.game = game.Create(game.PlayerType(state.playerXType), game.PlayerType(state.playerOType))
 	state.game.Result(func(letter.Letter, string) {
 		_, state.winningCombo = state.currentBoard.GetWinner()
@@ -53,7 +58,6 @@ func (g *GameWidget) runGame() {
 // Build builds the game.
 func (g *GameWidget) Build() {
 	playerTypes := []string{"Human", "AI", "AI (min-max alg)"}
-	//nolint:ifshort // https://github.com/golangci/golangci-lint/issues/2662
 	state := g.getState()
 
 	if state.displayBoard {
@@ -198,7 +202,8 @@ func (g *GameWidget) buildGameBoard(state *gameState) {
 			line = append(line, styled)
 		}
 
-		board = append(board,
+		board = append(
+			board,
 			giu.Row(line...),
 		)
 	}

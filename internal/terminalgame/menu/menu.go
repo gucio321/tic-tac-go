@@ -144,8 +144,8 @@ func (m *Menu) changeBoardSize() {
 		log.Fatal(err)
 	}
 
-	m.width, m.height = byte(w), byte(h)
-	m.chainLen = byte(l)
+	m.width, m.height = byte(w), byte(h) //nolint:gosec // we assume this is ok. This code is really bad anyway.
+	m.chainLen = byte(l)                 //nolint:gosec // we assume this is ok. This code is really bad anyway.
 }
 
 func (m *Menu) resetBoardSize() {
@@ -163,6 +163,7 @@ func (m *Menu) printHelp() {
 	}
 
 	fmt.Println(
+		//nolint:goconst // this is internal and really bad code anyway
 		strings.Join([]string{
 			"TicTacToe Version 1",
 			"Copyright (C) 2021 by gucio321 (https://github.com/gucio321)",
